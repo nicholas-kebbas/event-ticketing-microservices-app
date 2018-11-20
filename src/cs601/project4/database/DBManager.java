@@ -11,7 +11,6 @@ import cs601.project4.database.User;
 
 
 /**
- * Use the singleton here.
  * 
  * Must ensure isolation.
  * 	- Easy (inefficient) way is to make all methods synchronized

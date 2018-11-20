@@ -6,6 +6,11 @@ import java.sql.SQLException;
 
 import cs601.project4.database.DBConstants;
 
+/**
+ * Use the singleton here.
+ * @author nkebbas
+ *
+ */
 public final class Database {
 	private static Database INSTANCE;
 	private DBManager dbm;

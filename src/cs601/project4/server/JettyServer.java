@@ -5,7 +5,7 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
-/* https://25badcb0.ngrok.io/signin */
+
 public class JettyServer {
     private Server server;
  
@@ -19,7 +19,6 @@ public class JettyServer {
         ServerConnector connector = new ServerConnector(server);
         connector.setPort(5000);
         server.setConnectors(new Connector[] { connector });
-
         ServletHandler servletHandler = new ServletHandler();
         server.setHandler(servletHandler);
         
