@@ -1,5 +1,7 @@
 package cs601.project4.userservice;
 
-public class TransferTicketHandler {
+import javax.servlet.http.HttpServlet;
+
+public class TransferTicketHandler extends HttpServlet {
 
 }

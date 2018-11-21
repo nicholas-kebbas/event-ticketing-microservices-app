@@ -10,7 +10,7 @@ import cs601.project4.database.Database;
 public class StartServer {
 
 	public static void main(String[] args){
-	    JettyServer jettyServer = new JettyServer();
+	    JettyServer jettyServer = new JettyServer(5000);
 	    try {
 			jettyServer.start();
 		} catch (Exception e) {

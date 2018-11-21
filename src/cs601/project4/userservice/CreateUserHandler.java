@@ -1,5 +1,7 @@
 package cs601.project4.userservice;
 
-public class CreateUserHandler {
+import javax.servlet.http.HttpServlet;
+
+public class CreateUserHandler extends HttpServlet {
 
 }

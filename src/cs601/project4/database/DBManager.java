@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import cs601.project4.database.User;
 
@@ -42,11 +41,14 @@ public class DBManager {
 		updateStmt.setString(1, user.getName());
 		updateStmt.setString(2, user.getId());
 		updateStmt.setString(3, user.getAccessToken());
-		updateStmt.execute();	
+		updateStmt.execute();
 	}
 	
 	public void createEvent(Event event, String tableName) throws SQLException {
-		PreparedStatement updateStmt = con.prepareStatement("INSERT INTO " + tableName + " (value, operation, user_id, description) VALUES (?, ?, ?, ?)");
+		PreparedStatement updateStmt = con.prepareStatement("INSERT INTO " + tableName + " (userid, eventname, numtickets) VALUES (?, ?, ?)");
+		updateStmt.setInt(1, event.getUserId());
+		updateStmt.setString(2, event.getEventName());
+		updateStmt.setInt(3, event.getNumTickets());
 		updateStmt.execute();	
 	}
 	
@@ -79,11 +81,11 @@ public class DBManager {
 	}
 	
 	public boolean signIn(String userId) throws SQLException {
-		String selectStmt = "SELECT * FROM spusers";
+		String selectStmt = "SELECT * FROM users";
 		PreparedStatement stmt = con.prepareStatement(selectStmt);
 		ResultSet result = stmt.executeQuery();
 		while (result.next()) {
-			String dbUserId= result.getString("slack_id");
+			String dbUserId= result.getString("id");
 			if (userId.equals(dbUserId) ) {
 				return true;
 			}
