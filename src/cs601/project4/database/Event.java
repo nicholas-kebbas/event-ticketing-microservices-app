@@ -5,6 +5,16 @@ public class Event {
 	private String eventName;
 	private int numTickets;
 	
+	public Event() {
+		
+	}
+	
+	public Event(int userId, String eventName, int numTickets) {
+		this.userId = userId;
+		this.eventName = eventName;
+		this.numTickets = numTickets;
+	}
+
 	public int getUserId() {
 		return userId;
 	}

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import cs601.project4.database.User;
 
@@ -44,16 +45,29 @@ public class DBManager {
 		updateStmt.execute();
 	}
 	
-	public void createEvent(Event event, String tableName) throws SQLException {
-		PreparedStatement updateStmt = con.prepareStatement("INSERT INTO " + tableName + " (userid, eventname, numtickets) VALUES (?, ?, ?)");
+	public int createEvent(Event event, String tableName) throws SQLException {
+		String createSql = "INSERT INTO " + tableName + " (userid, eventname, numtickets) VALUES (?, ?, ?)";
+		PreparedStatement updateStmt = con.prepareStatement(createSql, Statement.RETURN_GENERATED_KEYS);
 		updateStmt.setInt(1, event.getUserId());
 		updateStmt.setString(2, event.getEventName());
 		updateStmt.setInt(3, event.getNumTickets());
-		updateStmt.execute();	
+
+		/* Create the new item */
+		updateStmt.executeUpdate();
+		/* Get the latest id */
+		ResultSet rs = updateStmt.getGeneratedKeys();
+		rs.next();
+		int id = rs.getInt(1);
+		System.out.println("id" + id);
+		return id;
 	}
 	
-	public Event getEvent() {
-		return null;
+	/* Get ID from request.getPathInfo() in handler */
+	public Event getEvent(int id, String tableName) throws SQLException {
+		Event returnEvent = new Event();
+		PreparedStatement updateStmt;
+		updateStmt = con.prepareStatement("SELECT id FROM " + tableName + "WHERE id=" + id);
+		return returnEvent;
 	}
 	
 /**
