@@ -24,6 +24,8 @@ public class CreateEventHandler extends HttpServlet {
 	public void doPost (HttpServletRequest request, HttpServletResponse response) throws IOException {	
 		/* Build the object based on json request */
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+		System.out.println("Body: " + request.getReader().readLine());
+		System.out.println(request == null);
 		JsonParser parser = new JsonParser();
         JsonObject jsonBody = (JsonObject) parser.parse(getBody);
         int userId = jsonBody.get("userid").getAsInt();
@@ -42,6 +44,7 @@ public class CreateEventHandler extends HttpServlet {
         
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().print("{" + "id: " + intString  +"}");
+        response.getWriter().print("{" + "\"eventid\": " + intString  +"}");
+        System.out.println(response.getStatus());
 	}
 }

@@ -2,19 +2,18 @@ package cs601.project4.frontend;
 
 import cs601.project4.database.Database;
 import cs601.project4.server.JettyServer;
-import cs601.project4.userservice.CreateTicketHandler;
-import cs601.project4.userservice.CreateUserHandler;
-import cs601.project4.userservice.TransferTicketHandler;
-import cs601.project4.userservice.UserDetailHandler;
 
 public class FrontendServer {
 	
 	public static void main(String[] args) {
 		JettyServer server = new JettyServer(7070);
-		server.addServlet(CreateUserHandler.class, "/create");
-		server.addServlet(CreateTicketHandler.class, "/*/tickets/add");
-		server.addServlet(UserDetailHandler.class, "/*");
-		server.addServlet(TransferTicketHandler.class, "/*/tickets/transfer/");
+		server.addServlet(FrontendEventListHandler.class, "/events");
+		server.addServlet(FrontendCreateEventHandler.class, "/events/create");
+		server.addServlet(FrontendEventDetailHandler.class, "/events/*");
+		// server.addServlet(FrontendPurchaseEventTicketHandler.class, "/events/*/purchase/transfer/*");
+		server.addServlet(FrontendCreateUserHandler.class, "/users/create");
+		server.addServlet(FrontendUserDetailHandler.class, "/users/*");
+		// server.addServlet(FrontendTransferTicketHandler.class, "/users/*/tickets/transfer");
 		
 		try {
 			server.start();

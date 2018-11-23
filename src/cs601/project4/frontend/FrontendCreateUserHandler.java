@@ -1,5 +1,7 @@
 package cs601.project4.frontend;
 
-public class FrontendCreateUserHandler {
+import javax.servlet.http.HttpServlet;
+
+public class FrontendCreateUserHandler extends HttpServlet {
 
 }
