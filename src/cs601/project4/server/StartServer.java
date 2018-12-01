@@ -16,6 +16,7 @@ public class StartServer {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	    System.out.println("server started");
 	    /* Create a connection to the database. 
 	     * Could also move this into separate (singleton) class and 

@@ -1,12 +1,13 @@
 package cs601.project4.eventservice;
 
 import cs601.project4.database.Database;
+import cs601.project4.server.Constants;
 import cs601.project4.server.JettyServer;
 
 public class EventServer {
 	
 	public static void main(String[] args) {
-		JettyServer server = new JettyServer(5000);
+		JettyServer server = new JettyServer(Constants.EVENTS_URL);
 		server.addServlet(CreateEventHandler.class, "/create");
 		server.addServlet(EventListHandler.class, "/list");
 		server.addServlet(EventDetailHandler.class, "/*");

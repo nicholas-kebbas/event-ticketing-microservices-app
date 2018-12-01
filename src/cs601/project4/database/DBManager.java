@@ -37,12 +37,21 @@ public class DBManager {
 	 * @return
 	 * @throws SQLException 
 	 */
-	public void createUser(User user, String tableName) throws SQLException {
-		PreparedStatement updateStmt = con.prepareStatement("INSERT INTO " + tableName + " (name, slack_id, access_token) VALUES (?, ?, ?)");
+	public int createUser(User user, String tableName) throws SQLException {
+		PreparedStatement printStmt = con.prepareStatement("SELECT * FROM " + tableName);
+		PreparedStatement updateStmt = con.prepareStatement("INSERT INTO " + tableName + " (name) VALUES (?)");
 		updateStmt.setString(1, user.getName());
-		updateStmt.setString(2, user.getId());
-		updateStmt.setString(3, user.getAccessToken());
+		/* Create the new item */
 		updateStmt.execute();
+		/* Then get the id of the new user to return */
+		ResultSet rs = printStmt.executeQuery();
+		int idres = 0;
+		while (rs.next()) {
+			//for each result, get the value of the columns name and id
+			idres = rs.getInt("id");
+		}
+		System.out.println("id" + idres);
+		return idres;
 	}
 	
 	public int createEvent(Event event, String tableName) throws SQLException {
@@ -56,10 +65,13 @@ public class DBManager {
 		updateStmt.executeUpdate();
 		/* Get the latest id */
 		ResultSet rs = updateStmt.getGeneratedKeys();
-		rs.next();
-		int id = rs.getInt(1);
-		System.out.println("id" + id);
-		return id;
+		int idres = 0;
+		while (rs.next()) {
+			//for each result, get the value of the columns name and id
+			idres = rs.getInt("name");
+		}
+		System.out.println("id" + idres);
+		return idres;
 	}
 	
 	/* Get ID from request.getPathInfo() in handler */
