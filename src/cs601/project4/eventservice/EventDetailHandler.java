@@ -18,7 +18,6 @@ public class EventDetailHandler extends HttpServlet {
 				try {
 					Event event = db.getDBManager().getEvent(id, "events");
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				System.out.println(id);
@@ -27,7 +26,7 @@ public class EventDetailHandler extends HttpServlet {
 			}
 	}
 	
-	public static boolean isNumeric(String s) {  
+	public static boolean isNumeric(String s) {
 	  try {  
 	    int num = Integer.parseInt(s);
 	  }	catch (NumberFormatException nfe) {  

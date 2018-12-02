@@ -14,6 +14,11 @@ import cs601.project4.database.Database;
 import cs601.project4.database.User;
 import cs601.project4.server.CS601Handler;
 
+/**
+ * Need to figure out how to split appropriately when there's a comma in the json request
+ * @author nkebbas
+ *
+ */
 public class CreateUserHandler extends CS601Handler {
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -34,13 +39,17 @@ public class CreateUserHandler extends CS601Handler {
 		try {
 			int id = db.getDBManager().createUser(user, "users");
 			intString = Integer.toString(id);
+			response.setContentType("application/json");
+			response.setStatus(HttpServletResponse.SC_OK);
+			response.getWriter().print("User Created \n {" + "\"userid\": " + intString  +"}");
 		} catch (SQLException e) {
+			response.setContentType("application/json");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().print("User Unsuccessfully Created");
 			e.printStackTrace();
 		} 
 		
-		response.setContentType("application/json");
-		response.setStatus(HttpServletResponse.SC_OK);
-		response.getWriter().print("User Created \n {" + "\"userid\": " + intString  +"}");
+		
 	    System.out.println(response.getStatus());
 	}
 }

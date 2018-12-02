@@ -74,6 +74,21 @@ public class DBManager {
 		return idres;
 	}
 	
+	public void addTicket(int userId, int eventId, String tableName) throws SQLException {
+		PreparedStatement updateStmt;
+		updateStmt = con.prepareStatement("INSERT INTO " + tableName + " (user_id, event_id) VALUES (?, ?)");
+		updateStmt.setInt(1, userId);
+		updateStmt.setInt(2, eventId);
+		/* Create the new item */
+		updateStmt.execute();
+	}
+	
+	public void decrementTicketAvailability(int eventId, String tableName) throws SQLException {
+		PreparedStatement updateStmt;
+		updateStmt = con.prepareStatement("UPDATE " + tableName + "SET tickets = tickets -1 WHERE event_id=" + eventId + "and tickets > 0");
+		updateStmt.execute();
+	}
+	
 	/* Get ID from request.getPathInfo() in handler */
 	public Event getEvent(int id, String tableName) throws SQLException {
 		Event returnEvent = new Event();
@@ -81,6 +96,15 @@ public class DBManager {
 		updateStmt = con.prepareStatement("SELECT id FROM " + tableName + "WHERE id=" + id);
 		return returnEvent;
 	}
+	
+	public User getUser(int id, String tableName) throws SQLException {
+		User returnUser = new User();
+		PreparedStatement updateStmt;
+		updateStmt = con.prepareStatement("SELECT id FROM " + tableName + "WHERE id=" + id);
+		return returnUser;
+	}
+	
+	
 	
 /**
  * Take as input username and password, return User object data

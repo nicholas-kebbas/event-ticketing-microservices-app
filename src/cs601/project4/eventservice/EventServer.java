@@ -12,6 +12,7 @@ public class EventServer {
 		server.addServlet(EventListHandler.class, "/list");
 		server.addServlet(EventDetailHandler.class, "/*");
 		server.addServlet(PurchaseEventHandler.class, "/purchase/*");
+		server.addServlet(UpdateTicketAvailabilityHandler.class, "/tickets/availability");
 		try {
 			server.start();
 		} catch (Exception e) {

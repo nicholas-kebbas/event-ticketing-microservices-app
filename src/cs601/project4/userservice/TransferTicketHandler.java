@@ -11,8 +11,7 @@ public class TransferTicketHandler extends CS601Handler {
 
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		System.out.println("ticket transfer doget");
-		
+		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 
 	@Override

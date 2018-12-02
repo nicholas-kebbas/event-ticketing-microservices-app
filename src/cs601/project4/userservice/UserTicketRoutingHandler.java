@@ -31,11 +31,6 @@ public class UserTicketRoutingHandler extends CS601Handler {
 		if (handler != null) {
 			handler.doPost(request, response);
 		}
-//		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-//		System.out.println("Body: " + request.getReader().readLine());
-//		System.out.println(request == null);
-//		JsonParser parser = new JsonParser();
-//        JsonObject jsonBody = (JsonObject) parser.parse(getBody);
 	}
 	
 	public static boolean isNumeric(String s) {  
@@ -50,7 +45,6 @@ public class UserTicketRoutingHandler extends CS601Handler {
 	// (CreateTicketHandler.class, "*/tickets/add");
 	// (UserTicketRoutingHandler.class, "/*");
 	// (TransferTicketHandler.class, "/*/tickets/transfer/");
-	//
 	public CS601Handler parseString(String requestUrl) {
 		String[] parameters = requestUrl.split("/");
 		System.out.println(parameters.length);

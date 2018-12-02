@@ -12,11 +12,9 @@ public class UserServer {
 		
 		/* Need to do additional parsing in the singler /* Handler 
 		 * So the below 3 should all be directed to one routing handler,
-		 * and then the correct handler will be called
+		 * and then the correct handler will be called in that servlet
 		 * */
-		// server.addServlet(CreateTicketHandler.class, "/*/tickets/add");
 		userServer.addServlet(UserTicketRoutingHandler.class, "/*");
-		// server.addServlet(TransferTicketHandler.class, "/*/tickets/transfer/");
 		
 		try {
 			userServer.start();
