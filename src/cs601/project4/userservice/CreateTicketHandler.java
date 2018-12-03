@@ -1,8 +1,10 @@
 package cs601.project4.userservice;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 
@@ -13,8 +15,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import cs601.project4.database.Database;
-import cs601.project4.database.Event;
-import cs601.project4.eventservice.CreateEventHandler;
 import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
 
@@ -32,42 +32,59 @@ public class CreateTicketHandler extends CS601Handler {
 	
 	public void doPost (HttpServletRequest request, HttpServletResponse response) throws IOException {	
 		System.out.println("do post create ticket");
-		
 		/* Parse the URL to get the UserID */
 		String[] parameters = request.getPathInfo().split("/");
-		System.out.println(parameters.length);
+		String getBody = "";
 		if (parameters.length == 4 && isNumeric(parameters[1])) {
 			int userId = Integer.parseInt(parameters[1]);
 			System.out.println(userId);
 			/* Parse the request and get Event ID and number of tickets */
-			String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+			getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 			System.out.println("Body: " + request.getReader().readLine());
 			JsonParser parser = new JsonParser();
 			JsonObject jsonBody = (JsonObject) parser.parse(getBody);
 			int eventId = jsonBody.get("eventid").getAsInt();
 			int tickets = jsonBody.get("tickets").getAsInt();
 			Database db = Database.getInstance();
-			/* Loop through and create a row for each ticket */
-			for (int i = 0; i < tickets; i++) {
-				try {
-					db.getDBManager().addTicket(userId, eventId, "tickets");
-				} catch (SQLException e) {
-					e.printStackTrace();
+			/* Check that designated number of tickets is available first */
+			
+			/* Open a new Request to event server and update ticket availability */
+			byte[] postData = getBody.getBytes( StandardCharsets.UTF_8 );
+	       	URL url = new URL (Constants.HOST + Constants.EVENTS_URL + "/tickets/availability");
+	        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
+			connect.setDoOutput( true );
+			connect.setInstanceFollowRedirects( false );
+	        connect.setRequestMethod("POST");
+			connect.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded"); 
+			connect.setRequestProperty( "charset", "utf-8");
+			connect.setRequestProperty( "Content-Length", Integer.toString( postData.length ));
+			connect.setUseCaches( false );
+			try( DataOutputStream wr = new DataOutputStream( connect.getOutputStream())) {
+				   wr.write( postData );
+			}
+	        connect.connect();  
+	        System.out.println("Response: " + connect.getResponseCode());
+	        
+	        /* There are enough available tickets so proceed with updating the tickets table */
+	        if (connect.getResponseCode() == 200) {
+		        /* if we get a 200 back, return affirmative, else return that there was an error. */
+		        response.getWriter().println("Event tickets added");
+				
+				/* Loop through and create a row for each ticket */
+				for (int i = 0; i < tickets; i++) {
+					try {
+						db.getDBManager().addTicket(userId, eventId, "tickets");
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 				}
+				response.setStatus(HttpServletResponse.SC_OK);
+	        } else {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			}
 		} else {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
-		
-		/* Open a new Request to event server and update ticket availability */
-	       	URL url = new URL (Constants.HOST + Constants.EVENTS_URL + "/tickets/availability");
-	        System.out.println(url);
-	        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-	        connect.setRequestMethod("POST");
-	        connect.connect();
-	        System.out.println(connect.getResponseCode());
-	        
-	        
 	}
 	
 	public static boolean isNumeric(String s) {

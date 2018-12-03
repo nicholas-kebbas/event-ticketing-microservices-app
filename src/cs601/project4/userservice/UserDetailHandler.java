@@ -21,9 +21,15 @@ public class UserDetailHandler extends CS601Handler {
 			try {
 				User user = db.getDBManager().getUser(id, "users");
 				response.setContentType("application/json");
-				response.setStatus(HttpServletResponse.SC_ACCEPTED);
+				response.setStatus(HttpServletResponse.SC_OK);
 				/* Not correct */
-				response.getWriter().print("{userid\": " + id  +"}");
+				response.getWriter().print("{"
+						+ "userid\": " + id  +", "
+						+ "username\":" + user.getName() + ", " 
+						+ "tickets\": [");
+				for (int i = 0; i < user.getTicketIds().size(); i++) {
+					System.out.println(user.getTicketIds().get(i) + " ticket");
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

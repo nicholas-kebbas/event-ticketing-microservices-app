@@ -5,21 +5,24 @@ import java.util.ArrayList;
 public class User {
 	private String id;
 	private String name;
-	private ArrayList<String> tickets;
-	
+	private ArrayList<Integer> ticketsIds;
+	private ArrayList<Integer> ticketsEventIds;
+
 	public User() {
-		tickets = new ArrayList<String>();
+		ticketsIds = new ArrayList<Integer>();
+		ticketsEventIds = new ArrayList<Integer>();
 	}
 	
 	public User(String name) {
 		this.name = name;
-		tickets = new ArrayList<String>();
+		ticketsIds = new ArrayList<Integer>();
 	}
 	
 	public User(String id, String name) {
 		this.id = id;
 		this.name = name;
-		tickets = new ArrayList<String>();
+		ticketsIds = new ArrayList<Integer>();
+		ticketsEventIds = new ArrayList<Integer>();
 	}
 
 	public String getId() {
@@ -36,6 +39,18 @@ public class User {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public void addTicketId(int ticketId) {
+		this.ticketsIds.add(ticketId);
+	}
+	
+	public ArrayList<Integer> getTicketIds() {
+		return ticketsIds;
+	}
+
+	public void setTicketIds(ArrayList<Integer> tickets) {
+		this.ticketsIds = tickets;
 	}
 	
 	public String toString() {

@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -26,12 +28,11 @@ public class CreateUserHandler extends CS601Handler {
 	}
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		System.out.println("create handler Posted");
+		System.out.println("create handler posted");
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-		System.out.println("Body: " + request.getReader().readLine());
 		JsonParser parser = new JsonParser();
-		JsonObject jsonBody = (JsonObject) parser.parse(getBody);
-		String userName = jsonBody.get("username").getAsString();
+		JsonObject jBody = (JsonObject) parser.parse(getBody);
+		String userName = jBody.get("username").getAsString();
 		/* Now save this info to database, and pass back the ID of the new event */
 		User user = new User(userName);
 		Database db = Database.getInstance();
@@ -41,15 +42,13 @@ public class CreateUserHandler extends CS601Handler {
 			intString = Integer.toString(id);
 			response.setContentType("application/json");
 			response.setStatus(HttpServletResponse.SC_OK);
-			response.getWriter().print("User Created \n {" + "\"userid\": " + intString  +"}");
+			response.getWriter().print("User Created" +  "\n {" + "\"userid\": " + intString  +"}");
 		} catch (SQLException e) {
 			response.setContentType("application/json");
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().print("User Unsuccessfully Created");
 			e.printStackTrace();
-		} 
-		
-		
+		}
 	    System.out.println(response.getStatus());
 	}
 }

@@ -47,10 +47,10 @@ public class DBManager {
 		ResultSet rs = printStmt.executeQuery();
 		int idres = 0;
 		while (rs.next()) {
-			//for each result, get the value of the columns name and id
+			// for each result, get the value of the columns name and id
 			idres = rs.getInt("id");
 		}
-		System.out.println("id" + idres);
+		System.out.println("id " + idres);
 		return idres;
 	}
 	
@@ -60,14 +60,13 @@ public class DBManager {
 		updateStmt.setInt(1, event.getUserId());
 		updateStmt.setString(2, event.getEventName());
 		updateStmt.setInt(3, event.getNumTickets());
-
 		/* Create the new item */
 		updateStmt.executeUpdate();
 		/* Get the latest id */
 		ResultSet rs = updateStmt.getGeneratedKeys();
 		int idres = 0;
 		while (rs.next()) {
-			//for each result, get the value of the columns name and id
+			// for each result, get the value of the columns name and id
 			idres = rs.getInt("name");
 		}
 		System.out.println("id" + idres);
@@ -83,10 +82,53 @@ public class DBManager {
 		updateStmt.execute();
 	}
 	
-	public void decrementTicketAvailability(int eventId, String tableName) throws SQLException {
+	/* Update Tickets Table with different ticket owners */
+	public boolean transferTicket(int userId, int targetUserId, int eventId, int tickets, String tableName) throws SQLException {
+		PreparedStatement checkStmt;
+		checkStmt = con.prepareStatement("SELECT user_id FROM " + tableName + " WHERE user_id= " + userId + " AND event_id= " + eventId);
+		ResultSet rs = checkStmt.executeQuery();
+		
+		int checkCount = 0;
+		while(rs.next()) {
+			checkCount++;
+		}
+		
+		System.out.println(checkCount);
 		PreparedStatement updateStmt;
-		updateStmt = con.prepareStatement("UPDATE " + tableName + "SET tickets = tickets -1 WHERE event_id=" + eventId + "and tickets > 0");
-		updateStmt.execute();
+		if (checkCount >= tickets) {
+			updateStmt = con.prepareStatement("UPDATE " + tableName + " SET user_id = " + targetUserId + " WHERE user_id= " + userId + " AND event_id= " + eventId + " LIMIT " + tickets);
+			updateStmt.execute();
+			System.out.println("here1");
+			return true;
+		}
+		System.out.println("here");
+		return false;
+	}
+	
+	public boolean decrementTicketAvailability(int eventId, int numTickets, String tableName) throws SQLException {
+		PreparedStatement checkStmt;
+		PreparedStatement updateStmt;
+		checkStmt = con.prepareStatement("SELECT numTickets FROM " + tableName + " WHERE  id= " + eventId);
+		updateStmt = con.prepareStatement("UPDATE " + tableName + " SET numTickets = numTickets - " + numTickets + " WHERE id=" + eventId);
+		System.out.println(checkStmt);
+		System.out.println(checkStmt.getResultSet());
+		boolean canDecrement = false;
+		ResultSet results = checkStmt.executeQuery();
+		
+		/* Have to figure out how to check if there are not enough available tickets */
+		int dbTickets = 0;
+		while (results.next()) {
+			dbTickets = results.getInt(1);
+			System.out.println("results " + dbTickets);
+		}
+		/* If there are enough tickets */
+		if (dbTickets >= numTickets) {
+			updateStmt.execute();
+			return true;
+		}
+		
+		/* If not enough tickets */
+		return false;
 	}
 	
 	/* Get ID from request.getPathInfo() in handler */
@@ -99,77 +141,23 @@ public class DBManager {
 	
 	public User getUser(int id, String tableName) throws SQLException {
 		User returnUser = new User();
-		PreparedStatement updateStmt;
-		updateStmt = con.prepareStatement("SELECT id FROM " + tableName + "WHERE id=" + id);
+		PreparedStatement userStmt;
+		userStmt = con.prepareStatement("SELECT * FROM " + tableName + " WHERE id=" + id);
+		ResultSet userRs = userStmt.executeQuery();
+		while(userRs.next()) {
+			String userName = userRs.getString(1);
+			returnUser.setName(userName);
+		}
+		PreparedStatement ticketStmt;
+		ticketStmt = con.prepareStatement("SELECT tickets.id FROM tickets JOIN users"
+				+ " ON users.id=tickets.user_id");
+		ResultSet  ticketRs = ticketStmt.executeQuery();
+		
+		/* Add the ticket Id to the list of the user's list of tickets */
+		while (ticketRs.next()) {
+			returnUser.addTicketId(ticketRs.getInt(1));
+		}
 		return returnUser;
-	}
-	
-	
-	
-/**
- * Take as input username and password, return User object data
- * @param username
- * @param password
- * @return
- */
-	public User authenticate(String username, String password) {
-		return null;
-	}
-	
-	/* Sign user in, don't create user. Then we can get all the transactions */
-	public boolean authenticate(String accessToken) throws SQLException {
-		String selectStmt = "SELECT * FROM spusers";
-		PreparedStatement stmt = con.prepareStatement(selectStmt);
-		ResultSet result = stmt.executeQuery();
-		while (result.next()) {
-			String dbToken= result.getString("access_token");
-			if (accessToken.equals(dbToken) ) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public boolean signIn(String userId) throws SQLException {
-		String selectStmt = "SELECT * FROM users";
-		PreparedStatement stmt = con.prepareStatement(selectStmt);
-		ResultSet result = stmt.executeQuery();
-		while (result.next()) {
-			String dbUserId= result.getString("id");
-			if (userId.equals(dbUserId) ) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public String getAllUserTransactions(String userId) throws SQLException {
-		System.out.println ("User id:" + userId); 
-		String output ="";
-		String selectStmt = "SELECT * FROM transactions"; 
-		PreparedStatement stmt = con.prepareStatement(selectStmt);
-		ResultSet result = stmt.executeQuery();
-		while (result.next()) {
-			String id = result.getString("user_id");
-			if (userId.equals(id)) {
-				String operation = result.getString("operation");
-				String value = result.getString("value");
-				String description = result.getString("description");
-			
-				if (operation.contains("charge") || operation.contains("buy")) {
-					output += "<p>Charge $";
-				} else if (operation.contains("credit") || operation.contains("sell")) {
-					output += "Credit $";
-				}
-				output+= value;
-				output+= " for " + description; 
-				output += "</p>";
-			}
-		}
-		if (output.equals("")) {
-			output += "<p>No transactions recorded. Please record some in slack.</p>";
-		}
-		return output;
 	}
 	
 	
