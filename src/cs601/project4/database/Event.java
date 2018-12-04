@@ -64,7 +64,13 @@ public class Event {
 	
 	public String toJsonFormattedString() {
 		String jsonString = "";
-		
+		jsonString += "{" +
+				"\"eventid\":" + this.eventId + "," +
+				"\"eventname\":" + "\"" +this.eventName+ "\"" + "," +
+				"\"userid\":" + this.userId + "," +
+				"\"avail\":" + this.availableTickets + "," +
+				"\"purchased\":" + this.getPurchasedTickets() +
+			"}";
 		return jsonString;
 	}
 }

@@ -156,6 +156,7 @@ public class DBManager {
 			event.setUserId(eventResultSet.getInt(3));
 			event.setAvailableTickets(eventResultSet.getInt(4));
 			event.setTotalTickets(eventResultSet.getInt(5));
+			outputList.add(event);
 		}
 		
 		return outputList;
