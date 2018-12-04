@@ -10,7 +10,7 @@ public class User {
 
 	public User() {
 		ticketsIds = new ArrayList<Integer>();
-		ticketsEventIds = new ArrayList<Integer>();
+		setTicketsEventIds(new ArrayList<Integer>());
 	}
 	
 	public User(String name) {
@@ -22,7 +22,7 @@ public class User {
 		this.id = id;
 		this.name = name;
 		ticketsIds = new ArrayList<Integer>();
-		ticketsEventIds = new ArrayList<Integer>();
+		setTicketsEventIds(new ArrayList<Integer>());
 	}
 
 	public String getId() {
@@ -45,6 +45,10 @@ public class User {
 		this.ticketsIds.add(ticketId);
 	}
 	
+	public void addTicketEventId(int ticketId) {
+		this.ticketsEventIds.add(ticketId);
+	}
+	
 	public ArrayList<Integer> getTicketIds() {
 		return ticketsIds;
 	}
@@ -57,5 +61,13 @@ public class User {
 		String toString = "";
 		toString = this.name + " " + this.id;
 		return toString;
+	}
+
+	public ArrayList<Integer> getTicketsEventIds() {
+		return ticketsEventIds;
+	}
+
+	public void setTicketsEventIds(ArrayList<Integer> ticketsEventIds) {
+		this.ticketsEventIds = ticketsEventIds;
 	}
 }

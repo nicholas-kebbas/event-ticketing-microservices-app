@@ -24,8 +24,6 @@ public class CreateEventHandler extends HttpServlet {
 	public void doPost (HttpServletRequest request, HttpServletResponse response) throws IOException {	
 		/* Build the object based on json request */
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-		System.out.println("Body: " + request.getReader().readLine());
-		System.out.println(request == null);
 		JsonParser parser = new JsonParser();
         JsonObject jsonBody = (JsonObject) parser.parse(getBody);
         int userId = jsonBody.get("userid").getAsInt();
@@ -35,16 +33,18 @@ public class CreateEventHandler extends HttpServlet {
         Event event = new Event(userId, eventName, numTickets);
         Database db = Database.getInstance();
         String intString = "";
+        int id;
         try {
-			int id = db.getDBManager().createEvent(event, "events");
+			id = db.getDBManager().createEvent(event, "events");
 			intString = Integer.toString(id);
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
+		}
         
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().print("{" + "\"eventid\": " + intString  +"}");
+        response.getWriter().print("Event created \n {" + "\"eventid\": " + intString  +"}");
         System.out.println(response.getStatus());
+        /* Need to catch if Event cannot be created */
 	}
 }

@@ -12,6 +12,8 @@ public class EventServer {
 		server.addServlet(EventListHandler.class, "/list");
 		server.addServlet(EventDetailHandler.class, "/*");
 		server.addServlet(PurchaseEventHandler.class, "/purchase/*");
+		
+		/* Accessed internally when a ticket is purchased */
 		server.addServlet(UpdateTicketAvailabilityHandler.class, "/tickets/availability");
 		try {
 			server.start();

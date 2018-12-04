@@ -1,5 +1,6 @@
 package cs601.project4.eventservice;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.servlet.http.HttpServlet;
@@ -10,17 +11,26 @@ import cs601.project4.database.Database;
 import cs601.project4.database.Event;
 
 public class EventDetailHandler extends HttpServlet {
-	public void doGet (HttpServletRequest request, HttpServletResponse response) {
+	public void doGet (HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String[] parameters = request.getPathInfo().split("/");
 			if (parameters.length == 2 && isNumeric(parameters[1])) {
 				int id = Integer.parseInt(parameters[1]);
 				Database db = Database.getInstance();
+				Event event;
 				try {
-					Event event = db.getDBManager().getEvent(id, "events");
+					event = db.getDBManager().getEvent(id, "events");
+					response.setStatus(HttpServletResponse.SC_OK);
+					response.getWriter().print("{" +
+							"\"eventid\": " + event.getUserId() + ", " +
+							"\"eventname\": \"" + event.getEventName() + "\", " + 
+							"\"userid\": " + event.getUserId() +  ", " +
+							"\"avail\": " + event.getAvailableTickets() +  ", " +
+							"\"purchased\": " + event.getPurchasedTickets() +
+							"}");
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-				System.out.println(id);
+			
 			} else {
 				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			}

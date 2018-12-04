@@ -5,8 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import cs601.project4.database.User;
+import java.util.ArrayList;
 
 
 
@@ -55,21 +54,21 @@ public class DBManager {
 	}
 	
 	public int createEvent(Event event, String tableName) throws SQLException {
-		String createSql = "INSERT INTO " + tableName + " (userid, eventname, numtickets) VALUES (?, ?, ?)";
+		PreparedStatement printStmt = con.prepareStatement("SELECT * FROM " + tableName);
+		String createSql = "INSERT INTO " + tableName + " (userid, eventname, available_tickets, total_tickets) VALUES (?, ?, ?, ?)";
 		PreparedStatement updateStmt = con.prepareStatement(createSql, Statement.RETURN_GENERATED_KEYS);
 		updateStmt.setInt(1, event.getUserId());
 		updateStmt.setString(2, event.getEventName());
-		updateStmt.setInt(3, event.getNumTickets());
+		updateStmt.setInt(3, event.getAvailableTickets());
+		updateStmt.setInt(4, event.getAvailableTickets());
 		/* Create the new item */
-		updateStmt.executeUpdate();
+		updateStmt.execute();
 		/* Get the latest id */
-		ResultSet rs = updateStmt.getGeneratedKeys();
+		ResultSet rs = printStmt.executeQuery();
 		int idres = 0;
 		while (rs.next()) {
-			// for each result, get the value of the columns name and id
-			idres = rs.getInt("name");
+			idres = rs.getInt("id");
 		}
-		System.out.println("id" + idres);
 		return idres;
 	}
 	
@@ -93,33 +92,30 @@ public class DBManager {
 			checkCount++;
 		}
 		
-		System.out.println(checkCount);
 		PreparedStatement updateStmt;
 		if (checkCount >= tickets) {
 			updateStmt = con.prepareStatement("UPDATE " + tableName + " SET user_id = " + targetUserId + " WHERE user_id= " + userId + " AND event_id= " + eventId + " LIMIT " + tickets);
 			updateStmt.execute();
-			System.out.println("here1");
 			return true;
 		}
-		System.out.println("here");
 		return false;
 	}
 	
 	public boolean decrementTicketAvailability(int eventId, int numTickets, String tableName) throws SQLException {
 		PreparedStatement checkStmt;
 		PreparedStatement updateStmt;
-		checkStmt = con.prepareStatement("SELECT numTickets FROM " + tableName + " WHERE  id= " + eventId);
-		updateStmt = con.prepareStatement("UPDATE " + tableName + " SET numTickets = numTickets - " + numTickets + " WHERE id=" + eventId);
+		checkStmt = con.prepareStatement("SELECT available_tickets FROM " + tableName + " WHERE  id= " + eventId);
+		updateStmt = con.prepareStatement("UPDATE " + tableName + " SET available_tickets = available_tickets - " + numTickets + " WHERE id=" + eventId);
 		System.out.println(checkStmt);
 		System.out.println(checkStmt.getResultSet());
 		boolean canDecrement = false;
 		ResultSet results = checkStmt.executeQuery();
 		
 		/* Have to figure out how to check if there are not enough available tickets */
+		/* Can also use isBeforeFirst() on ResultSet. */
 		int dbTickets = 0;
 		while (results.next()) {
 			dbTickets = results.getInt(1);
-			System.out.println("results " + dbTickets);
 		}
 		/* If there are enough tickets */
 		if (dbTickets >= numTickets) {
@@ -134,9 +130,35 @@ public class DBManager {
 	/* Get ID from request.getPathInfo() in handler */
 	public Event getEvent(int id, String tableName) throws SQLException {
 		Event returnEvent = new Event();
-		PreparedStatement updateStmt;
-		updateStmt = con.prepareStatement("SELECT id FROM " + tableName + "WHERE id=" + id);
+		PreparedStatement eventStmt;
+		eventStmt = con.prepareStatement("SELECT * FROM " + tableName + " WHERE id=" + id);
+		ResultSet userResultSet = eventStmt.executeQuery();
+		while(userResultSet.next()) {
+			returnEvent.setEventName(userResultSet.getString(2));
+			returnEvent.setUserId(userResultSet.getInt(3));
+			returnEvent.setAvailableTickets(userResultSet.getInt(4));
+			returnEvent.setTotalTickets(userResultSet.getInt(5));
+		}
 		return returnEvent;
+	}
+	
+	public ArrayList<Event> getEventList(String tableName) throws SQLException {
+		ArrayList<Event> outputList = new ArrayList<Event>(); 
+		String stmt = "SELECT * FROM " + tableName;
+		PreparedStatement eventStmt;
+		eventStmt = con.prepareStatement(stmt);
+		ResultSet eventResultSet = eventStmt.executeQuery();
+		
+		while (eventResultSet.next()) {
+			Event event = new Event();
+			event.setEventId(eventResultSet.getInt(1));
+			event.setEventName(eventResultSet.getString(2));
+			event.setUserId(eventResultSet.getInt(3));
+			event.setAvailableTickets(eventResultSet.getInt(4));
+			event.setTotalTickets(eventResultSet.getInt(5));
+		}
+		
+		return outputList;
 	}
 	
 	public User getUser(int id, String tableName) throws SQLException {
@@ -145,18 +167,20 @@ public class DBManager {
 		userStmt = con.prepareStatement("SELECT * FROM " + tableName + " WHERE id=" + id);
 		ResultSet userRs = userStmt.executeQuery();
 		while(userRs.next()) {
-			String userName = userRs.getString(1);
+			String userName = userRs.getString(2);
 			returnUser.setName(userName);
 		}
 		PreparedStatement ticketStmt;
-		ticketStmt = con.prepareStatement("SELECT tickets.id FROM tickets JOIN users"
+		ticketStmt = con.prepareStatement("SELECT tickets.id, tickets.event_id FROM tickets JOIN users"
 				+ " ON users.id=tickets.user_id");
 		ResultSet  ticketRs = ticketStmt.executeQuery();
 		
 		/* Add the ticket Id to the list of the user's list of tickets */
 		while (ticketRs.next()) {
 			returnUser.addTicketId(ticketRs.getInt(1));
+			returnUser.addTicketEventId(ticketRs.getInt(2));
 		}
+		
 		return returnUser;
 	}
 	

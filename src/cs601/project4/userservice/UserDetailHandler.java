@@ -24,12 +24,17 @@ public class UserDetailHandler extends CS601Handler {
 				response.setStatus(HttpServletResponse.SC_OK);
 				/* Not correct */
 				response.getWriter().print("{"
-						+ "userid\": " + id  +", "
-						+ "username\":" + user.getName() + ", " 
-						+ "tickets\": [");
+						+ " \"userid\": " + id  +", "
+						+ " \"username\": " + "\"" + user.getName() + "\"" + ", " 
+						+ " \"tickets\": [ ");
 				for (int i = 0; i < user.getTicketIds().size(); i++) {
-					System.out.println(user.getTicketIds().get(i) + " ticket");
+					if (i != 0) {
+						response.getWriter().print(",");
+					}
+					response.getWriter().print("{ \"eventid\": " + user.getTicketsEventIds().get(i) + "}");
+					System.out.println(user.getTicketsEventIds().get(i) + " ticket");
 				}
+				response.getWriter().print(" ] }" );
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

@@ -7,8 +7,6 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -24,7 +22,7 @@ import cs601.project4.server.CS601Handler;
 public class CreateUserHandler extends CS601Handler {
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		
+		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -42,11 +40,10 @@ public class CreateUserHandler extends CS601Handler {
 			intString = Integer.toString(id);
 			response.setContentType("application/json");
 			response.setStatus(HttpServletResponse.SC_OK);
-			response.getWriter().print("User Created" +  "\n {" + "\"userid\": " + intString  +"}");
+			response.getWriter().print("{" + "\"userid\": " + intString  +"}");
 		} catch (SQLException e) {
 			response.setContentType("application/json");
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.getWriter().print("User Unsuccessfully Created");
 			e.printStackTrace();
 		}
 	    System.out.println(response.getStatus());

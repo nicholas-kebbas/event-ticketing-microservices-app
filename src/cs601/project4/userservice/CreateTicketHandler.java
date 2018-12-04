@@ -60,7 +60,7 @@ public class CreateTicketHandler extends CS601Handler {
 			connect.setRequestProperty( "Content-Length", Integer.toString( postData.length ));
 			connect.setUseCaches( false );
 			try( DataOutputStream wr = new DataOutputStream( connect.getOutputStream())) {
-				   wr.write( postData );
+				wr.write( postData );
 			}
 	        connect.connect();  
 	        System.out.println("Response: " + connect.getResponseCode());
@@ -68,7 +68,6 @@ public class CreateTicketHandler extends CS601Handler {
 	        /* There are enough available tickets so proceed with updating the tickets table */
 	        if (connect.getResponseCode() == 200) {
 		        /* if we get a 200 back, return affirmative, else return that there was an error. */
-		        response.getWriter().println("Event tickets added");
 				
 				/* Loop through and create a row for each ticket */
 				for (int i = 0; i < tickets; i++) {

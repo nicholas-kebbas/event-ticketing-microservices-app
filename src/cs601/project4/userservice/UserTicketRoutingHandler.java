@@ -54,7 +54,6 @@ public class UserTicketRoutingHandler extends CS601Handler {
 				return null;
 			}
 			if (parameters[1].equals("create")) {
-				System.out.println("create handler");
 				CreateUserHandler createUserHandler = new CreateUserHandler();
 				return createUserHandler;
 			}
