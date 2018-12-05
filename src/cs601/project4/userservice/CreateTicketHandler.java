@@ -31,7 +31,6 @@ public class CreateTicketHandler extends CS601Handler {
 	}
 	
 	public void doPost (HttpServletRequest request, HttpServletResponse response) throws IOException {	
-		System.out.println("do post create ticket");
 		/* Parse the URL to get the UserID */
 		String[] parameters = request.getPathInfo().split("/");
 		String getBody = "";

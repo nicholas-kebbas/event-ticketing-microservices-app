@@ -9,8 +9,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import cs601.project4.database.Database;
 import cs601.project4.database.Event;
+import cs601.project4.server.CS601Handler;
 
-public class EventDetailHandler extends HttpServlet {
+public class EventDetailHandler extends CS601Handler {
+	
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		System.out.println("not supported");
+		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	}
+	
 	public void doGet (HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String[] parameters = request.getPathInfo().split("/");
 			if (parameters.length == 2 && isNumeric(parameters[1])) {

@@ -10,9 +10,8 @@ public class EventServer {
 		JettyServer server = new JettyServer(Constants.EVENTS_URL);
 		server.addServlet(CreateEventHandler.class, "/create");
 		server.addServlet(EventListHandler.class, "/list");
-		server.addServlet(EventDetailHandler.class, "/*");
 		server.addServlet(PurchaseEventHandler.class, "/purchase/*");
-		
+		server.addServlet(EventDetailHandler.class, "/*");
 		/* Accessed internally when a ticket is purchased */
 		server.addServlet(UpdateTicketAvailabilityHandler.class, "/tickets/availability");
 		try {

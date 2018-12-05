@@ -148,7 +148,6 @@ public class DBManager {
 		PreparedStatement eventStmt;
 		eventStmt = con.prepareStatement(stmt);
 		ResultSet eventResultSet = eventStmt.executeQuery();
-		
 		while (eventResultSet.next()) {
 			Event event = new Event();
 			event.setEventId(eventResultSet.getInt(1));
