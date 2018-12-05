@@ -14,7 +14,6 @@ import cs601.project4.server.CS601Handler;
 public class EventDetailHandler extends CS601Handler {
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		System.out.println("not supported");
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 	

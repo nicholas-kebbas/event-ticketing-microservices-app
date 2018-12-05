@@ -20,7 +20,9 @@ import cs601.project4.server.Constants;
 
 /**
  * Get user id from URL, then create ticket row in ticketDB, 
- * then update available tickets in Event DB
+ * then update available tickets in Event DB.
+ * 
+ * Need to confirm that the users transferring to and from exist.
  * @author nkebbas
  *
  */
@@ -35,13 +37,12 @@ public class CreateTicketHandler extends CS601Handler {
 		String[] parameters = request.getPathInfo().split("/");
 		String getBody = "";
 		if (parameters.length == 4 && isNumeric(parameters[1])) {
-			int userId = Integer.parseInt(parameters[1]);
-			System.out.println(userId);
+			
 			/* Parse the request and get Event ID and number of tickets */
 			getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-			System.out.println("Body: " + request.getReader().readLine());
 			JsonParser parser = new JsonParser();
 			JsonObject jsonBody = (JsonObject) parser.parse(getBody);
+			int userId = Integer.parseInt(parameters[1]);
 			int eventId = jsonBody.get("eventid").getAsInt();
 			int tickets = jsonBody.get("tickets").getAsInt();
 			Database db = Database.getInstance();
@@ -54,12 +55,12 @@ public class CreateTicketHandler extends CS601Handler {
 			connect.setDoOutput( true );
 			connect.setInstanceFollowRedirects( false );
 	        connect.setRequestMethod("POST");
-			connect.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded"); 
-			connect.setRequestProperty( "charset", "utf-8");
-			connect.setRequestProperty( "Content-Length", Integer.toString( postData.length ));
+			connect.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); 
+			connect.setRequestProperty("charset", "utf-8");
+			connect.setRequestProperty("Content-Length", Integer.toString( postData.length));
 			connect.setUseCaches( false );
 			try( DataOutputStream wr = new DataOutputStream( connect.getOutputStream())) {
-				wr.write( postData );
+				wr.write(postData);
 			}
 	        connect.connect();  
 	        System.out.println("Response: " + connect.getResponseCode());

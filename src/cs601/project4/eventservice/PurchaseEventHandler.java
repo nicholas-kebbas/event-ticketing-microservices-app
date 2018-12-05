@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServlet;
@@ -41,31 +42,46 @@ public class PurchaseEventHandler extends CS601Handler {
 		JsonParser parser = new JsonParser();
 		JsonObject jBody = (JsonObject) parser.parse(getBody);
 		if (isNumeric(parameters[1])) {
-			int eventId = Integer.parseInt(parameters[1]);
+			// int eventId = Integer.parseInt(parameters[1]);
 			/* Get the event from the event DB, and decrement tickets */
 			Database db = Database.getInstance();
-			//jBody.get("userid").get
-			//db.getDBManager().decrementTicketAvailability(eventId, numTickets, tableName)
+			int userId = jBody.get("userid").getAsInt();
+			int eventId = jBody.get("eventid").getAsInt();
+			int tickets = jBody.get("tickets").getAsInt();
 			
-			/* Get the data passed from request and convert to bytes */
-			byte[] postData = getBody.getBytes( StandardCharsets.UTF_8 );
-		
-			/* Open a new connection and connect to the User service */
-			URL url = new URL(Constants.HOST + Constants.USERS_URL + "/tickets/add");
-			HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-			connect.setDoOutput( true );
-			connect.setInstanceFollowRedirects( false );
-	        connect.setRequestMethod("POST");
-			connect.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded"); 
-			connect.setRequestProperty( "charset", "utf-8");
-			connect.setRequestProperty( "Content-Length", Integer.toString( postData.length ));
-			connect.setUseCaches( false );
-			try( DataOutputStream wr = new DataOutputStream( connect.getOutputStream())) {
-				wr.write( postData );
+			/* Make sure tickets are available*/
+			boolean canDecrement = false;
+			try {
+				canDecrement = db.getDBManager().decrementTicketAvailability(eventId, tickets, "events");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-	        connect.connect();  
-	        System.out.println("Response: " + connect.getResponseCode());
 			
+			/* If you can decrement tickets, call the User API that handles adding of tickets */
+			if (canDecrement) {
+			
+				/* Get the data passed from request and convert to bytes */
+				byte[] postData = getBody.getBytes( StandardCharsets.UTF_8 );
+				
+				/* Open a new connection and connect to the User service */
+				URL url = new URL(Constants.HOST + Constants.USERS_URL + "/tickets/add");
+				HttpURLConnection connect = (HttpURLConnection) url.openConnection();
+				connect.setDoOutput( true );
+				connect.setInstanceFollowRedirects( false );
+		        connect.setRequestMethod("POST");
+				connect.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded"); 
+				connect.setRequestProperty( "charset", "utf-8");
+				connect.setRequestProperty( "Content-Length", Integer.toString( postData.length ));
+				connect.setUseCaches( false );
+				try( DataOutputStream wr = new DataOutputStream( connect.getOutputStream())) {
+					wr.write( postData );
+				}
+		        connect.connect();  
+		        System.out.println("Response: " + connect.getResponseCode());
+			} else {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			}
 			
 		}
 	}
