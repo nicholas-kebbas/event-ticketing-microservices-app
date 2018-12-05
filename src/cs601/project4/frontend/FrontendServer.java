@@ -17,7 +17,7 @@ public class FrontendServer {
 		server.addServlet(FrontendCreateUserHandler.class, "/users/create");
 		
 		// This will need to parse /users/*/tickets/transfer as well
-		server.addServlet(FrontendUserDetailHandler.class, "/users/*");
+		server.addServlet(FrontendUsersRoutingHandler.class, "/users/*");
 		// server.addServlet(FrontendTransferTicketHandler.class, "/users/*/tickets/transfer");
 		
 		try {
