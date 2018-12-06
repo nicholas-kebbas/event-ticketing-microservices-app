@@ -72,6 +72,13 @@ public class DBManager {
 		return idres;
 	}
 	
+	/**
+	 * Add Ticket to table
+	 * @param userId
+	 * @param eventId
+	 * @param tableName
+	 * @throws SQLException
+	 */
 	public void addTicket(int userId, int eventId, String tableName) throws SQLException {
 		PreparedStatement updateStmt;
 		updateStmt = con.prepareStatement("INSERT INTO " + tableName + " (user_id, event_id) VALUES (?, ?)");
@@ -81,7 +88,16 @@ public class DBManager {
 		updateStmt.execute();
 	}
 	
-	/* Update Tickets Table with different ticket owners */
+	/**
+	 * Update table with new userId. Should make ticket an object as well.
+	 * @param userId
+	 * @param targetUserId
+	 * @param eventId
+	 * @param tickets
+	 * @param tableName
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean transferTicket(int userId, int targetUserId, int eventId, int tickets, String tableName) throws SQLException {
 		PreparedStatement checkStmt;
 		checkStmt = con.prepareStatement("SELECT user_id FROM " + tableName + " WHERE user_id= " + userId + " AND event_id= " + eventId);
@@ -101,6 +117,14 @@ public class DBManager {
 		return false;
 	}
 	
+	/**
+	 * Decrement ticket availability by number of tickets
+	 * @param eventId
+	 * @param numTickets
+	 * @param tableName
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean decrementTicketAvailability(int eventId, int numTickets, String tableName) throws SQLException {
 		PreparedStatement checkStmt;
 		PreparedStatement updateStmt;
@@ -127,7 +151,13 @@ public class DBManager {
 		return false;
 	}
 	
-	/* Get ID from request.getPathInfo() in handler */
+	/**
+	 * Get Event
+	 * @param id
+	 * @param tableName
+	 * @return
+	 * @throws SQLException
+	 */
 	public Event getEvent(int id, String tableName) throws SQLException {
 		Event returnEvent = new Event();
 		PreparedStatement eventStmt;

@@ -19,8 +19,8 @@ import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
 
 /**
- * Get user id from URL, then create ticket row in ticketDB, 
- * then update available tickets in Event DB.
+ * Internal API that takes as input id from URL, contacts Events Service
+ * to check availability of tickets, then updates Tickets table.
  * 
  * Need to confirm that the users transferring to and from exist.
  * @author nkebbas
@@ -37,7 +37,6 @@ public class CreateTicketHandler extends CS601Handler {
 		String[] parameters = request.getPathInfo().split("/");
 		String getBody = "";
 		if (parameters.length == 4 && isNumeric(parameters[1])) {
-			
 			/* Parse the request and get Event ID and number of tickets */
 			getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 			JsonParser parser = new JsonParser();

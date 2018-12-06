@@ -7,7 +7,8 @@ import java.sql.SQLException;
 import cs601.project4.database.DBConstants;
 
 /**
- * Use the singleton here.
+ * Generic Database class that utilizes the singleton pattern to access 
+ * the database instance.
  * @author nkebbas
  *
  */

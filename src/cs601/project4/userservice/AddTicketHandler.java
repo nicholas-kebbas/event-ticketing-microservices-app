@@ -21,12 +21,11 @@ public class AddTicketHandler extends CS601Handler {
 
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		
-		
+			
 	}
 
 	@Override
-	/* Need to make sure user exists in db here still. */
+	/* Need to make sure user exists in DB here still. */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 		JsonParser parser = new JsonParser();
@@ -39,6 +38,7 @@ public class AddTicketHandler extends CS601Handler {
 		/* Make a transaction in the ticket table of the database */
 		
 		Database db = Database.getInstance();
+		
 		try {
 			for (int i = 0; i < tickets; i++) {
 				db.getDBManager().addTicket(userId, eventId, "tickets");

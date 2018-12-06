@@ -26,8 +26,6 @@ public class FrontendUserDetailHandler extends CS601Handler {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String[] parameters = request.getPathInfo().split("/");
-		int userId = Integer.parseInt(parameters[1]);
-		System.out.println("ID " + userId);
        	URL url = new URL (Constants.HOST + Constants.USERS_URL + "/" + parameters[1]);
         HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput( true );
@@ -36,8 +34,6 @@ public class FrontendUserDetailHandler extends CS601Handler {
 		connect.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); 
 		connect.setRequestProperty("charset", "utf-8");
 		connect.setDoOutput(true);
-		int responseCode = connect.getResponseCode();
-		System.out.println(responseCode);
 		
 		/* Get response from User server */
 		BufferedReader in = new BufferedReader(
@@ -51,8 +47,6 @@ public class FrontendUserDetailHandler extends CS601Handler {
 	     //print in String
 	     System.out.println(responseString.toString());
 	     response.getWriter().print(responseString.toString());
-		
-		/* Now need to get response from the User Detail Handler, and write that to frontend response */
 		
 		
 	}
