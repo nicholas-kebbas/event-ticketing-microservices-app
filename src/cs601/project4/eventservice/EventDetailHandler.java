@@ -3,7 +3,6 @@ package cs601.project4.eventservice;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,6 +24,10 @@ public class EventDetailHandler extends CS601Handler {
 				Event event;
 				try {
 					event = db.getDBManager().getEvent(id, "events");
+					if (event == null) {
+						response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+						return;
+					}
 					response.setStatus(HttpServletResponse.SC_OK);
 					response.getWriter().print("{" +
 							"\"eventid\": " + event.getEventId() + ", " +

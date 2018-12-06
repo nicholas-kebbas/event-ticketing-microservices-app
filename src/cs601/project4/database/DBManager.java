@@ -115,9 +115,6 @@ public class DBManager {
 		PreparedStatement updateStmt;
 		checkStmt = con.prepareStatement("SELECT available_tickets FROM " + tableName + " WHERE  id= " + eventId);
 		updateStmt = con.prepareStatement("UPDATE " + tableName + " SET available_tickets = available_tickets - " + numTickets + " WHERE id=" + eventId);
-		System.out.println(checkStmt);
-		System.out.println(checkStmt.getResultSet());
-		boolean canDecrement = false;
 		ResultSet results = checkStmt.executeQuery();
 		
 		/* Have to figure out how to check if there are not enough available tickets */
@@ -144,12 +141,19 @@ public class DBManager {
 	 * @throws SQLException
 	 */
 	
-	/* TODO: Return null if Event does not exist. */
+	/* TODO: Return null if event does not exist. */
 	public Event getEvent(int id, String tableName) throws SQLException {
 		Event returnEvent = new Event();
 		PreparedStatement eventStmt;
 		eventStmt = con.prepareStatement("SELECT * FROM " + tableName + " WHERE id=" + id);
 		ResultSet eventResultSet = eventStmt.executeQuery();
+		
+		eventResultSet.beforeFirst();
+		if (!eventResultSet.next()) {
+			return null;
+		}
+		
+		eventResultSet.beforeFirst();
 		while(eventResultSet.next()) {
 			returnEvent.setEventId(eventResultSet.getInt(1));
 			returnEvent.setEventName(eventResultSet.getString(2));
@@ -160,6 +164,7 @@ public class DBManager {
 		return returnEvent;
 	}
 	
+	/* Return null if empty */
 	public ArrayList<Event> getEventList(String tableName) throws SQLException {
 		ArrayList<Event> outputList = new ArrayList<Event>(); 
 		String stmt = "SELECT * FROM " + tableName;
@@ -175,7 +180,9 @@ public class DBManager {
 			event.setTotalTickets(eventResultSet.getInt(5));
 			outputList.add(event);
 		}
-		
+		if (outputList.isEmpty()) {
+			return null;
+		}
 		return outputList;
 	}
 	
@@ -185,10 +192,21 @@ public class DBManager {
 		PreparedStatement userStmt;
 		userStmt = con.prepareStatement("SELECT * FROM " + tableName + " WHERE id=" + id);
 		ResultSet userRs = userStmt.executeQuery();
+		
+		/* Check for no reults */
+		userRs.beforeFirst();
+		if (!userRs.next()) {
+			return null;
+		}
+		
+		userRs.beforeFirst();
 		while(userRs.next()) {
+			System.out.println("next");
 			String userName = userRs.getString(2);
 			returnUser.setName(userName);
 		}
+
+
 		PreparedStatement ticketStmt;
 		ticketStmt = con.prepareStatement("SELECT tickets.id, tickets.event_id FROM tickets JOIN users"
 				+ " ON users.id=tickets.user_id WHERE tickets.user_id=" + id);

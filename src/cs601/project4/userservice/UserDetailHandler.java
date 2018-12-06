@@ -19,9 +19,13 @@ public class UserDetailHandler extends CS601Handler {
 			Database db = Database.getInstance();
 			try {
 				User user = db.getDBManager().getUser(id, "users");
+				if (user == null) {
+					response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+					return;
+				}
 				response.setContentType("application/json");
 				response.setStatus(HttpServletResponse.SC_OK);
-				/* Not correct */
+				
 				response.getWriter().print("{"
 						+ " \"userid\": " + id  +", "
 						+ " \"username\": " + "\"" + user.getName() + "\"" + ", " 
@@ -39,7 +43,7 @@ public class UserDetailHandler extends CS601Handler {
 			}
 			System.out.println(id);
 		} else {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 	}
 

@@ -16,29 +16,32 @@ import cs601.project4.server.Constants;
 public class FrontendEventListHandler extends CS601Handler {
 
 	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-       	URL url = new URL (Constants.HOST + Constants.EVENTS_URL + "/list");
-        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-		connect.setDoOutput(true);
-		connect.setInstanceFollowRedirects(false);
-        connect.setRequestMethod("GET");
-		connect.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); 
-		connect.setRequestProperty("charset", "utf-8");
-		connect.setDoOutput(true);
-		
-		/* Get response from User server */
-		BufferedReader in = new BufferedReader(
-	             new InputStreamReader(connect.getInputStream()));
-	     String inputLine;
-	     StringBuffer responseString = new StringBuffer();
-	     while ((inputLine = in.readLine()) != null) {
-	     	responseString.append(inputLine);
-	     }
-	     in.close();
-	     //print in String
-	     response.setStatus(HttpServletResponse.SC_OK);
-	     System.out.println(responseString.toString());
-	     response.getWriter().print(responseString.toString());
+	public void doGet(HttpServletRequest request, HttpServletResponse response) {
+		try {
+	       	URL url = new URL (Constants.HOST + Constants.EVENTS_URL + "/list");
+	        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
+			connect.setDoOutput(true);
+			connect.setInstanceFollowRedirects(false);
+	        connect.setRequestMethod("GET");
+			connect.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); 
+			connect.setRequestProperty("charset", "utf-8");
+			connect.setDoOutput(true);
+			
+			/* Get response from Event server */
+			BufferedReader in = new BufferedReader(
+		             new InputStreamReader(connect.getInputStream()));
+			 String inputLine;
+			 StringBuffer responseString = new StringBuffer();
+			 while ((inputLine = in.readLine()) != null) {
+			 	responseString.append(inputLine);
+			 }
+			 in.close();
+			 response.setStatus(HttpServletResponse.SC_OK);
+			 System.out.println(responseString.toString());
+			 response.getWriter().print(responseString.toString());
+		} catch (IOException e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
 		
 	}
 
