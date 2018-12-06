@@ -43,7 +43,7 @@ public class CreateEventHandler extends HttpServlet {
         
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().print("Event created \n {" + "\"eventid\": " + intString  +"}");
+        response.getWriter().print("{" + "\"eventid\": " + intString  +"}");
         System.out.println(response.getStatus());
         /* Need to catch if Event cannot be created */
 	}

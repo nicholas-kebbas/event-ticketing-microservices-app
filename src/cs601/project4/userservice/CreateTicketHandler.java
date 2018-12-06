@@ -28,11 +28,11 @@ import cs601.project4.server.Constants;
  */
 public class CreateTicketHandler extends CS601Handler {
 	
-	public void doGet (HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doGet (HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 	
-	public void doPost (HttpServletRequest request, HttpServletResponse response) throws IOException {	
+	public synchronized void doPost (HttpServletRequest request, HttpServletResponse response) throws IOException {	
 		/* Parse the URL to get the UserID */
 		String[] parameters = request.getPathInfo().split("/");
 		String getBody = "";
@@ -40,10 +40,14 @@ public class CreateTicketHandler extends CS601Handler {
 			/* Parse the request and get Event ID and number of tickets */
 			getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 			JsonParser parser = new JsonParser();
-			JsonObject jsonBody = (JsonObject) parser.parse(getBody);
+			JsonObject jBody = (JsonObject) parser.parse(getBody);
 			int userId = Integer.parseInt(parameters[1]);
-			int eventId = jsonBody.get("eventid").getAsInt();
-			int tickets = jsonBody.get("tickets").getAsInt();
+			if (jBody.get("eventid") == null || jBody.get("tickets") == null) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				return;
+			}
+			int eventId = jBody.get("eventid").getAsInt();
+			int tickets = jBody.get("tickets").getAsInt();
 
 			/* Check that designated number of tickets is available first */
 			
@@ -52,19 +56,16 @@ public class CreateTicketHandler extends CS601Handler {
 	       	URL url = new URL (Constants.HOST + Constants.EVENTS_URL + "/tickets/availability");
 	        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 			connect.setDoOutput( true );
-			connect.setInstanceFollowRedirects( false );
 	        connect.setRequestMethod("POST");
 			connect.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); 
 			connect.setRequestProperty("charset", "utf-8");
 			connect.setRequestProperty("Content-Length", Integer.toString( postData.length));
-			connect.setUseCaches( false );
 			try( DataOutputStream wr = new DataOutputStream( connect.getOutputStream())) {
 				wr.write(postData);
 			}
 			
 			/* Body is written above, so just connect to POST */
-	        connect.connect();  
-	        System.out.println("Response: " + connect.getResponseCode());
+	        connect.connect();
 	        
 	        /* There are enough available tickets so proceed with updating the tickets table */
 			Database db = Database.getInstance();

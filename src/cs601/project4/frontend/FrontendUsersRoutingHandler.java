@@ -15,7 +15,7 @@ import cs601.project4.server.CS601Handler;
  */
 public class FrontendUsersRoutingHandler extends CS601Handler {
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		CS601Handler handler = parseUrl(request.getPathInfo());
 		if (handler != null) {
 			handler.doGet(request, response);
@@ -23,7 +23,7 @@ public class FrontendUsersRoutingHandler extends CS601Handler {
 		
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		CS601Handler handler = parseUrl(request.getPathInfo());
 		if (handler != null) {
 			handler.doPost(request, response);
@@ -39,8 +39,8 @@ public class FrontendUsersRoutingHandler extends CS601Handler {
 				FrontendUserDetailHandler frontendUserDetailHandler = new FrontendUserDetailHandler();
 				return frontendUserDetailHandler;
 			}
-		} else if (parameters.length == 5) {
-			if (isNumeric(parameters[2]) && parameters[4].equals("transfer")) {
+		} else if (parameters.length == 4) {
+			if (isNumeric(parameters[1]) && parameters[3].equals("transfer")) {
 				FrontendTransferTicketHandler frontendTransferTicketHandler = new FrontendTransferTicketHandler();
 				return frontendTransferTicketHandler;
 			}

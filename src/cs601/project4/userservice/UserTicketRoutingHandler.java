@@ -18,7 +18,7 @@ import cs601.project4.server.CS601Handler;
 public class UserTicketRoutingHandler extends CS601Handler {
 	
 	
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		CS601Handler handler = parseString(request.getPathInfo());
 		if (handler != null) {
 			handler.doGet(request, response);
@@ -26,7 +26,7 @@ public class UserTicketRoutingHandler extends CS601Handler {
 		
 	}
 	
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		CS601Handler handler = parseString(request.getPathInfo());
 		if (handler != null) {
 			handler.doPost(request, response);

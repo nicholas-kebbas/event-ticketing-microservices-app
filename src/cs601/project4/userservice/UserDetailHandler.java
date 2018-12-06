@@ -12,8 +12,7 @@ import cs601.project4.server.CS601Handler;
 
 public class UserDetailHandler extends CS601Handler {
 
-	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String[] parameters = request.getPathInfo().split("/");
 		if (parameters.length == 2 && isNumeric(parameters[1])) {
 			int id = Integer.parseInt(parameters[1]);
@@ -44,8 +43,7 @@ public class UserDetailHandler extends CS601Handler {
 		}
 	}
 
-	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 	

@@ -20,13 +20,12 @@ import cs601.project4.server.CS601Handler;
  */
 public class TransferTicketHandler extends CS601Handler {
 
-	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		System.out.println("transfer ticket get");
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 
-	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 		System.out.println("transfer ticket");
 		
@@ -54,10 +53,8 @@ public class TransferTicketHandler extends CS601Handler {
 		/* If successful */
 		if (didTransfer) {
 			response.setStatus(HttpServletResponse.SC_OK);
-			response.getWriter().write("Event tickets transfered");
 		} else {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.getWriter().write("Tickets could not be transfered");
 		}
 		
 		

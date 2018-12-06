@@ -1,13 +1,17 @@
 package cs601.project4.frontend;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
 
@@ -34,7 +38,17 @@ public class FrontendCreateUserHandler extends CS601Handler {
 		try(DataOutputStream wr = new DataOutputStream(connect.getOutputStream())) {
 			wr.write(postData);
 		}
-        connect.connect();  
-        System.out.println("Response: " + connect.getResponseCode());	
+		if (connect.getResponseCode() == 200) {
+			/* Write to frontend response */
+			BufferedReader input = new BufferedReader(new InputStreamReader(connect.getInputStream()));
+			String inputLine;
+			StringBuffer responseString = new StringBuffer();
+			while ((inputLine = input.readLine()) != null) {
+				responseString.append(inputLine);
+			}
+			input.close();
+			response.getWriter().print(responseString.toString());
+	        connect.connect();
+		}
 	}
 }

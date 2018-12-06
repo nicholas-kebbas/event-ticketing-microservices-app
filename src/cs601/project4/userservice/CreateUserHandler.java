@@ -21,15 +21,19 @@ import cs601.project4.server.CS601Handler;
  */
 public class CreateUserHandler extends CS601Handler {
 	
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 	
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		System.out.println("create handler posted");
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 		JsonParser parser = new JsonParser();
 		JsonObject jBody = (JsonObject) parser.parse(getBody);
+		if (jBody.get("username") == null) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
 		String userName = jBody.get("username").getAsString();
 		/* Now save this info to database, and pass back the ID of the new event */
 		User user = new User(userName);

@@ -1,7 +1,9 @@
 package cs601.project4.frontend;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -31,19 +33,31 @@ public class FrontendCreateEventHandler extends CS601Handler {
 		byte[] postData = getBody.getBytes( StandardCharsets.UTF_8 );
 		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/create");
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-		
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
 		connect.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); 
 		connect.setRequestProperty("charset", "utf-8");
-		connect.setRequestProperty("Content-Length", Integer.toString( postData.length));
+		connect.setRequestProperty("Content-Length", Integer.toString(postData.length));
 		/* Then get response and write that */
 		try(DataOutputStream wr = new DataOutputStream(connect.getOutputStream())) {
 			wr.write(postData);
 		}
         connect.connect();  
-        System.out.println("Response: " + connect.getResponseCode());	
-	}
+        
+        /* Write response to frontend body */
+        if (connect.getResponseCode() == 200) {
+			/* Write to frontend response */
+			BufferedReader input = new BufferedReader(new InputStreamReader(connect.getInputStream()));
+			String inputLine;
+			StringBuffer responseString = new StringBuffer();
+			while ((inputLine = input.readLine()) != null) {
+				responseString.append(inputLine);
+			}
+			input.close();
+			response.getWriter().print(responseString.toString());
+	        connect.connect();
+		}
+     }
     
     
 }

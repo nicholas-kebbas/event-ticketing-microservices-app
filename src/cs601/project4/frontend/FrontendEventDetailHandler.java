@@ -47,7 +47,6 @@ public class FrontendEventDetailHandler extends CS601Handler {
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		
 	}
 
 }

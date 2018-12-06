@@ -27,7 +27,7 @@ public class EventDetailHandler extends CS601Handler {
 					event = db.getDBManager().getEvent(id, "events");
 					response.setStatus(HttpServletResponse.SC_OK);
 					response.getWriter().print("{" +
-							"\"eventid\": " + event.getUserId() + ", " +
+							"\"eventid\": " + event.getEventId() + ", " +
 							"\"eventname\": \"" + event.getEventName() + "\", " + 
 							"\"userid\": " + event.getUserId() +  ", " +
 							"\"avail\": " + event.getAvailableTickets() +  ", " +

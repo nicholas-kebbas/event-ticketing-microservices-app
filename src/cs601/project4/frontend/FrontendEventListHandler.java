@@ -19,8 +19,8 @@ public class FrontendEventListHandler extends CS601Handler {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
        	URL url = new URL (Constants.HOST + Constants.EVENTS_URL + "/list");
         HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-		connect.setDoOutput( true );
-		connect.setInstanceFollowRedirects( false );
+		connect.setDoOutput(true);
+		connect.setInstanceFollowRedirects(false);
         connect.setRequestMethod("GET");
 		connect.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); 
 		connect.setRequestProperty("charset", "utf-8");

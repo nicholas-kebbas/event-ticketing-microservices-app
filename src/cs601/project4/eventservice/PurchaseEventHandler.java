@@ -28,13 +28,10 @@ import cs601.project4.server.Constants;
  */
 public class PurchaseEventHandler extends CS601Handler {
 
-	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		
 	}
 
-	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String[] parameters = request.getPathInfo().split("/");
 		/* Get body information from Post Request */
@@ -73,9 +70,8 @@ public class PurchaseEventHandler extends CS601Handler {
 				connect.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded"); 
 				connect.setRequestProperty( "charset", "utf-8");
 				connect.setRequestProperty( "Content-Length", Integer.toString( postData.length ));
-				connect.setUseCaches( false );
 				try( DataOutputStream wr = new DataOutputStream( connect.getOutputStream())) {
-					wr.write( postData );
+					wr.write(postData);
 				}
 		        connect.connect();  
 		        System.out.println("Response: " + connect.getResponseCode());

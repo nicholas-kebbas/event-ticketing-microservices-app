@@ -19,18 +19,20 @@ import cs601.project4.server.CS601Handler;
  */
 public class AddTicketHandler extends CS601Handler {
 
-	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-			
+	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 
-	@Override
 	/* Need to make sure user exists in DB here still. */
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 		JsonParser parser = new JsonParser();
 		JsonObject jsonBody = (JsonObject) parser.parse(getBody);
 		
+		if (jsonBody.get("userid") == null || jsonBody.get("eventid") == null || jsonBody.get("tickets") == null) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
 		int userId = jsonBody.get("userid").getAsInt();
 		int eventId = jsonBody.get("eventid").getAsInt();
 		int tickets = jsonBody.get("tickets").getAsInt();

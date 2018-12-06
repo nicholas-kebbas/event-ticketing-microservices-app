@@ -16,12 +16,12 @@ import cs601.project4.server.Constants;
 
 public class FrontendPurchaseEventTicketHandler extends CS601Handler {
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 
 	/* Need to edit the post request to include userId and eventId */
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 		
 		/* Open connection to Events Server and send over */

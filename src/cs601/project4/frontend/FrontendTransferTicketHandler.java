@@ -23,18 +23,19 @@ import cs601.project4.server.Constants;
  */
 public class FrontendTransferTicketHandler extends CS601Handler {
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		System.out.println("transfer ticket get");
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 		
 		/* Open connection to Events Server and send over */
 		byte[] postData = getBody.getBytes( StandardCharsets.UTF_8 );
 		
 		String[] parameters = request.getPathInfo().split("/");
-		int userId = Integer.parseInt(parameters[2]);
+		int userId = Integer.parseInt(parameters[1]);
 		URL url = new URL(Constants.HOST + Constants.USERS_URL + "/" + userId + "/tickets/transfer");
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		

@@ -20,22 +20,7 @@ import java.util.ArrayList;
  */
 public class DBManager {
 	Connection con;
-
-	public User getUser(int id) {
-		return null;	
-	}
 	
-	/**
-	 * Create account and give password.
-	 * Generate a salt. Hash password and store it.
-	 * When you log in, give user and password. 
-	 * Get username, get salt out of row, add it to username,
-	 * then hash that. If they're the same, allow access. If not, deny.
-	 * Implement something like https://www.baeldung.com/java-password-hashing
-	 * 
-	 * @return
-	 * @throws SQLException 
-	 */
 	public int createUser(User user, String tableName) throws SQLException {
 		PreparedStatement printStmt = con.prepareStatement("SELECT * FROM " + tableName);
 		PreparedStatement updateStmt = con.prepareStatement("INSERT INTO " + tableName + " (name) VALUES (?)");
@@ -158,16 +143,19 @@ public class DBManager {
 	 * @return
 	 * @throws SQLException
 	 */
+	
+	/* TODO: Return null if Event does not exist. */
 	public Event getEvent(int id, String tableName) throws SQLException {
 		Event returnEvent = new Event();
 		PreparedStatement eventStmt;
 		eventStmt = con.prepareStatement("SELECT * FROM " + tableName + " WHERE id=" + id);
-		ResultSet userResultSet = eventStmt.executeQuery();
-		while(userResultSet.next()) {
-			returnEvent.setEventName(userResultSet.getString(2));
-			returnEvent.setUserId(userResultSet.getInt(3));
-			returnEvent.setAvailableTickets(userResultSet.getInt(4));
-			returnEvent.setTotalTickets(userResultSet.getInt(5));
+		ResultSet eventResultSet = eventStmt.executeQuery();
+		while(eventResultSet.next()) {
+			returnEvent.setEventId(eventResultSet.getInt(1));
+			returnEvent.setEventName(eventResultSet.getString(2));
+			returnEvent.setUserId(eventResultSet.getInt(3));
+			returnEvent.setAvailableTickets(eventResultSet.getInt(4));
+			returnEvent.setTotalTickets(eventResultSet.getInt(5));
 		}
 		return returnEvent;
 	}
@@ -191,6 +179,7 @@ public class DBManager {
 		return outputList;
 	}
 	
+	/* TODO: Return null if User does not exist. */
 	public User getUser(int id, String tableName) throws SQLException {
 		User returnUser = new User();
 		PreparedStatement userStmt;
@@ -202,7 +191,7 @@ public class DBManager {
 		}
 		PreparedStatement ticketStmt;
 		ticketStmt = con.prepareStatement("SELECT tickets.id, tickets.event_id FROM tickets JOIN users"
-				+ " ON users.id=tickets.user_id");
+				+ " ON users.id=tickets.user_id WHERE tickets.user_id=" + id);
 		ResultSet  ticketRs = ticketStmt.executeQuery();
 		
 		/* Add the ticket Id to the list of the user's list of tickets */

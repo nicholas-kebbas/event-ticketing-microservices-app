@@ -24,7 +24,7 @@ import cs601.project4.server.Constants;
 public class FrontendUserDetailHandler extends CS601Handler {
 
 	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String[] parameters = request.getPathInfo().split("/");
        	URL url = new URL (Constants.HOST + Constants.USERS_URL + "/" + parameters[1]);
         HttpURLConnection connect = (HttpURLConnection) url.openConnection();
@@ -52,7 +52,7 @@ public class FrontendUserDetailHandler extends CS601Handler {
 	}
 
 	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 

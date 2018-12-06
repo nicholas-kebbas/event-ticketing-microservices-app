@@ -19,7 +19,6 @@ public class EventListHandler extends HttpServlet {
 		try {
 			eventsList = db.getDBManager().getEventList("events");
 			response.getWriter().print("{ [");
-			System.out.println(eventsList.size());
 			for (int i = 0; i < eventsList.size(); i++) {
 				if (i != 0) {
 					response.getWriter().print(",");
