@@ -51,7 +51,7 @@ public class AddTicketHandler extends CS601Handler {
 		}
 		
 		if (success) {
-			response.setStatus(HttpServletResponse.SC_ACCEPTED);
+			response.setStatus(HttpServletResponse.SC_OK);
 		} else {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}

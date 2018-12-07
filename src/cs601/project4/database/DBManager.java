@@ -39,17 +39,28 @@ public class DBManager {
 	}
 	
 	public int createEvent(Event event, String tableName) throws SQLException {
-		PreparedStatement printStmt = con.prepareStatement("SELECT * FROM " + tableName);
+		/* Check user exists. Return -1 if not. */
+		PreparedStatement checkStmt;
+		checkStmt = con.prepareStatement("SELECT * FROM " + tableName + " WHERE id=" + event.getUserId());
+		ResultSet resultSet = checkStmt.executeQuery();
+		
+		resultSet.beforeFirst();
+		if (!resultSet.next()) {
+			return -1;
+		}
+		
+		/* Create the new item */
 		String createSql = "INSERT INTO " + tableName + " (userid, eventname, available_tickets, total_tickets) VALUES (?, ?, ?, ?)";
 		PreparedStatement updateStmt = con.prepareStatement(createSql, Statement.RETURN_GENERATED_KEYS);
 		updateStmt.setInt(1, event.getUserId());
 		updateStmt.setString(2, event.getEventName());
 		updateStmt.setInt(3, event.getAvailableTickets());
 		updateStmt.setInt(4, event.getAvailableTickets());
-		/* Create the new item */
+		
 		updateStmt.execute();
 		/* Get the latest id */
-		ResultSet rs = printStmt.executeQuery();
+		PreparedStatement getAllStmt = con.prepareStatement("SELECT * FROM " + tableName);
+		ResultSet rs = getAllStmt.executeQuery();
 		int idres = 0;
 		while (rs.next()) {
 			idres = rs.getInt("id");

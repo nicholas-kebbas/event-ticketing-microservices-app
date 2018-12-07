@@ -48,6 +48,10 @@ public class CreateEventHandler extends HttpServlet {
         int id;
         try {
 			id = db.getDBManager().createEvent(event, "events");
+			if (id == -1) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				return;
+			}
 			intString = Integer.toString(id);
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -82,6 +82,11 @@ public class PurchaseEventHandler extends CS601Handler {
 				}
 		        connect.connect();  
 		        System.out.println("Response: " + connect.getResponseCode());
+		        if (connect.getResponseCode() == 200) {
+		        		response.setStatus(HttpServletResponse.SC_OK);
+		        } else {
+		        		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		        }
 			} else {
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			}

@@ -38,6 +38,7 @@ public class FrontendCreateUserHandler extends CS601Handler {
 		try(DataOutputStream wr = new DataOutputStream(connect.getOutputStream())) {
 			wr.write(postData);
 		}
+		
 		if (connect.getResponseCode() == 200) {
 			/* Write to frontend response */
 			BufferedReader input = new BufferedReader(new InputStreamReader(connect.getInputStream()));

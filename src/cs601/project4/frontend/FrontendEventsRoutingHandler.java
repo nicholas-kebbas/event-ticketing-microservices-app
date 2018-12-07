@@ -21,7 +21,7 @@ public class FrontendEventsRoutingHandler extends CS601Handler {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		CS601Handler handler = parseUrl(request.getPathInfo());
 		if (handler != null) {
-			handler.doGet(request, response);
+			handler.doPost(request, response);
 		} else {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
@@ -29,14 +29,15 @@ public class FrontendEventsRoutingHandler extends CS601Handler {
 	
 	private CS601Handler parseUrl(String requestUrl) {
 		String[] parameters = requestUrl.split("/");
-		System.out.println(parameters.length + parameters[1]  + parameters[2]);
 		if (parameters.length == 2) {
 			if (isNumeric(parameters[1])) {
 				FrontendEventDetailHandler frontendEventDetailHandler = new FrontendEventDetailHandler();
 				return frontendEventDetailHandler;
 			}
 		} else if (parameters.length == 4) {
-			if (isNumeric(parameters[1]) && parameters[2].equals("purchase")) {
+			System.out.println("length is 4");
+			if (isNumeric(parameters[1]) && isNumeric(parameters[3])) {
+				System.out.println("calling handler");
 				FrontendPurchaseEventTicketHandler frontendPurchaseEventTicketHandler = new FrontendPurchaseEventTicketHandler();
 				return frontendPurchaseEventTicketHandler;
 			}
