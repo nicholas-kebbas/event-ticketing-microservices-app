@@ -37,7 +37,6 @@ public class FrontendEventListHandler extends CS601Handler {
 			 }
 			 in.close();
 			 response.setStatus(HttpServletResponse.SC_OK);
-			 System.out.println(responseString.toString());
 			 response.getWriter().print(responseString.toString());
 		} catch (IOException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

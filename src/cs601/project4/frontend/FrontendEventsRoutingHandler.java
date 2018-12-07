@@ -10,23 +10,33 @@ import cs601.project4.server.CS601Handler;
 public class FrontendEventsRoutingHandler extends CS601Handler {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		
+		CS601Handler handler = parseUrl(request.getPathInfo());
+		if (handler != null) {
+			handler.doGet(request, response);
+		} else {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		
+		CS601Handler handler = parseUrl(request.getPathInfo());
+		if (handler != null) {
+			handler.doGet(request, response);
+		} else {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
 	}
 	
 	private CS601Handler parseUrl(String requestUrl) {
 		String[] parameters = requestUrl.split("/");
-		System.out.println(parameters.length);
+		System.out.println(parameters.length + parameters[1]  + parameters[2]);
 		if (parameters.length == 2) {
 			if (isNumeric(parameters[1])) {
 				FrontendEventDetailHandler frontendEventDetailHandler = new FrontendEventDetailHandler();
 				return frontendEventDetailHandler;
 			}
-		} else if (parameters.length == 5) {
-			if (isNumeric(parameters[2]) && parameters[4].equals("purchase")) {
+		} else if (parameters.length == 4) {
+			if (isNumeric(parameters[1]) && parameters[2].equals("purchase")) {
 				FrontendPurchaseEventTicketHandler frontendPurchaseEventTicketHandler = new FrontendPurchaseEventTicketHandler();
 				return frontendPurchaseEventTicketHandler;
 			}

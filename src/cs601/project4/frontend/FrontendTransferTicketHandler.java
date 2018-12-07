@@ -24,7 +24,6 @@ import cs601.project4.server.Constants;
 public class FrontendTransferTicketHandler extends CS601Handler {
 
 	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		System.out.println("transfer ticket get");
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 
@@ -49,7 +48,6 @@ public class FrontendTransferTicketHandler extends CS601Handler {
 			wr.write(postData);
 		}
         connect.connect();  
-        System.out.println("Response: " + connect.getResponseCode());	
 	}
 
 }

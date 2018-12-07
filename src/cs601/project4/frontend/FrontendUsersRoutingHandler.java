@@ -19,6 +19,8 @@ public class FrontendUsersRoutingHandler extends CS601Handler {
 		CS601Handler handler = parseUrl(request.getPathInfo());
 		if (handler != null) {
 			handler.doGet(request, response);
+		} else {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		
 	}
@@ -27,13 +29,14 @@ public class FrontendUsersRoutingHandler extends CS601Handler {
 		CS601Handler handler = parseUrl(request.getPathInfo());
 		if (handler != null) {
 			handler.doPost(request, response);
+		} else {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		
 	}
 	
 	public CS601Handler parseUrl(String requestUrl) {
 		String[] parameters = requestUrl.split("/");
-		System.out.println(parameters.length);
 		if (parameters.length == 2) {
 			if (isNumeric(parameters[1])) {
 				FrontendUserDetailHandler frontendUserDetailHandler = new FrontendUserDetailHandler();

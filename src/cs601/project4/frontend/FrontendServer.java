@@ -12,7 +12,7 @@ public class FrontendServer {
 		server.addServlet(FrontendCreateEventHandler.class, "/events/create");
 		
 		// This will need to parse /events/*/purchase/transfer/* as well 
-		server.addServlet(FrontendEventDetailHandler.class, "/events/*");
+		server.addServlet(FrontendEventsRoutingHandler.class, "/events/*");
 		// server.addServlet(FrontendPurchaseEventTicketHandler.class, "/events/*/purchase/transfer/*");
 		server.addServlet(FrontendCreateUserHandler.class, "/users/create");
 		
@@ -27,7 +27,6 @@ public class FrontendServer {
 			e.printStackTrace();
 		}
 		
-	    System.out.println("server started");
 	    /* Create a connection to the database. 
 	     * Could also move this into separate (singleton) class and 
 	     * perform this logic there.  */

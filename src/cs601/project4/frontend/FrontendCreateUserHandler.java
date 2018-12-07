@@ -49,6 +49,8 @@ public class FrontendCreateUserHandler extends CS601Handler {
 			input.close();
 			response.getWriter().print(responseString.toString());
 	        connect.connect();
+		} else {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 	}
 }
