@@ -37,7 +37,10 @@ public class CreateUserHandler extends CS601Handler {
 	    		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	    		return;
 		}
-		
+		if (parser.parse(getBody).isJsonNull()) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
 		jsonBody = (JsonObject) parser.parse(getBody);
 
 		if (jsonBody.get("username") == null) {

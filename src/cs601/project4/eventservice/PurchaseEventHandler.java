@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
 import cs601.project4.database.Database;
@@ -37,14 +38,20 @@ public class PurchaseEventHandler extends CS601Handler {
 		/* Get body information from Post Request */
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 		JsonParser parser = new JsonParser();
-		JsonObject jBody = (JsonObject) parser.parse(getBody);
+		JsonObject jsonBody = new JsonObject();
+        try {
+        		jsonBody = (JsonObject) parser.parse(getBody);
+        } catch (JsonParseException j) {
+        		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        		return;
+        }
 		if (isNumeric(parameters[1])) {
 			// int eventId = Integer.parseInt(parameters[1]);
 			/* Get the event from the event DB, and decrement tickets */
 			Database db = Database.getInstance();
-			int userId = jBody.get("userid").getAsInt();
-			int eventId = jBody.get("eventid").getAsInt();
-			int tickets = jBody.get("tickets").getAsInt();
+			int userId = jsonBody.get("userid").getAsInt();
+			int eventId = jsonBody.get("eventid").getAsInt();
+			int tickets = jsonBody.get("tickets").getAsInt();
 			
 			/* Make sure tickets are available*/
 			boolean canDecrement = false;

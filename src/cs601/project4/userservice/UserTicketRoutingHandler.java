@@ -22,6 +22,8 @@ public class UserTicketRoutingHandler extends CS601Handler {
 		CS601Handler handler = parseString(request.getPathInfo());
 		if (handler != null) {
 			handler.doGet(request, response);
+		} else {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		
 	}
@@ -30,6 +32,8 @@ public class UserTicketRoutingHandler extends CS601Handler {
 		CS601Handler handler = parseString(request.getPathInfo());
 		if (handler != null) {
 			handler.doPost(request, response);
+		} else {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 	}
 	

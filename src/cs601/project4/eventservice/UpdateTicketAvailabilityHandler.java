@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
 import cs601.project4.database.Database;
@@ -33,9 +34,16 @@ public class UpdateTicketAvailabilityHandler extends CS601Handler {
 		
 		/* Now we read the request body */
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-		System.out.println("Body: " + request.getReader().readLine());
+
 		JsonParser parser = new JsonParser();
-		JsonObject jsonBody = (JsonObject) parser.parse(getBody);
+		JsonObject jsonBody = new JsonObject();
+        try {
+        		jsonBody = (JsonObject) parser.parse(getBody);
+        } catch (JsonParseException j) {
+        		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        		return;
+        }
+        
 		int eventId = jsonBody.get("eventid").getAsInt();
 		int tickets = jsonBody.get("tickets").getAsInt();
 		
