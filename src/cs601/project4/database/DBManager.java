@@ -64,13 +64,24 @@ public class DBManager {
 	 * @param tableName
 	 * @throws SQLException
 	 */
-	public void addTicket(int userId, int eventId, String tableName) throws SQLException {
+	public boolean addTicket(int userId, int eventId, String usersTableName ,String ticketsTableName) throws SQLException {
+		PreparedStatement checkStmt;
 		PreparedStatement updateStmt;
-		updateStmt = con.prepareStatement("INSERT INTO " + tableName + " (user_id, event_id) VALUES (?, ?)");
+		checkStmt = con.prepareStatement("SELECT id FROM " + usersTableName + " WHERE id=" + userId);
+		
+		ResultSet resultSet = checkStmt.executeQuery();
+		
+		resultSet.beforeFirst();
+		if (!resultSet.next()) {
+			return false;
+		}
+		
+		updateStmt = con.prepareStatement("INSERT INTO " + ticketsTableName + " (user_id, event_id) VALUES (?, ?)");
 		updateStmt.setInt(1, userId);
 		updateStmt.setInt(2, eventId);
 		/* Create the new item */
 		updateStmt.execute();
+		return true;
 	}
 	
 	/**

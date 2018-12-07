@@ -34,6 +34,7 @@ public class CreateTicketHandler extends CS601Handler {
 	
 	public synchronized void doPost (HttpServletRequest request, HttpServletResponse response) throws IOException {	
 		/* Parse the URL to get the UserID */
+		boolean success = false;
 		String[] parameters = request.getPathInfo().split("/");
 		String getBody = "";
 		if (parameters.length == 4 && isNumeric(parameters[1])) {
@@ -75,12 +76,17 @@ public class CreateTicketHandler extends CS601Handler {
 				/* Loop through and create a row for each ticket */
 				for (int i = 0; i < tickets; i++) {
 					try {
-						db.getDBManager().addTicket(userId, eventId, "tickets");
+						success = db.getDBManager().addTicket(userId, eventId, "users", "tickets");
 					} catch (SQLException e) {
 						e.printStackTrace();
 					}
 				}
-				response.setStatus(HttpServletResponse.SC_OK);
+				if (success) {
+					response.setStatus(HttpServletResponse.SC_OK);
+				} else {
+					response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				}
+				
 	        } else {
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			}

@@ -25,6 +25,7 @@ public class AddTicketHandler extends CS601Handler {
 
 	/* Need to make sure user exists in DB here still. */
 	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		boolean success = false;
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 		JsonParser parser = new JsonParser();
 		JsonObject jsonBody = (JsonObject) parser.parse(getBody);
@@ -43,10 +44,16 @@ public class AddTicketHandler extends CS601Handler {
 		
 		try {
 			for (int i = 0; i < tickets; i++) {
-				db.getDBManager().addTicket(userId, eventId, "tickets");
+				success = db.getDBManager().addTicket(userId, eventId, "users" ,"tickets");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+		
+		if (success) {
+			response.setStatus(HttpServletResponse.SC_ACCEPTED);
+		} else {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		
 	}

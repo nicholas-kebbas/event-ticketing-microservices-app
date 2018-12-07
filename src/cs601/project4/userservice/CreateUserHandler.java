@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
 import cs601.project4.database.Database;
@@ -29,12 +30,21 @@ public class CreateUserHandler extends CS601Handler {
 		System.out.println("create handler posted");
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 		JsonParser parser = new JsonParser();
-		JsonObject jBody = (JsonObject) parser.parse(getBody);
-		if (jBody.get("username") == null) {
+		JsonObject jsonBody = new JsonObject();
+		try {
+			parser.parse(getBody);
+		} catch (JsonParseException j) {
+	    		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	    		return;
+		}
+		
+		jsonBody = (JsonObject) parser.parse(getBody);
+
+		if (jsonBody.get("username") == null) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
-		String userName = jBody.get("username").getAsString();
+		String userName = jsonBody.get("username").getAsString();
 		/* Now save this info to database, and pass back the ID of the new event */
 		User user = new User(userName);
 		Database db = Database.getInstance();

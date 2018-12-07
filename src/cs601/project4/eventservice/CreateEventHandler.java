@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
 import cs601.project4.database.Database;
@@ -25,7 +26,18 @@ public class CreateEventHandler extends HttpServlet {
 		/* Build the object based on json request */
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 		JsonParser parser = new JsonParser();
-        JsonObject jsonBody = (JsonObject) parser.parse(getBody);
+		JsonObject jsonBody = new JsonObject();
+        try {
+        		jsonBody = (JsonObject) parser.parse(getBody);
+        } catch (JsonParseException j) {
+        		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        		return;
+        }
+        
+        if (jsonBody.get("userid") == null || jsonBody.get("eventname") ==  null || jsonBody.get("numtickets") == null) {
+	    		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	    		return;
+        }
         int userId = jsonBody.get("userid").getAsInt();
         String eventName = jsonBody.get("eventname").getAsString(); 
         int numTickets = jsonBody.get("numtickets").getAsInt();

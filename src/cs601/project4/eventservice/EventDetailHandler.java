@@ -41,7 +41,7 @@ public class EventDetailHandler extends CS601Handler {
 				}
 			
 			} else {
-				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			}
 	}
 	
