@@ -1,6 +1,9 @@
 package cs601.project4.eventservice;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 
@@ -14,6 +17,7 @@ import com.google.gson.JsonParser;
 
 import cs601.project4.database.Database;
 import cs601.project4.database.Event;
+import cs601.project4.server.Constants;
 
 /**
  *  Handler to Create an Event POST /event. Responds with JSON Body
@@ -48,6 +52,16 @@ public class CreateEventHandler extends HttpServlet {
         int userId = jsonBody.get("userid").getAsInt();
         String eventName = jsonBody.get("eventname").getAsString(); 
         int numTickets = jsonBody.get("numtickets").getAsInt();
+        
+        /* After checking for correct JSON, check users server to confirm user exists */
+       	URL url = new URL (Constants.HOST + Constants.USERS_URL + "/" + userId);
+        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
+		connect = tryGetConnection(connect);
+		if (connect.getResponseCode() != 200) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+        
         /* Now save this info to database, and pass back the ID of the new event */
         Event event = new Event(userId, eventName, numTickets);
         Database db = Database.getInstance();
@@ -67,7 +81,14 @@ public class CreateEventHandler extends HttpServlet {
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().print("{" + "\"eventid\": " + intString  +"}");
-        System.out.println(response.getStatus());
-        /* Need to catch if Event cannot be created */
 	}
+	
+	private HttpURLConnection tryGetConnection(HttpURLConnection connect) throws IOException {
+		connect.setDoOutput( true );
+        connect.setRequestMethod("GET");
+		connect.setRequestProperty("Content-Type", "application/json"); 
+		connect.setRequestProperty("charset", "utf-8");
+		return connect;
+	}
+	
 }

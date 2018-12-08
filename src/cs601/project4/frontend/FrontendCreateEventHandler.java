@@ -33,15 +33,7 @@ public class FrontendCreateEventHandler extends CS601Handler {
 		byte[] postData = getBody.getBytes( StandardCharsets.UTF_8 );
 		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/create");
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-		connect.setDoOutput(true);
-        connect.setRequestMethod("POST");
-		connect.setRequestProperty("Content-Type", "application/json");
-		connect.setRequestProperty("charset", "utf-8");
-		connect.setRequestProperty("Content-Length", Integer.toString(postData.length));
-		/* Then get response and write that */
-		try(DataOutputStream wr = new DataOutputStream(connect.getOutputStream())) {
-			wr.write(postData);
-		}
+		connect = tryConnection(connect, postData);
         connect.connect();  
         
         /* Write response to frontend body */
@@ -60,6 +52,18 @@ public class FrontendCreateEventHandler extends CS601Handler {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
      }
+	
+	private HttpURLConnection tryConnection(HttpURLConnection connect, byte[] postData) throws IOException {
+		connect.setDoOutput( true );
+        connect.setRequestMethod("POST");
+		connect.setRequestProperty("Content-Type", "application/json");
+		connect.setRequestProperty("charset", "utf-8");
+		connect.setRequestProperty("Content-Length", Integer.toString( postData.length ));
+		try( DataOutputStream wr = new DataOutputStream( connect.getOutputStream())) {
+			wr.write(postData);
+		}
+		return connect;
+	}
     
     
 }

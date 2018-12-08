@@ -29,13 +29,7 @@ public class FrontendUserDetailHandler extends CS601Handler {
 		try {
 	       	URL url = new URL (Constants.HOST + Constants.USERS_URL + "/" + parameters[1]);
 	        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-			connect.setDoOutput( true );
-			connect.setInstanceFollowRedirects( false );
-	        connect.setRequestMethod("GET");
-			connect.setRequestProperty("Content-Type", "application/json"); 
-			connect.setRequestProperty("charset", "utf-8");
-			connect.setDoOutput(true);
-			
+	        connect = tryGetConnection(connect);
 			/* Get response from User server */
 			BufferedReader in = new BufferedReader(
 		             new InputStreamReader(connect.getInputStream()));
@@ -54,6 +48,14 @@ public class FrontendUserDetailHandler extends CS601Handler {
 	@Override
 	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	}
+	
+	private HttpURLConnection tryGetConnection(HttpURLConnection connect) throws IOException {
+		connect.setDoOutput( true );
+        connect.setRequestMethod("GET");
+		connect.setRequestProperty("Content-Type", "application/json"); 
+		connect.setRequestProperty("charset", "utf-8");
+		return connect;
 	}
 
 }

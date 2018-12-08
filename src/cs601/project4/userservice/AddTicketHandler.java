@@ -1,6 +1,8 @@
 package cs601.project4.userservice;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 
@@ -13,6 +15,7 @@ import com.google.gson.JsonParser;
 
 import cs601.project4.database.Database;
 import cs601.project4.server.CS601Handler;
+import cs601.project4.server.Constants;
 /**
  * Add a ticket. Called by Events server.
  * @author nkebbas
@@ -52,6 +55,27 @@ public class AddTicketHandler extends CS601Handler {
 		int eventId = jsonBody.get("eventid").getAsInt();
 		int tickets = jsonBody.get("tickets").getAsInt();
 		
+		/* Confirm Event Exists */
+       	URL eventUrl = new URL (Constants.HOST + Constants.EVENTS_URL + "/" + eventId);
+        HttpURLConnection eventConnect = (HttpURLConnection) eventUrl.openConnection();
+		eventConnect = tryGetConnection(eventConnect);
+		
+		if (eventConnect.getResponseCode() != 200) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		
+		/* Confirm User Exists */
+       	URL url = new URL (Constants.HOST + Constants.USERS_URL + "/" + userId);
+        HttpURLConnection userConnect = (HttpURLConnection) url.openConnection();
+		userConnect = tryGetConnection(userConnect);
+		
+		if (userConnect.getResponseCode() != 200) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		
+		
 		/* Make a transaction in the ticket table of the database */
 		
 		Database db = Database.getInstance();
@@ -70,6 +94,14 @@ public class AddTicketHandler extends CS601Handler {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		
+	}
+	
+	private HttpURLConnection tryGetConnection(HttpURLConnection connect) throws IOException {
+		connect.setDoOutput( true );
+        connect.setRequestMethod("GET");
+		connect.setRequestProperty("Content-Type", "application/json"); 
+		connect.setRequestProperty("charset", "utf-8");
+		return connect;
 	}
 	
 }

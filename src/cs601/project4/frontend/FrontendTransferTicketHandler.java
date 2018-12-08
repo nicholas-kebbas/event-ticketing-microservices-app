@@ -40,23 +40,27 @@ public class FrontendTransferTicketHandler extends CS601Handler {
 		int userId = Integer.parseInt(parameters[1]);
 		URL url = new URL(Constants.HOST + Constants.USERS_URL + "/" + userId + "/tickets/transfer");
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-		
-		connect.setDoOutput(true);
-        connect.setRequestMethod("POST");
-		connect.setRequestProperty("Content-Type", "application/json");
-		connect.setRequestProperty("charset", "utf-8");
-		connect.setRequestProperty("Content-Length", Integer.toString( postData.length));
-		/* Then get response and write that */
-		try(DataOutputStream wr = new DataOutputStream(connect.getOutputStream())) {
-			wr.write(postData);
-		}
-        
+		connect = tryPostConnection(connect, postData);
+      
         if (connect.getResponseCode() == 200) {
 			response.setStatus(HttpServletResponse.SC_OK);
 		} else {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
+        
         connect.connect();  
+	}
+	
+	private HttpURLConnection tryPostConnection(HttpURLConnection connect, byte[] postData) throws IOException {
+		connect.setDoOutput( true );
+        connect.setRequestMethod("POST");
+		connect.setRequestProperty("Content-Type", "application/json");
+		connect.setRequestProperty("charset", "utf-8");
+		connect.setRequestProperty("Content-Length", Integer.toString( postData.length ));
+		try( DataOutputStream wr = new DataOutputStream( connect.getOutputStream())) {
+			wr.write(postData);
+		}
+		return connect;
 	}
 
 }

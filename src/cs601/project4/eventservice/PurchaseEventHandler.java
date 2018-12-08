@@ -3,6 +3,7 @@ package cs601.project4.eventservice;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
@@ -60,7 +61,11 @@ public class PurchaseEventHandler extends CS601Handler {
 			return;
 		}
         
-		/* Check if event, users exist */
+		/* Open connection to check if event, users exist */
+		
+		
+		
+		
 		
 		/* If so, continue */
         
@@ -83,21 +88,13 @@ public class PurchaseEventHandler extends CS601Handler {
 			/* If you can decrement tickets, call the User API that handles adding of tickets */
 			if (canDecrement) {
 			
-				/* Get the data passed from request and convert to bytes */
+				/* Get the data passed from request and convert to bytes, then open a connection */
 				byte[] postData = getBody.getBytes( StandardCharsets.UTF_8 );
-				
-				/* Open a new connection and connect to the User service */
 				URL url = new URL(Constants.HOST + Constants.USERS_URL + "/tickets/add");
 				HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-				connect.setDoOutput( true );
-		        connect.setRequestMethod("POST");
-				connect.setRequestProperty("Content-Type", "application/json");
-				connect.setRequestProperty("charset", "utf-8");
-				connect.setRequestProperty("Content-Length", Integer.toString( postData.length ));
-				try( DataOutputStream wr = new DataOutputStream( connect.getOutputStream())) {
-					wr.write(postData);
-				}
+				connect = tryConnection(connect, postData);
 		        connect.connect();  
+		        
 		        if (connect.getResponseCode() == 200) {
 		        		response.setStatus(HttpServletResponse.SC_OK);
 		        } else {
@@ -108,6 +105,18 @@ public class PurchaseEventHandler extends CS601Handler {
 			}
 			
 		}
+	}
+	
+	private HttpURLConnection tryConnection(HttpURLConnection connect, byte[] postData) throws IOException {
+		connect.setDoOutput( true );
+        connect.setRequestMethod("POST");
+		connect.setRequestProperty("Content-Type", "application/json");
+		connect.setRequestProperty("charset", "utf-8");
+		connect.setRequestProperty("Content-Length", Integer.toString( postData.length ));
+		try( DataOutputStream wr = new DataOutputStream( connect.getOutputStream())) {
+			wr.write(postData);
+		}
+		return connect;
 	}
 
 	public static boolean isNumeric(String s) {

@@ -37,12 +37,7 @@ public class DBManager {
 		return idres;
 	}
 	
-	public int createEvent(Event event, String tableName) throws SQLException {
-		/* CANNOT CHECK. Need to Use external API to check. Check user exists. Return -1 if not. */
-		if (!checkIdExists(event.getUserId(), "users")) {
-			return -1;
-		}
-		
+	public int createEvent(Event event, String tableName) throws SQLException {		
 		/* Create the new item */
 		String createSql = "INSERT INTO " + tableName + " (userid, eventname, available_tickets, total_tickets) VALUES (?, ?, ?, ?)";
 		PreparedStatement updateStmt = con.prepareStatement(createSql, Statement.RETURN_GENERATED_KEYS);
@@ -50,7 +45,6 @@ public class DBManager {
 		updateStmt.setString(2, event.getEventName());
 		updateStmt.setInt(3, event.getAvailableTickets());
 		updateStmt.setInt(4, event.getAvailableTickets());
-		
 		updateStmt.execute();
 		/* Get the latest id */
 		PreparedStatement getAllStmt = con.prepareStatement("SELECT * FROM " + tableName);
@@ -73,11 +67,6 @@ public class DBManager {
 		PreparedStatement updateStmt;
 		
 		if (!checkIdExists(userId, "users")) {
-			return false;
-		}
-		
-		/* CANNOT CHECK. Need to Use external API to check. Do this before we run this command in handler. */
-		if (!checkIdExists(eventId, "events")) {
 			return false;
 		}
 		
@@ -107,11 +96,6 @@ public class DBManager {
 		}
 		
 		if (!checkIdExists(targetUserId, "users")) {
-			return false;
-		}
-		
-		/* CANNOT CHECK. Need to Use external API to check. Do this before we run this command in handler. */
-		if (!checkIdExists(eventId, "events")) {
 			return false;
 		}
 		
