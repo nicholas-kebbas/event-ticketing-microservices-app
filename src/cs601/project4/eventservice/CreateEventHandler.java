@@ -22,7 +22,7 @@ import cs601.project4.database.Event;
  *
  */
 public class CreateEventHandler extends HttpServlet {
-	public void doPost (HttpServletRequest request, HttpServletResponse response) throws IOException {	
+	public synchronized void doPost (HttpServletRequest request, HttpServletResponse response) throws IOException {	
 		/* Build the object based on json request */
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 		JsonParser parser = new JsonParser();

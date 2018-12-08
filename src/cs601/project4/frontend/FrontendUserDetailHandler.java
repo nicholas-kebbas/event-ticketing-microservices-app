@@ -32,7 +32,7 @@ public class FrontendUserDetailHandler extends CS601Handler {
 			connect.setDoOutput( true );
 			connect.setInstanceFollowRedirects( false );
 	        connect.setRequestMethod("GET");
-			connect.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); 
+			connect.setRequestProperty("Content-Type", "application/json"); 
 			connect.setRequestProperty("charset", "utf-8");
 			connect.setDoOutput(true);
 			
@@ -49,8 +49,6 @@ public class FrontendUserDetailHandler extends CS601Handler {
 		} catch (IOException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
-		
-		
 	}
 
 	@Override

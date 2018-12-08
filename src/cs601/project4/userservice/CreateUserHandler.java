@@ -27,7 +27,6 @@ public class CreateUserHandler extends CS601Handler {
 	}
 	
 	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		System.out.println("create handler posted");
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 		JsonParser parser = new JsonParser();
 		JsonObject jsonBody = new JsonObject();
@@ -47,6 +46,7 @@ public class CreateUserHandler extends CS601Handler {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
+		
 		String userName = jsonBody.get("username").getAsString();
 		/* Now save this info to database, and pass back the ID of the new event */
 		User user = new User(userName);

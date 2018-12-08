@@ -35,13 +35,11 @@ public class UserDetailHandler extends CS601Handler {
 						response.getWriter().print(",");
 					}
 					response.getWriter().print("{ \"eventid\": " + user.getTicketsEventIds().get(i) + "}");
-					System.out.println(user.getTicketsEventIds().get(i) + " ticket");
 				}
 				response.getWriter().print(" ] }" );
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			System.out.println(id);
 		} else {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}

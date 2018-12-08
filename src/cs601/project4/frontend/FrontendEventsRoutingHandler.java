@@ -35,9 +35,7 @@ public class FrontendEventsRoutingHandler extends CS601Handler {
 				return frontendEventDetailHandler;
 			}
 		} else if (parameters.length == 4) {
-			System.out.println("length is 4");
 			if (isNumeric(parameters[1]) && isNumeric(parameters[3])) {
-				System.out.println("calling handler");
 				FrontendPurchaseEventTicketHandler frontendPurchaseEventTicketHandler = new FrontendPurchaseEventTicketHandler();
 				return frontendPurchaseEventTicketHandler;
 			}

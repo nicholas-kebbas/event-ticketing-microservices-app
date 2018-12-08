@@ -13,7 +13,7 @@ import cs601.project4.database.Event;
 
 public class EventListHandler extends HttpServlet {
 	
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Database db = Database.getInstance();
 		ArrayList<Event> eventsList = new ArrayList<Event>();
 		try {

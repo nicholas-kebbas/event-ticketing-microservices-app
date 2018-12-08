@@ -20,7 +20,6 @@ public class EventServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	    System.out.println("server started");
 	    /* Create a connection to the database. 
 	     * Could also move this into separate (singleton) class and 
 	     * perform this logic there.  */

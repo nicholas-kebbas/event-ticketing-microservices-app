@@ -22,11 +22,11 @@ import cs601.project4.server.Constants;
  */
 public class FrontendCreateEventHandler extends CS601Handler {
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 		
 		/* Open connection to Events Server and send over */
@@ -35,7 +35,7 @@ public class FrontendCreateEventHandler extends CS601Handler {
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
-		connect.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); 
+		connect.setRequestProperty("Content-Type", "application/json");
 		connect.setRequestProperty("charset", "utf-8");
 		connect.setRequestProperty("Content-Length", Integer.toString(postData.length));
 		/* Then get response and write that */

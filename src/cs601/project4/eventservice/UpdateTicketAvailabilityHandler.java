@@ -23,14 +23,12 @@ import cs601.project4.server.CS601Handler;
 public class UpdateTicketAvailabilityHandler extends CS601Handler {
 
 	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		System.out.println("do get available tickets");
+	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 
 	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		System.out.println("do post available tickets");
+	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 		/* Now we read the request body */
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));

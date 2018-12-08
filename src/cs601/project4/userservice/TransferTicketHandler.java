@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
 import cs601.project4.database.Database;
@@ -21,13 +22,10 @@ import cs601.project4.server.CS601Handler;
 public class TransferTicketHandler extends CS601Handler {
 
 	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		System.out.println("transfer ticket get");
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 
 	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		
-		System.out.println("transfer ticket");
 		
 		/* Get userId of requester */
 		String[] parameters = request.getPathInfo().split("/");
@@ -36,7 +34,35 @@ public class TransferTicketHandler extends CS601Handler {
 		/* Get body of request */
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 		JsonParser parser = new JsonParser();
-		JsonObject jsonBody = (JsonObject) parser.parse(getBody);
+		JsonObject jsonBody;
+	    try {
+	    		jsonBody = (JsonObject) parser.parse(getBody);
+	    } catch (JsonParseException j) {
+	    		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	    		return;
+	    }
+		jsonBody = (JsonObject) parser.parse(getBody);
+		
+		
+		if (jsonBody.get("eventid") == null || jsonBody.get("targetuser") == null || jsonBody.get("tickets") == null) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		
+		if (jsonBody.get("eventid") == null) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		
+		if (jsonBody.get("tickets") == null) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		
+		if (jsonBody.get("targetuser") == null) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
 		
 		int eventId = jsonBody.get("eventid").getAsInt();
 		int tickets = jsonBody.get("tickets").getAsInt();
@@ -56,10 +82,6 @@ public class TransferTicketHandler extends CS601Handler {
 		} else {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
-		
-		
-		
-		
 	}
 
 }

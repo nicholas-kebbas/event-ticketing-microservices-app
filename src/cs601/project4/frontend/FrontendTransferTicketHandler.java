@@ -18,6 +18,9 @@ import cs601.project4.server.Constants;
  * json object.
  * 
  * Supports POST requests. Contacts /users/{userid}/tickets/transfer internal API.
+ * 
+ * 
+ * 
  * @author nkebbas
  *
  */
@@ -40,12 +43,18 @@ public class FrontendTransferTicketHandler extends CS601Handler {
 		
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
-		connect.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); 
+		connect.setRequestProperty("Content-Type", "application/json");
 		connect.setRequestProperty("charset", "utf-8");
 		connect.setRequestProperty("Content-Length", Integer.toString( postData.length));
 		/* Then get response and write that */
 		try(DataOutputStream wr = new DataOutputStream(connect.getOutputStream())) {
 			wr.write(postData);
+		}
+        
+        if (connect.getResponseCode() == 200) {
+			response.setStatus(HttpServletResponse.SC_OK);
+		} else {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
         connect.connect();  
 	}

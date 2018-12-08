@@ -34,18 +34,12 @@ public class DBManager {
 			// for each result, get the value of the columns name and id
 			idres = rs.getInt("id");
 		}
-		System.out.println("id " + idres);
 		return idres;
 	}
 	
 	public int createEvent(Event event, String tableName) throws SQLException {
-		/* Check user exists. Return -1 if not. */
-		PreparedStatement checkStmt;
-		checkStmt = con.prepareStatement("SELECT * FROM " + tableName + " WHERE id=" + event.getUserId());
-		ResultSet resultSet = checkStmt.executeQuery();
-		
-		resultSet.beforeFirst();
-		if (!resultSet.next()) {
+		/* CANNOT CHECK. Need to Use external API to check. Check user exists. Return -1 if not. */
+		if (!checkIdExists(event.getUserId(), "users")) {
 			return -1;
 		}
 		
@@ -75,15 +69,15 @@ public class DBManager {
 	 * @param tableName
 	 * @throws SQLException
 	 */
-	public boolean addTicket(int userId, int eventId, String usersTableName ,String ticketsTableName) throws SQLException {
-		PreparedStatement checkStmt;
+	public boolean addTicket(int userId, int eventId, String usersTableName, String ticketsTableName) throws SQLException {
 		PreparedStatement updateStmt;
-		checkStmt = con.prepareStatement("SELECT id FROM " + usersTableName + " WHERE id=" + userId);
 		
-		ResultSet resultSet = checkStmt.executeQuery();
+		if (!checkIdExists(userId, "users")) {
+			return false;
+		}
 		
-		resultSet.beforeFirst();
-		if (!resultSet.next()) {
+		/* CANNOT CHECK. Need to Use external API to check. Do this before we run this command in handler. */
+		if (!checkIdExists(eventId, "events")) {
 			return false;
 		}
 		
@@ -107,6 +101,20 @@ public class DBManager {
 	 */
 	public boolean transferTicket(int userId, int targetUserId, int eventId, int tickets, String tableName) throws SQLException {
 		PreparedStatement checkStmt;
+		
+		if (!checkIdExists(userId, "users")) {
+			return false;
+		}
+		
+		if (!checkIdExists(targetUserId, "users")) {
+			return false;
+		}
+		
+		/* CANNOT CHECK. Need to Use external API to check. Do this before we run this command in handler. */
+		if (!checkIdExists(eventId, "events")) {
+			return false;
+		}
+		
 		checkStmt = con.prepareStatement("SELECT user_id FROM " + tableName + " WHERE user_id= " + userId + " AND event_id= " + eventId);
 		ResultSet rs = checkStmt.executeQuery();
 		
@@ -132,6 +140,7 @@ public class DBManager {
 	 * @return
 	 * @throws SQLException
 	 */
+	
 	public boolean decrementTicketAvailability(int eventId, int numTickets, String tableName) throws SQLException {
 		PreparedStatement checkStmt;
 		PreparedStatement updateStmt;
@@ -223,11 +232,9 @@ public class DBManager {
 		
 		userRs.beforeFirst();
 		while(userRs.next()) {
-			System.out.println("next");
 			String userName = userRs.getString(2);
 			returnUser.setName(userName);
 		}
-
 
 		PreparedStatement ticketStmt;
 		ticketStmt = con.prepareStatement("SELECT tickets.id, tickets.event_id FROM tickets JOIN users"
@@ -241,6 +248,19 @@ public class DBManager {
 		}
 		
 		return returnUser;
+	}
+	
+	private boolean checkIdExists(int id, String tableName) throws SQLException {
+		PreparedStatement checkStmt;
+		checkStmt = con.prepareStatement("SELECT * FROM " + tableName + " WHERE id=" + id);
+		ResultSet resultSet = checkStmt.executeQuery();
+		
+		resultSet.beforeFirst();
+		if (!resultSet.next()) {
+			return false;
+		}
+		
+		return true;
 	}
 	
 	

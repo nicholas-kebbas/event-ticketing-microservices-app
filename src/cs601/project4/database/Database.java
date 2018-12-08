@@ -43,9 +43,9 @@ public final class Database {
 		// format "jdbc:mysql://[hostname][:port]/[dbname]"
 		//note: if connecting through an ssh tunnel make sure to use 127.0.0.1 and
 		//also to that the ports are set up correctly
-		String urlString = "jdbc:mysql://127.0.0.1:3306/"+DBConstants.DB;
+		String urlString = DBConstants.URL_STRING+DBConstants.DB;
 		//Must set time zone explicitly in newer versions of mySQL.
-		String timeZoneSettings = "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+		String timeZoneSettings = DBConstants.TIME_ZONE_SETTINGS;
 
 
 		try {
@@ -57,7 +57,6 @@ public final class Database {
 			e.printStackTrace();
 		}
 		this.dbm.setCon(con);
-	    System.out.println("DB connection established");
 	}
 	
 	public DBManager getDBManager() {

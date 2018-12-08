@@ -16,14 +16,13 @@ import cs601.project4.server.Constants;
 public class FrontendEventListHandler extends CS601Handler {
 
 	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) {
+	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) {
 		try {
 	       	URL url = new URL (Constants.HOST + Constants.EVENTS_URL + "/list");
 	        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 			connect.setDoOutput(true);
-			connect.setInstanceFollowRedirects(false);
 	        connect.setRequestMethod("GET");
-			connect.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); 
+			connect.setRequestProperty("Content-Type", "application/json");
 			connect.setRequestProperty("charset", "utf-8");
 			connect.setDoOutput(true);
 			
@@ -45,9 +44,8 @@ public class FrontendEventListHandler extends CS601Handler {
 	}
 
 	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		
 	}
 
 }

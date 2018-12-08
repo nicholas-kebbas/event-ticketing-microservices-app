@@ -58,7 +58,7 @@ public class CreateTicketHandler extends CS601Handler {
 	        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 			connect.setDoOutput( true );
 	        connect.setRequestMethod("POST");
-			connect.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); 
+			connect.setRequestProperty("Content-Type", "application/json"); 
 			connect.setRequestProperty("charset", "utf-8");
 			connect.setRequestProperty("Content-Length", Integer.toString( postData.length));
 			try( DataOutputStream wr = new DataOutputStream( connect.getOutputStream())) {

@@ -24,27 +24,31 @@ import cs601.project4.server.Constants;
  * Purchase ticket to event. This will check if tickets are available, 
  * decrement the available tickets number,
  * and then open a connection to the user service
+ * 
+ * There's an issue here where if the user doesn't exist, the events table will still decrement.
  * @author nkebbas
  *
  */
 public class PurchaseEventHandler extends CS601Handler {
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String[] parameters = request.getPathInfo().split("/");
 		/* Get body information from Post Request */
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 		JsonParser parser = new JsonParser();
 		JsonObject jsonBody = new JsonObject();
+		
         try {
         		jsonBody = (JsonObject) parser.parse(getBody);
         } catch (JsonParseException j) {
         		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         		return;
         }
+        
 		if (isNumeric(parameters[1])) {
 			// int eventId = Integer.parseInt(parameters[1]);
 			/* Get the event from the event DB, and decrement tickets */
@@ -53,12 +57,11 @@ public class PurchaseEventHandler extends CS601Handler {
 			int eventId = jsonBody.get("eventid").getAsInt();
 			int tickets = jsonBody.get("tickets").getAsInt();
 			
-			/* Make sure tickets are available*/
+			/* Make sure tickets are available. This decrements first, so need to roll back. */
 			boolean canDecrement = false;
 			try {
 				canDecrement = db.getDBManager().decrementTicketAvailability(eventId, tickets, "events");
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -72,16 +75,14 @@ public class PurchaseEventHandler extends CS601Handler {
 				URL url = new URL(Constants.HOST + Constants.USERS_URL + "/tickets/add");
 				HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 				connect.setDoOutput( true );
-				connect.setInstanceFollowRedirects( false );
 		        connect.setRequestMethod("POST");
-				connect.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded"); 
-				connect.setRequestProperty( "charset", "utf-8");
-				connect.setRequestProperty( "Content-Length", Integer.toString( postData.length ));
+				connect.setRequestProperty("Content-Type", "application/json");
+				connect.setRequestProperty("charset", "utf-8");
+				connect.setRequestProperty("Content-Length", Integer.toString( postData.length ));
 				try( DataOutputStream wr = new DataOutputStream( connect.getOutputStream())) {
 					wr.write(postData);
 				}
 		        connect.connect();  
-		        System.out.println("Response: " + connect.getResponseCode());
 		        if (connect.getResponseCode() == 200) {
 		        		response.setStatus(HttpServletResponse.SC_OK);
 		        } else {
@@ -94,12 +95,12 @@ public class PurchaseEventHandler extends CS601Handler {
 		}
 	}
 
-public static boolean isNumeric(String s) {
-	  try {  
-	    int num = Integer.parseInt(s);
-	  }	catch (NumberFormatException nfe) {  
-	    return false;  
-	  } return true;  
-	}
+	public static boolean isNumeric(String s) {
+		  try {  
+		    int num = Integer.parseInt(s);
+		  }	catch (NumberFormatException nfe) {  
+		    return false;  
+		  } return true;  
+		}
 
 }
