@@ -25,14 +25,21 @@ public class CreateEventHandler extends HttpServlet {
 	public synchronized void doPost (HttpServletRequest request, HttpServletResponse response) throws IOException {	
 		/* Build the object based on json request */
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+		
+		/* Check for Correct JSON Issues and No null necessary parameters */
 		JsonParser parser = new JsonParser();
 		JsonObject jsonBody = new JsonObject();
-        try {
-        		jsonBody = (JsonObject) parser.parse(getBody);
-        } catch (JsonParseException j) {
-        		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        		return;
-        }
+		try {
+			parser.parse(getBody);
+		} catch (JsonParseException j) {
+	    		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	    		return;
+		}
+		if (parser.parse(getBody).isJsonNull()) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		jsonBody = (JsonObject) parser.parse(getBody);
         
         if (jsonBody.get("userid") == null || jsonBody.get("eventname") ==  null || jsonBody.get("numtickets") == null) {
 	    		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

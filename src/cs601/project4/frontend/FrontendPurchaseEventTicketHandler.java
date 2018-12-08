@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
 import cs601.project4.server.CS601Handler;
@@ -35,10 +36,26 @@ public class FrontendPurchaseEventTicketHandler extends CS601Handler {
 		/* Open connection to Events Server and send over */
 		byte[] postData = getBody.getBytes(StandardCharsets.UTF_8);
 		
-		/* Get tickets from POST Body */
+		/* Check for Correct JSON Issues and No null necessary parameters */
 		JsonParser parser = new JsonParser();
-		JsonObject jBody = (JsonObject) parser.parse(getBody);
-		int tickets = jBody.get("tickets").getAsInt();
+		JsonObject jsonBody = new JsonObject();
+		try {
+			parser.parse(getBody);
+		} catch (JsonParseException j) {
+	    		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	    		return;
+		}
+		if (parser.parse(getBody).isJsonNull()) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		jsonBody = (JsonObject) parser.parse(getBody);
+		
+		if (jsonBody.get("tickets") == null) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		int tickets = jsonBody.get("tickets").getAsInt();
 		
 		String[] parameters = request.getPathInfo().split("/");
 		int eventId = Integer.parseInt(parameters[1]);

@@ -17,6 +17,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
 import cs601.project4.database.Database;
+import cs601.project4.server.CS601ConnectionWrapper;
 import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
 
@@ -39,15 +40,29 @@ public class PurchaseEventHandler extends CS601Handler {
 		String[] parameters = request.getPathInfo().split("/");
 		/* Get body information from Post Request */
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+		/* Check for Correct JSON Issues and No null necessary parameters */
 		JsonParser parser = new JsonParser();
 		JsonObject jsonBody = new JsonObject();
+		try {
+			parser.parse(getBody);
+		} catch (JsonParseException j) {
+	    		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	    		return;
+		}
+		if (parser.parse(getBody).isJsonNull()) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		jsonBody = (JsonObject) parser.parse(getBody);
+        
+		if (jsonBody.get("eventid") == null || jsonBody.get("userid") == null || jsonBody.get("tickets") == null) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+        
+		/* Check if event, users exist */
 		
-        try {
-        		jsonBody = (JsonObject) parser.parse(getBody);
-        } catch (JsonParseException j) {
-        		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        		return;
-        }
+		/* If so, continue */
         
 		if (isNumeric(parameters[1])) {
 			// int eventId = Integer.parseInt(parameters[1]);

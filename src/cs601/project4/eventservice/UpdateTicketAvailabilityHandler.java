@@ -33,13 +33,24 @@ public class UpdateTicketAvailabilityHandler extends CS601Handler {
 		/* Now we read the request body */
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
+		/* Check for Correct JSON Issues and No null necessary parameters */
 		JsonParser parser = new JsonParser();
 		JsonObject jsonBody = new JsonObject();
-        try {
-        		jsonBody = (JsonObject) parser.parse(getBody);
-        } catch (JsonParseException j) {
-        		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        		return;
+		try {
+			parser.parse(getBody);
+		} catch (JsonParseException j) {
+	    		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	    		return;
+		}
+		if (parser.parse(getBody).isJsonNull()) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		jsonBody = (JsonObject) parser.parse(getBody);
+        
+        if (jsonBody.get("eventid") == null || jsonBody.get("tickets") == null) {
+	        	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	        	return;
         }
         
 		int eventId = jsonBody.get("eventid").getAsInt();

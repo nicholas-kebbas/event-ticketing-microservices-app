@@ -28,6 +28,8 @@ public class CreateUserHandler extends CS601Handler {
 	
 	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+		
+		/* Check for Correct JSON Issues and No null necessary parameters */
 		JsonParser parser = new JsonParser();
 		JsonObject jsonBody = new JsonObject();
 		try {

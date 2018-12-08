@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
 import cs601.project4.database.Database;
@@ -27,8 +28,21 @@ public class AddTicketHandler extends CS601Handler {
 	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		boolean success = false;
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+		
+		/* Check for Correct JSON Issues and No null necessary parameters */
 		JsonParser parser = new JsonParser();
-		JsonObject jsonBody = (JsonObject) parser.parse(getBody);
+		JsonObject jsonBody = new JsonObject();
+		try {
+			parser.parse(getBody);
+		} catch (JsonParseException j) {
+	    		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	    		return;
+		}
+		if (parser.parse(getBody).isJsonNull()) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		jsonBody = (JsonObject) parser.parse(getBody);
 		
 		if (jsonBody.get("userid") == null || jsonBody.get("eventid") == null || jsonBody.get("tickets") == null) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
