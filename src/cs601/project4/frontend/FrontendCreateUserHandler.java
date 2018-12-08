@@ -28,7 +28,7 @@ public class FrontendCreateUserHandler extends CS601Handler {
 		byte[] postData = getBody.getBytes( StandardCharsets.UTF_8 );
 		URL url = new URL(Constants.HOST + Constants.USERS_URL + "/create");
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-		connect = tryConnection(connect, postData);
+		connect = tryPostConnection(connect, postData);
 		
 		if (connect.getResponseCode() == 200) {
 			/* Write to frontend response */
@@ -46,7 +46,7 @@ public class FrontendCreateUserHandler extends CS601Handler {
 		}
 	}
 	
-	private HttpURLConnection tryConnection(HttpURLConnection connect, byte[] postData) throws IOException {
+	private HttpURLConnection tryPostConnection(HttpURLConnection connect, byte[] postData) throws IOException {
 		connect.setDoOutput( true );
         connect.setRequestMethod("POST");
 		connect.setRequestProperty("Content-Type", "application/json");

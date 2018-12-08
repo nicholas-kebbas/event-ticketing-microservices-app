@@ -33,7 +33,7 @@ public class FrontendCreateEventHandler extends CS601Handler {
 		byte[] postData = getBody.getBytes( StandardCharsets.UTF_8 );
 		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/create");
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-		connect = tryConnection(connect, postData);
+		connect = tryPostConnection(connect, postData);
         connect.connect();  
         
         /* Write response to frontend body */
@@ -53,7 +53,7 @@ public class FrontendCreateEventHandler extends CS601Handler {
 		}
      }
 	
-	private HttpURLConnection tryConnection(HttpURLConnection connect, byte[] postData) throws IOException {
+	private HttpURLConnection tryPostConnection(HttpURLConnection connect, byte[] postData) throws IOException {
 		connect.setDoOutput( true );
         connect.setRequestMethod("POST");
 		connect.setRequestProperty("Content-Type", "application/json");

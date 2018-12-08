@@ -51,7 +51,6 @@ public class UserTicketRoutingHandler extends CS601Handler {
 	// (TransferTicketHandler.class, "/*/tickets/transfer/");
 	public CS601Handler parseString(String requestUrl) {
 		String[] parameters = requestUrl.split("/");
-		System.out.println(parameters.length);
 		if (parameters.length == 2) {
 			/* Work around chrome pulling in favicon */
 			if (parameters[1].equals("favicon.ico")) {
@@ -60,9 +59,11 @@ public class UserTicketRoutingHandler extends CS601Handler {
 			if (parameters[1].equals("create")) {
 				CreateUserHandler createUserHandler = new CreateUserHandler();
 				return createUserHandler;
+			} else if(isNumeric(parameters[1])){
+				UserDetailHandler userDetailHandler = new UserDetailHandler();
+				return userDetailHandler;
 			}
-			UserDetailHandler userDetailHandler = new UserDetailHandler();
-			return userDetailHandler;
+			
 		} else if (parameters.length == 4) {
 			if (parameters[3].equals("add")) {
 				CreateTicketHandler createTicketHandler = new CreateTicketHandler();
