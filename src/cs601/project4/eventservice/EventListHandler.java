@@ -18,14 +18,14 @@ public class EventListHandler extends HttpServlet {
 		ArrayList<Event> eventsList = new ArrayList<Event>();
 		try {
 			eventsList = db.getDBManager().getEventList("events");
-			response.getWriter().print("{ [");
+			response.getWriter().print("[");
 			for (int i = 0; i < eventsList.size(); i++) {
 				if (i != 0) {
 					response.getWriter().print(",");
 				}
 				response.getWriter().print(eventsList.get(i).toJsonFormattedString());
 			}
-			response.getWriter().print("] }");
+			response.getWriter().print("]");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
