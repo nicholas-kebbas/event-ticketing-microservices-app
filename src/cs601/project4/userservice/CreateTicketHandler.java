@@ -18,6 +18,7 @@ import com.google.gson.JsonParser;
 import cs601.project4.database.Database;
 import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
+import cs601.project4.utility.ConnectionHelper;
 
 /**
  * Internal API that takes as input id from URL, contacts Events Service
@@ -65,10 +66,10 @@ public class CreateTicketHandler extends CS601Handler {
 			int eventId = jsonBody.get("eventid").getAsInt();
 			int tickets = jsonBody.get("tickets").getAsInt();
 			
-			/* Confirm Event Exists */
+			/* Open a connection with GET request to confirm event Exists */
 	       	URL eventUrl = new URL (Constants.HOST + Constants.EVENTS_URL + "/" + eventId);
 	        HttpURLConnection eventConnect = (HttpURLConnection) eventUrl.openConnection();
-			eventConnect = tryGetConnection(eventConnect);
+			eventConnect = ConnectionHelper.tryGetConnection(eventConnect);
 			
 			if (eventConnect.getResponseCode() != 200) {
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -81,7 +82,7 @@ public class CreateTicketHandler extends CS601Handler {
 			byte[] postData = getBody.getBytes( StandardCharsets.UTF_8 );
 	       	URL url = new URL (Constants.HOST + Constants.EVENTS_URL + "/tickets/availability");
 	        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-	        connect = tryPostConnection(connect, postData);
+	        connect = ConnectionHelper.tryPostConnection(connect, postData);
 			
 			/* Body is written above, so just connect to POST */
 	        connect.connect();
@@ -120,24 +121,4 @@ public class CreateTicketHandler extends CS601Handler {
 		    return false;  
 		  } return true;  
 		}
-	
-	private HttpURLConnection tryPostConnection(HttpURLConnection connect, byte[] postData) throws IOException {
-		connect.setDoOutput( true );
-        connect.setRequestMethod("POST");
-		connect.setRequestProperty("Content-Type", "application/json");
-		connect.setRequestProperty("charset", "utf-8");
-		connect.setRequestProperty("Content-Length", Integer.toString( postData.length ));
-		try( DataOutputStream wr = new DataOutputStream( connect.getOutputStream())) {
-			wr.write(postData);
-		}
-		return connect;
-	}
-	
-	private HttpURLConnection tryGetConnection(HttpURLConnection connect) throws IOException {
-		connect.setDoOutput( true );
-        connect.setRequestMethod("GET");
-		connect.setRequestProperty("Content-Type", "application/json"); 
-		connect.setRequestProperty("charset", "utf-8");
-		return connect;
-	}
 }

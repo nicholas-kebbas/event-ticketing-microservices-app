@@ -1,5 +1,10 @@
 package cs601.project4.database;
 
+/**
+ * Event object
+ * @author nkebbas
+ *
+ */
 public class Event {
 	private int userId;
 	private int eventId;

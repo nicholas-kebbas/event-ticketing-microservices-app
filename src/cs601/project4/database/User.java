@@ -2,6 +2,12 @@ package cs601.project4.database;
 
 import java.util.ArrayList;
 
+/**
+ * Creates User Object, has name, id, and arraylists that hold IDs of tickets and EventIDs of tickets.
+ * @author nkebbas
+ *
+ */
+
 public class User {
 	private String id;
 	private String name;
@@ -9,20 +15,20 @@ public class User {
 	private ArrayList<Integer> ticketsEventIds;
 
 	public User() {
-		ticketsIds = new ArrayList<Integer>();
-		setTicketsEventIds(new ArrayList<Integer>());
+		this.ticketsIds = new ArrayList<Integer>();
+		this.setTicketsEventIds(new ArrayList<Integer>());
 	}
 	
 	public User(String name) {
 		this.name = name;
-		ticketsIds = new ArrayList<Integer>();
+		this.ticketsIds = new ArrayList<Integer>();
 	}
 	
 	public User(String id, String name) {
 		this.id = id;
 		this.name = name;
-		ticketsIds = new ArrayList<Integer>();
-		setTicketsEventIds(new ArrayList<Integer>());
+		this.ticketsIds = new ArrayList<Integer>();
+		this.setTicketsEventIds(new ArrayList<Integer>());
 	}
 
 	public String getId() {

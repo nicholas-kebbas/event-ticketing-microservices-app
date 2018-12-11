@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
+import cs601.project4.utility.ConnectionHelper;
 
 public class FrontendEventListHandler extends CS601Handler {
 
@@ -20,7 +21,7 @@ public class FrontendEventListHandler extends CS601Handler {
 		try {
 	       	URL url = new URL (Constants.HOST + Constants.EVENTS_URL + "/list");
 	        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-	        connect = tryGetConnection(connect);
+	        connect = ConnectionHelper.tryGetConnection(connect);
 			/* Get response from Event server */
 			BufferedReader in = new BufferedReader(
 		             new InputStreamReader(connect.getInputStream()));
@@ -41,14 +42,6 @@ public class FrontendEventListHandler extends CS601Handler {
 	@Override
 	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-	}
-	
-	private HttpURLConnection tryGetConnection(HttpURLConnection connect) throws IOException {
-		connect.setDoOutput( true );
-        connect.setRequestMethod("GET");
-		connect.setRequestProperty("Content-Type", "application/json"); 
-		connect.setRequestProperty("charset", "utf-8");
-		return connect;
 	}
 
 }

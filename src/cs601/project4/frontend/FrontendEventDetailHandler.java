@@ -1,7 +1,6 @@
 package cs601.project4.frontend;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -12,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
+import cs601.project4.utility.ConnectionHelper;
 
 public class FrontendEventDetailHandler extends CS601Handler {
 
@@ -21,7 +21,7 @@ public class FrontendEventDetailHandler extends CS601Handler {
 		try {
 	       	URL url = new URL (Constants.HOST + Constants.EVENTS_URL + "/" + parameters[1]);
 	        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-			connect = tryGetConnection(connect);
+			connect = ConnectionHelper.tryGetConnection(connect);
 			/* Get response from User server */
 			BufferedReader in = new BufferedReader(
 		             new InputStreamReader(connect.getInputStream()));
@@ -42,14 +42,6 @@ public class FrontendEventDetailHandler extends CS601Handler {
 	@Override
 	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-	}
-	
-	private HttpURLConnection tryGetConnection(HttpURLConnection connect) throws IOException {
-		connect.setDoOutput( true );
-        connect.setRequestMethod("GET");
-		connect.setRequestProperty("Content-Type", "application/json"); 
-		connect.setRequestProperty("charset", "utf-8");
-		return connect;
 	}
 
 }

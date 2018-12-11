@@ -102,7 +102,7 @@ public class UsersServerTests {
 		connect.setRequestProperty("charset", "utf-8");
 		/* Write the body of the request */
 		String postData = "{\n" + 
-				"	\"username\": \"Test User\",\n" + 
+				"	\"username\": \"Test User\"\n" + 
 				"";
 		
 		connect.setRequestProperty("Content-Length", Integer.toString(postData.length()));
@@ -128,7 +128,7 @@ public class UsersServerTests {
 		connect.setRequestProperty("charset", "utf-8");
 		/* Write the body of the request */
 		String postData = "{\n" + 
-				"	\"usernam\": \"Test User\",\n" + 
+				"	\"usernam\": \"Test User\"\n" + 
 				"}";
 		
 		connect.setRequestProperty("Content-Length", Integer.toString(postData.length()));
@@ -225,7 +225,7 @@ public class UsersServerTests {
 	@Test
 	public void testPurchaseEventTicketMalformedJson() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/purchase/1" );
+		URL url = new URL(Constants.HOST + Constants.USERS_URL + "/1/tickets/add" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -233,9 +233,8 @@ public class UsersServerTests {
 		connect.setRequestProperty("charset", "utf-8");
 		/* Write the body of the request */
 		String postData = "{\n" + 
-				"	\"userid\": 1,\n" + 
 				"	\"eventid\": 1,\n" + 
-				"	\"tickets\": 10\n" + 
+				"	\"tickets\": 1\n" + 
 				"";
 		connect.setRequestProperty("Content-Length", Integer.toString(postData.length()));
 		/* Then get response and write that */
@@ -252,7 +251,7 @@ public class UsersServerTests {
 	@Test
 	public void testPurchaseEventTicketNoEvent() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/purchase/2" );
+		URL url = new URL(Constants.HOST + Constants.USERS_URL + "/1/tickets/add" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -260,7 +259,6 @@ public class UsersServerTests {
 		connect.setRequestProperty("charset", "utf-8");
 		/* Write the body of the request */
 		String postData = "{\n" + 
-				"	\"userid\": 1,\n" + 
 				"	\"eventid\": -1,\n" + 
 				"	\"tickets\": 10\n" + 
 				"}";
@@ -279,7 +277,7 @@ public class UsersServerTests {
 	@Test
 	public void testPurchaseEventTicketNotEnoughTickets() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/purchase/2" );
+		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/1/tickets/add" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -287,7 +285,6 @@ public class UsersServerTests {
 		connect.setRequestProperty("charset", "utf-8");
 		/* Write the body of the request */
 		String postData = "{\n" + 
-				"	\"userid\": 1,\n" + 
 				"	\"eventid\": 2,\n" + 
 				"	\"tickets\": 10000000\n" + 
 				"}";
@@ -306,7 +303,7 @@ public class UsersServerTests {
 	@Test
 	public void testPurchaseEventTicketUserDoesNotExist() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/create" );
+		URL url = new URL(Constants.HOST + Constants.USERS_URL + "/-1/tickets/add" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -314,9 +311,120 @@ public class UsersServerTests {
 		connect.setRequestProperty("charset", "utf-8");
 		/* Write the body of the request */
 		String postData = "{\n" + 
-				"	\"userid\": -1,\n" + 
 				"	\"eventid\": 1,\n" + 
 				"	\"tickets\": 1\n" + 
+				"}";
+		
+		connect.setRequestProperty("Content-Length", Integer.toString(postData.length()));
+		/* Then get response and write that */
+		try(DataOutputStream wr = new DataOutputStream(connect.getOutputStream())) {
+			wr.writeBytes(postData);
+		}
+        connect.connect();
+        connect.getResponseCode();
+        
+        /* Confirm the response is as expected */
+        assertEquals(400, connect.getResponseCode());
+	}
+	
+	@Test
+	public void testTransferTicketSuccessful() throws IOException {
+		/* Make connection to URL */
+		URL url = new URL(Constants.HOST + Constants.USERS_URL + "/1/tickets/transfer" );
+		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
+		connect.setDoOutput(true);
+        connect.setRequestMethod("POST");
+		connect.setRequestProperty("Content-Type", "application/json"); 
+		connect.setRequestProperty("charset", "utf-8");
+		/* Write the body of the request */
+		String postData = "{\n" + 
+				"	\"eventid\": 1,\n" + 
+				"	\"tickets\": 1,\n" + 
+				"	\"targetuser\": 2\n" +
+				"}";
+		
+		connect.setRequestProperty("Content-Length", Integer.toString(postData.length()));
+		/* Then get response and write that */
+		try(DataOutputStream wr = new DataOutputStream(connect.getOutputStream())) {
+			wr.writeBytes(postData);
+		}
+        connect.connect();
+        connect.getResponseCode();
+        
+        /* Confirm the response is as expected */
+        assertEquals(200, connect.getResponseCode());
+	}
+	
+	@Test
+	public void testTransferTicketOriginUserDoesNotExist() throws IOException {
+		/* Make connection to URL */
+		URL url = new URL(Constants.HOST + Constants.USERS_URL + "/-1/tickets/transfer" );
+		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
+		connect.setDoOutput(true);
+        connect.setRequestMethod("POST");
+		connect.setRequestProperty("Content-Type", "application/json"); 
+		connect.setRequestProperty("charset", "utf-8");
+		/* Write the body of the request */
+		String postData = "{\n" + 
+				"	\"eventid\": 1,\n" + 
+				"	\"tickets\": 1,\n" + 
+				"	\"targetuser\": 2\n" +
+				"}";
+		
+		connect.setRequestProperty("Content-Length", Integer.toString(postData.length()));
+		/* Then get response and write that */
+		try(DataOutputStream wr = new DataOutputStream(connect.getOutputStream())) {
+			wr.writeBytes(postData);
+		}
+        connect.connect();
+        connect.getResponseCode();
+        
+        /* Confirm the response is as expected */
+        assertEquals(400, connect.getResponseCode());
+	}
+	
+	@Test
+	public void testTransferTicketTargetUserDoesNotExist() throws IOException {
+		/* Make connection to URL */
+		URL url = new URL(Constants.HOST + Constants.USERS_URL + "/1/tickets/transfer" );
+		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
+		connect.setDoOutput(true);
+        connect.setRequestMethod("POST");
+		connect.setRequestProperty("Content-Type", "application/json"); 
+		connect.setRequestProperty("charset", "utf-8");
+		/* Write the body of the request */
+		String postData = "{\n" + 
+				"	\"eventid\": 1,\n" + 
+				"	\"tickets\": 1\n" + 
+				"	\"targetuser\": -1\n" +
+				"}";
+		
+		connect.setRequestProperty("Content-Length", Integer.toString(postData.length()));
+		/* Then get response and write that */
+		try(DataOutputStream wr = new DataOutputStream(connect.getOutputStream())) {
+			wr.writeBytes(postData);
+		}
+        connect.connect();
+        connect.getResponseCode();
+        
+        /* Confirm the response is as expected */
+        assertEquals(400, connect.getResponseCode());
+	}
+	
+	@Test
+	public void testTransferTicketEventIsNotOwned() throws IOException {
+		/* Make connection to URL */
+		URL url = new URL(Constants.HOST + Constants.USERS_URL + "/1/tickets/transfer" );
+		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
+		connect.setDoOutput(true);
+        connect.setRequestMethod("POST");
+		connect.setRequestProperty("Content-Type", "application/json"); 
+		connect.setRequestProperty("charset", "utf-8");
+		/* Write the body of the request */
+		String postData = "{\n" + 
+				"	\"eventid\": 2,\n" + 
+				"	\"tickets\": 1\n" + 
+				"	\"targetuser\": 2\n" +
 				"}";
 		
 		connect.setRequestProperty("Content-Length", Integer.toString(postData.length()));

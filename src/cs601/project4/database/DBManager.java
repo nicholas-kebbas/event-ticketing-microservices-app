@@ -10,20 +10,16 @@ import java.util.ArrayList;
 
 
 /**
- * 
- * Must ensure isolation.
- * 	- Easy (inefficient) way is to make all methods synchronized
- *	- Alternatively, Transactions can be interleaved because they're 
- *	not touching any of the same data.
+ * Object that provides the database with methods to interact with database
  * @author nkebbas
  *
  */
 public class DBManager {
-	Connection con;
+	private Connection con;
 	
-	public int createUser(User user, String tableName) throws SQLException {
-		PreparedStatement printStmt = con.prepareStatement("SELECT * FROM " + tableName);
-		PreparedStatement updateStmt = con.prepareStatement("INSERT INTO " + tableName + " (name) VALUES (?)");
+	public synchronized int createUser(User user, String tableName) throws SQLException {
+		PreparedStatement printStmt = this.con.prepareStatement("SELECT * FROM " + tableName);
+		PreparedStatement updateStmt = this.con.prepareStatement("INSERT INTO " + tableName + " (name) VALUES (?)");
 		updateStmt.setString(1, user.getName());
 		/* Create the new item */
 		updateStmt.execute();
@@ -31,23 +27,22 @@ public class DBManager {
 		ResultSet rs = printStmt.executeQuery();
 		int idres = 0;
 		while (rs.next()) {
-			// for each result, get the value of the columns name and id
 			idres = rs.getInt("id");
 		}
 		return idres;
 	}
 	
-	public int createEvent(Event event, String tableName) throws SQLException {		
+	public synchronized int createEvent(Event event, String tableName) throws SQLException {		
 		/* Create the new item */
 		String createSql = "INSERT INTO " + tableName + " (userid, eventname, available_tickets, total_tickets) VALUES (?, ?, ?, ?)";
-		PreparedStatement updateStmt = con.prepareStatement(createSql, Statement.RETURN_GENERATED_KEYS);
+		PreparedStatement updateStmt = this.con.prepareStatement(createSql, Statement.RETURN_GENERATED_KEYS);
 		updateStmt.setInt(1, event.getUserId());
 		updateStmt.setString(2, event.getEventName());
 		updateStmt.setInt(3, event.getAvailableTickets());
 		updateStmt.setInt(4, event.getAvailableTickets());
 		updateStmt.execute();
 		/* Get the latest id */
-		PreparedStatement getAllStmt = con.prepareStatement("SELECT * FROM " + tableName);
+		PreparedStatement getAllStmt = this.con.prepareStatement("SELECT * FROM " + tableName);
 		ResultSet rs = getAllStmt.executeQuery();
 		int idres = 0;
 		while (rs.next()) {
@@ -63,14 +58,14 @@ public class DBManager {
 	 * @param tableName
 	 * @throws SQLException
 	 */
-	public boolean addTicket(int userId, int eventId, String usersTableName, String ticketsTableName) throws SQLException {
+	public synchronized boolean addTicket(int userId, int eventId, String usersTableName, String ticketsTableName) throws SQLException {
 		PreparedStatement updateStmt;
 		
 		if (!checkIdExists(userId, "users")) {
 			return false;
 		}
 		
-		updateStmt = con.prepareStatement("INSERT INTO " + ticketsTableName + " (user_id, event_id) VALUES (?, ?)");
+		updateStmt = this.con.prepareStatement("INSERT INTO " + ticketsTableName + " (user_id, event_id) VALUES (?, ?)");
 		updateStmt.setInt(1, userId);
 		updateStmt.setInt(2, eventId);
 		/* Create the new item */
@@ -88,7 +83,7 @@ public class DBManager {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean transferTicket(int userId, int targetUserId, int eventId, int tickets, String tableName) throws SQLException {
+	public synchronized boolean transferTicket(int userId, int targetUserId, int eventId, int tickets, String tableName) throws SQLException {
 		PreparedStatement checkStmt;
 		
 		if (!checkIdExists(userId, "users")) {
@@ -99,7 +94,7 @@ public class DBManager {
 			return false;
 		}
 		
-		checkStmt = con.prepareStatement("SELECT user_id FROM " + tableName + " WHERE user_id= " + userId + " AND event_id= " + eventId);
+		checkStmt = this.con.prepareStatement("SELECT user_id FROM " + tableName + " WHERE user_id= " + userId + " AND event_id= " + eventId);
 		ResultSet rs = checkStmt.executeQuery();
 		
 		int checkCount = 0;
@@ -109,7 +104,7 @@ public class DBManager {
 		
 		PreparedStatement updateStmt;
 		if (checkCount >= tickets) {
-			updateStmt = con.prepareStatement("UPDATE " + tableName + " SET user_id = " + targetUserId + " WHERE user_id= " + userId + " AND event_id= " + eventId + " LIMIT " + tickets);
+			updateStmt = this.con.prepareStatement("UPDATE " + tableName + " SET user_id = " + targetUserId + " WHERE user_id= " + userId + " AND event_id= " + eventId + " LIMIT " + tickets);
 			updateStmt.execute();
 			return true;
 		}
@@ -125,15 +120,13 @@ public class DBManager {
 	 * @throws SQLException
 	 */
 	
-	public boolean decrementTicketAvailability(int eventId, int numTickets, String tableName) throws SQLException {
+	public synchronized boolean decrementTicketAvailability(int eventId, int numTickets, String tableName) throws SQLException {
 		PreparedStatement checkStmt;
 		PreparedStatement updateStmt;
-		checkStmt = con.prepareStatement("SELECT available_tickets FROM " + tableName + " WHERE  id= " + eventId);
-		updateStmt = con.prepareStatement("UPDATE " + tableName + " SET available_tickets = available_tickets - " + numTickets + " WHERE id=" + eventId);
+		checkStmt = this.con.prepareStatement("SELECT available_tickets FROM " + tableName + " WHERE  id= " + eventId);
+		updateStmt = this.con.prepareStatement("UPDATE " + tableName + " SET available_tickets = available_tickets - " + numTickets + " WHERE id=" + eventId);
 		ResultSet results = checkStmt.executeQuery();
-		
-		/* Have to figure out how to check if there are not enough available tickets */
-		/* Can also use isBeforeFirst() on ResultSet. */
+	
 		int dbTickets = 0;
 		while (results.next()) {
 			dbTickets = results.getInt(1);
@@ -156,11 +149,10 @@ public class DBManager {
 	 * @throws SQLException
 	 */
 	
-	/* TODO: Return null if event does not exist. */
-	public Event getEvent(int id, String tableName) throws SQLException {
+	public synchronized Event getEvent(int id, String tableName) throws SQLException {
 		Event returnEvent = new Event();
 		PreparedStatement eventStmt;
-		eventStmt = con.prepareStatement("SELECT * FROM " + tableName + " WHERE id=" + id);
+		eventStmt = this.con.prepareStatement("SELECT * FROM " + tableName + " WHERE id=" + id);
 		ResultSet eventResultSet = eventStmt.executeQuery();
 		
 		eventResultSet.beforeFirst();
@@ -179,12 +171,11 @@ public class DBManager {
 		return returnEvent;
 	}
 	
-	/* Return null if empty */
-	public ArrayList<Event> getEventList(String tableName) throws SQLException {
+	public synchronized ArrayList<Event> getEventList(String tableName) throws SQLException {
 		ArrayList<Event> outputList = new ArrayList<Event>(); 
 		String stmt = "SELECT * FROM " + tableName;
 		PreparedStatement eventStmt;
-		eventStmt = con.prepareStatement(stmt);
+		eventStmt = this.con.prepareStatement(stmt);
 		ResultSet eventResultSet = eventStmt.executeQuery();
 		while (eventResultSet.next()) {
 			Event event = new Event();
@@ -201,11 +192,10 @@ public class DBManager {
 		return outputList;
 	}
 	
-	/* TODO: Return null if User does not exist. */
-	public User getUser(int id, String tableName) throws SQLException {
+	public synchronized User getUser(int id, String tableName) throws SQLException {
 		User returnUser = new User();
 		PreparedStatement userStmt;
-		userStmt = con.prepareStatement("SELECT * FROM " + tableName + " WHERE id=" + id);
+		userStmt = this.con.prepareStatement("SELECT * FROM " + tableName + " WHERE id=" + id);
 		ResultSet userRs = userStmt.executeQuery();
 		
 		/* Check for no reults */
@@ -221,7 +211,7 @@ public class DBManager {
 		}
 
 		PreparedStatement ticketStmt;
-		ticketStmt = con.prepareStatement("SELECT tickets.id, tickets.event_id FROM tickets JOIN users"
+		ticketStmt = this.con.prepareStatement("SELECT tickets.id, tickets.event_id FROM tickets JOIN users"
 				+ " ON users.id=tickets.user_id WHERE tickets.user_id=" + id);
 		ResultSet  ticketRs = ticketStmt.executeQuery();
 		
@@ -234,22 +224,20 @@ public class DBManager {
 		return returnUser;
 	}
 	
-	private boolean checkIdExists(int id, String tableName) throws SQLException {
+	private synchronized boolean checkIdExists(int id, String tableName) throws SQLException {
 		PreparedStatement checkStmt;
-		checkStmt = con.prepareStatement("SELECT * FROM " + tableName + " WHERE id=" + id);
+		checkStmt = this.con.prepareStatement("SELECT * FROM " + tableName + " WHERE id=" + id);
 		ResultSet resultSet = checkStmt.executeQuery();
-		
 		resultSet.beforeFirst();
 		if (!resultSet.next()) {
 			return false;
 		}
-		
 		return true;
 	}
 	
 	
 	public Connection getCon() {
-		return con;
+		return this.con;
 	}
 
 	public void setCon(Connection con) {

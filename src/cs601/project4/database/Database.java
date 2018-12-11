@@ -21,7 +21,6 @@ public final class Database {
 		dbm = new DBManager();
 	}
 	
-	/* TODO: Make threadsafe without using synchronized */
 	public synchronized static Database getInstance() {
 		
 		if(INSTANCE == null) {
@@ -33,7 +32,6 @@ public final class Database {
 	
 	public void connect() {
 		try {
-			// load driver
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 		}
 		catch (Exception e) {
@@ -53,7 +51,6 @@ public final class Database {
 					DBConstants.USERNAME,
 					DBConstants.PASSWORD);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		this.dbm.setCon(con);

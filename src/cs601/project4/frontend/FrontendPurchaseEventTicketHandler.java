@@ -16,6 +16,7 @@ import com.google.gson.JsonParser;
 
 import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
+import cs601.project4.utility.ConnectionHelper;
 
 /**
  * There's an issue here where if the user doesn't exist, the events table will still decrement.
@@ -64,25 +65,13 @@ public class FrontendPurchaseEventTicketHandler extends CS601Handler {
 		byte[] newBodyBytes = newBody.getBytes(StandardCharsets.UTF_8);
 		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/purchase/" + eventId);
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-		connect = tryPostConnection(connect, newBodyBytes);
+		connect = ConnectionHelper.tryPostConnection(connect, newBodyBytes);
 		if (connect.getResponseCode() == 200) {
 			response.setStatus(HttpServletResponse.SC_OK);
 		} else {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
         connect.connect();  
-	}
-	
-	private HttpURLConnection tryPostConnection(HttpURLConnection connect, byte[] postData) throws IOException {
-		connect.setDoOutput( true );
-        connect.setRequestMethod("POST");
-		connect.setRequestProperty("Content-Type", "application/json");
-		connect.setRequestProperty("charset", "utf-8");
-		connect.setRequestProperty("Content-Length", Integer.toString( postData.length ));
-		try( DataOutputStream wr = new DataOutputStream( connect.getOutputStream())) {
-			wr.write(postData);
-		}
-		return connect;
 	}
 
 }

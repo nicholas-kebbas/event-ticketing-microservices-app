@@ -31,7 +31,7 @@ public class FrontendServerTests {
         connect.getResponseCode();
         
         /* Confirm the response is as expected */
-        assertEquals(404, connect.getResponseCode());
+        assertEquals(400, connect.getResponseCode());
 	}
 	
 	@Test
@@ -131,7 +131,7 @@ public class FrontendServerTests {
 		connect.setRequestProperty("charset", "utf-8");
 		/* Write the body of the request */
 		String postData = "{\n" + 
-				"	\"usernam\": \"Test User\",\n" + 
+				"	\"usernam\": \"Test User\"\n" + 
 				"}";
 		
 		connect.setRequestProperty("Content-Length", Integer.toString(postData.length()));

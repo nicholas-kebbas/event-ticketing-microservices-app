@@ -16,6 +16,7 @@ import com.google.gson.JsonParser;
 import cs601.project4.database.Database;
 import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
+import cs601.project4.utility.ConnectionHelper;
 
 /**
  * Hit Transfer API, will change ticket owner.
@@ -66,7 +67,7 @@ public class TransferTicketHandler extends CS601Handler {
 		/* Confirm Event Exists */
        	URL eventUrl = new URL (Constants.HOST + Constants.EVENTS_URL + "/" + eventId);
         HttpURLConnection eventConnect = (HttpURLConnection) eventUrl.openConnection();
-		eventConnect = tryGetConnection(eventConnect);
+		eventConnect = ConnectionHelper.tryGetConnection(eventConnect);
 		
 		if (eventConnect.getResponseCode() != 200) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -111,14 +112,6 @@ public class TransferTicketHandler extends CS601Handler {
 		} else {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
-	}
-	
-	private HttpURLConnection tryGetConnection(HttpURLConnection connect) throws IOException {
-		connect.setDoOutput( true );
-        connect.setRequestMethod("GET");
-		connect.setRequestProperty("Content-Type", "application/json"); 
-		connect.setRequestProperty("charset", "utf-8");
-		return connect;
 	}
 
 }

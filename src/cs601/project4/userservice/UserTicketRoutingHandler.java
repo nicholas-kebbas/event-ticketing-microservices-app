@@ -14,7 +14,12 @@ import com.google.gson.JsonParser;
 import cs601.project4.database.Database;
 import cs601.project4.database.Event;
 import cs601.project4.server.CS601Handler;
+import cs601.project4.utility.Numeric;
 
+/**
+ * Route between various handlers (Create or Transfer Ticket)
+ * author: nkebbas
+ * */
 public class UserTicketRoutingHandler extends CS601Handler {
 	
 	
@@ -37,18 +42,6 @@ public class UserTicketRoutingHandler extends CS601Handler {
 		}
 	}
 	
-	public static boolean isNumeric(String s) {  
-		  try {  
-		    int num = Integer.parseInt(s);
-		  }	catch (NumberFormatException nfe) {  
-		    return false;  
-		  } return true;  
-	}
-	
-	// Route to appropriate Servlet. For users, this is deciding between
-	// (CreateTicketHandler.class, "*/tickets/add");
-	// (UserTicketRoutingHandler.class, "/*");
-	// (TransferTicketHandler.class, "/*/tickets/transfer/");
 	public CS601Handler parseString(String requestUrl) {
 		String[] parameters = requestUrl.split("/");
 		if (parameters.length == 2) {
@@ -59,7 +52,7 @@ public class UserTicketRoutingHandler extends CS601Handler {
 			if (parameters[1].equals("create")) {
 				CreateUserHandler createUserHandler = new CreateUserHandler();
 				return createUserHandler;
-			} else if(isNumeric(parameters[1])){
+			} else if(Numeric.isNumeric(parameters[1])){
 				UserDetailHandler userDetailHandler = new UserDetailHandler();
 				return userDetailHandler;
 			}

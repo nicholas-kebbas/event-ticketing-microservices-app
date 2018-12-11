@@ -26,6 +26,7 @@ import cs601.project4.server.Constants;
  *
  */
 public class CreateEventHandler extends HttpServlet {
+	
 	public synchronized void doPost (HttpServletRequest request, HttpServletResponse response) throws IOException {	
 		/* Build the object based on json request */
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));

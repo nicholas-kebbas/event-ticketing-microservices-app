@@ -3,6 +3,7 @@ package cs601.project4.frontend;
 import cs601.project4.database.Database;
 import cs601.project4.server.Constants;
 import cs601.project4.server.JettyServer;
+import cs601.project4.userservice.UserTicketRoutingHandler;
 
 public class FrontendServer {
 	
@@ -10,26 +11,18 @@ public class FrontendServer {
 		JettyServer server = new JettyServer(Constants.FRONTEND_URL);
 		server.addServlet(FrontendEventListHandler.class, "/events");
 		server.addServlet(FrontendCreateEventHandler.class, "/events/create");
-		
-		// This will need to parse /events/*/purchase/transfer/* as well 
 		server.addServlet(FrontendEventsRoutingHandler.class, "/events/*");
-		// server.addServlet(FrontendPurchaseEventTicketHandler.class, "/events/*/purchase/transfer/*");
 		server.addServlet(FrontendCreateUserHandler.class, "/users/create");
-		
-		// This will need to parse /users/*/tickets/transfer as well
 		server.addServlet(FrontendUsersRoutingHandler.class, "/users/*");
-		// server.addServlet(FrontendTransferTicketHandler.class, "/users/*/tickets/transfer");
+		server.addServlet(FrontendUsersRoutingHandler.class, "/*");
 		
 		try {
 			server.start();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		
-	    /* Create a connection to the database. 
-	     * Could also move this into separate (singleton) class and 
-	     * perform this logic there.  */
+	    /* Create a connection to the database. */
 	    Database db = Database.getInstance();
 	    db.connect();
 	}

@@ -19,12 +19,9 @@ public class UserServer {
 		try {
 			userServer.start();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
-	    /* Create a connection to the database. 
-	     * Could also move this into separate (singleton) class and 
-	     * perform this logic there.  */
+	    /* Create a connection to the database. */
 	    Database db = Database.getInstance();
 	    db.connect();
 	}

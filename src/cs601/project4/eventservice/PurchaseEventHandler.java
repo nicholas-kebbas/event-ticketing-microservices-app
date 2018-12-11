@@ -1,15 +1,12 @@
 package cs601.project4.eventservice;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,16 +15,19 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
 import cs601.project4.database.Database;
-import cs601.project4.server.CS601ConnectionWrapper;
 import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
+import cs601.project4.utility.ConnectionHelper;
+import cs601.project4.utility.Numeric;
 
 /**
  * Purchase ticket to event. This will check if tickets are available, 
  * decrement the available tickets number,
  * and then open a connection to the user service
  * 
- * There's an issue here where if the user doesn't exist, the events table will still decrement.
+ * TODO: There's an issue here where if the user doesn't exist, the events table will still decrement. 
+ * This is happening because we're decrementing first. Also an issue in the user server for ticket purchasing.
+ * Need to fix this.
  * @author nkebbas
  *
  */
@@ -60,22 +60,27 @@ public class PurchaseEventHandler extends CS601Handler {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
+		
         
-		/* Open connection to check if event, users exist */
-		
-		
-		
-		
-		
-		/* If so, continue */
-        
-		if (isNumeric(parameters[1])) {
+		if (Numeric.isNumeric(parameters[1])) {
 			// int eventId = Integer.parseInt(parameters[1]);
 			/* Get the event from the event DB, and decrement tickets */
 			Database db = Database.getInstance();
 			int userId = jsonBody.get("userid").getAsInt();
 			int eventId = jsonBody.get("eventid").getAsInt();
 			int tickets = jsonBody.get("tickets").getAsInt();
+			
+			/* Open a connection and check if user exists */
+			URL userExistsUrl = new URL(Constants.HOST + Constants.USERS_URL + "/" + userId);
+			HttpURLConnection userExistsConnect = (HttpURLConnection) userExistsUrl.openConnection();
+			userExistsConnect = ConnectionHelper.tryGetConnection(userExistsConnect);
+			userExistsConnect.connect();  
+			
+	        /* Response Code indicates user exists */
+	        if (userExistsConnect.getResponseCode() != 200) {
+	        		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	        		return;
+	        }
 			
 			/* Make sure tickets are available. This decrements first, so need to roll back. */
 			boolean canDecrement = false;
@@ -92,9 +97,8 @@ public class PurchaseEventHandler extends CS601Handler {
 				byte[] postData = getBody.getBytes( StandardCharsets.UTF_8 );
 				URL url = new URL(Constants.HOST + Constants.USERS_URL + "/tickets/add");
 				HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-				connect = tryConnection(connect, postData);
-		        connect.connect();  
-		        
+				connect = ConnectionHelper.tryPostConnection(connect, postData);
+		        connect.connect(); 
 		        if (connect.getResponseCode() == 200) {
 		        		response.setStatus(HttpServletResponse.SC_OK);
 		        } else {
@@ -103,28 +107,6 @@ public class PurchaseEventHandler extends CS601Handler {
 			} else {
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			}
-			
 		}
 	}
-	
-	private HttpURLConnection tryConnection(HttpURLConnection connect, byte[] postData) throws IOException {
-		connect.setDoOutput( true );
-        connect.setRequestMethod("POST");
-		connect.setRequestProperty("Content-Type", "application/json");
-		connect.setRequestProperty("charset", "utf-8");
-		connect.setRequestProperty("Content-Length", Integer.toString( postData.length ));
-		try( DataOutputStream wr = new DataOutputStream( connect.getOutputStream())) {
-			wr.write(postData);
-		}
-		return connect;
-	}
-
-	public static boolean isNumeric(String s) {
-		  try {  
-		    int num = Integer.parseInt(s);
-		  }	catch (NumberFormatException nfe) {  
-		    return false;  
-		  } return true;  
-		}
-
 }

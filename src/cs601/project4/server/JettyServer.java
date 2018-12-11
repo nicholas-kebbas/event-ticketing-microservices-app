@@ -23,7 +23,6 @@ public class JettyServer {
         server.setConnectors(new Connector[] { connector });
 		this.servletHandler = new ServletHandler();
         server.setHandler(servletHandler);
-        
     }
  
     public void start() throws Exception {

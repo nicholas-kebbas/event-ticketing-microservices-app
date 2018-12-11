@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cs601.project4.server.CS601Handler;
+import cs601.project4.utility.Numeric;
 
 public class FrontendEventsRoutingHandler extends CS601Handler {
 
@@ -30,25 +31,17 @@ public class FrontendEventsRoutingHandler extends CS601Handler {
 	private CS601Handler parseUrl(String requestUrl) {
 		String[] parameters = requestUrl.split("/");
 		if (parameters.length == 2) {
-			if (isNumeric(parameters[1])) {
+			if (Numeric.isNumeric(parameters[1])) {
 				FrontendEventDetailHandler frontendEventDetailHandler = new FrontendEventDetailHandler();
 				return frontendEventDetailHandler;
 			}
 		} else if (parameters.length == 4) {
-			if (isNumeric(parameters[1]) && isNumeric(parameters[3])) {
+			if (Numeric.isNumeric(parameters[1]) && Numeric.isNumeric(parameters[3])) {
 				FrontendPurchaseEventTicketHandler frontendPurchaseEventTicketHandler = new FrontendPurchaseEventTicketHandler();
 				return frontendPurchaseEventTicketHandler;
 			}
 		}
 		return null;
 	}
-	
-	public static boolean isNumeric(String s) {
-		  try {  
-		    int num = Integer.parseInt(s);
-		  }	catch (NumberFormatException nfe) {  
-		    return false;  
-		  } return true;  
-		}
 
 }
