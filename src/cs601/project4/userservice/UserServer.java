@@ -10,10 +10,6 @@ public class UserServer {
 		JettyServer userServer = new JettyServer(Constants.USERS_URL);
 		userServer.addServlet(CreateUserHandler.class, "/create");
 		userServer.addServlet(AddTicketHandler.class, "/tickets/add");
-		/* Need to do additional parsing in the singler /* Handler 
-		 * So the below 3 should all be directed to one routing handler,
-		 * and then the correct handler will be called in that servlet
-		 * */
 		userServer.addServlet(UserTicketRoutingHandler.class, "/*");
 		
 		try {

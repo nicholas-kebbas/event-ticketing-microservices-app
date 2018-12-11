@@ -1,6 +1,5 @@
 package cs601.project4;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

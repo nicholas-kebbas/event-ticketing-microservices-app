@@ -17,8 +17,7 @@ public class EventServer {
 		try {
 			server.start();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 	    /* Create a connection to the database. */
 	    Database db = Database.getInstance();

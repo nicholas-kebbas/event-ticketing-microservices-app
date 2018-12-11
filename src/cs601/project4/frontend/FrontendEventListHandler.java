@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,20 +22,18 @@ public class FrontendEventListHandler extends CS601Handler {
 	        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 	        connect = ConnectionHelper.tryGetConnection(connect);
 			/* Get response from Event server */
-			BufferedReader in = new BufferedReader(
-		             new InputStreamReader(connect.getInputStream()));
-			 String inputLine;
-			 StringBuffer responseString = new StringBuffer();
-			 while ((inputLine = in.readLine()) != null) {
-			 	responseString.append(inputLine);
-			 }
-			 in.close();
-			 response.setStatus(HttpServletResponse.SC_OK);
-			 response.getWriter().print(responseString.toString());
+			BufferedReader in = new BufferedReader(new InputStreamReader(connect.getInputStream()));
+			String inputLine;
+			StringBuffer responseString = new StringBuffer();
+			while ((inputLine = in.readLine()) != null) {
+				responseString.append(inputLine);
+			}
+			in.close();
+			response.setStatus(HttpServletResponse.SC_OK);
+			response.getWriter().print(responseString.toString());
 		} catch (IOException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
-		
 	}
 
 	@Override

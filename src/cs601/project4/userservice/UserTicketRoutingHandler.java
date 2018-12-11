@@ -1,18 +1,8 @@
 package cs601.project4.userservice;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import cs601.project4.database.Database;
-import cs601.project4.database.Event;
 import cs601.project4.server.CS601Handler;
 import cs601.project4.utility.Numeric;
 
@@ -56,7 +46,6 @@ public class UserTicketRoutingHandler extends CS601Handler {
 				UserDetailHandler userDetailHandler = new UserDetailHandler();
 				return userDetailHandler;
 			}
-			
 		} else if (parameters.length == 4) {
 			if (parameters[3].equals("add")) {
 				CreateTicketHandler createTicketHandler = new CreateTicketHandler();

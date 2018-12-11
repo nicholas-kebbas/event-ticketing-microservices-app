@@ -39,12 +39,9 @@ public final class Database {
 			System.exit(1);
 		}
 		// format "jdbc:mysql://[hostname][:port]/[dbname]"
-		//note: if connecting through an ssh tunnel make sure to use 127.0.0.1 and
-		//also to that the ports are set up correctly
 		String urlString = DBConstants.URL_STRING+DBConstants.DB;
 		//Must set time zone explicitly in newer versions of mySQL.
 		String timeZoneSettings = DBConstants.TIME_ZONE_SETTINGS;
-
 
 		try {
 			con = DriverManager.getConnection(urlString+timeZoneSettings,

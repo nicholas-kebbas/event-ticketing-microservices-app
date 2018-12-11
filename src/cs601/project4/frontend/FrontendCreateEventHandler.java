@@ -32,7 +32,7 @@ public class FrontendCreateEventHandler extends CS601Handler {
 		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/create");
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect = ConnectionHelper.tryPostConnection(connect, postData);
-        connect.connect();  
+		connect.connect();  
         
         /* Write response to frontend body */
         if (connect.getResponseCode() == 200) {

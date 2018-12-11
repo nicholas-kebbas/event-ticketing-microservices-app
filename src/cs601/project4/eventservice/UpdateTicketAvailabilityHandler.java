@@ -13,6 +13,7 @@ import com.google.gson.JsonParser;
 
 import cs601.project4.database.Database;
 import cs601.project4.server.CS601Handler;
+import cs601.project4.utility.JsonManager;
 /**
  * Update number of available tickets after ticket is purchased.
  * This will be contacted by servlet in user when ticket is purchased.
@@ -34,19 +35,11 @@ public class UpdateTicketAvailabilityHandler extends CS601Handler {
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
 		/* Check for Correct JSON Issues and No null necessary parameters */
-		JsonParser parser = new JsonParser();
-		JsonObject jsonBody = new JsonObject();
-		try {
-			parser.parse(getBody);
-		} catch (JsonParseException j) {
-	    		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-	    		return;
-		}
-		if (parser.parse(getBody).isJsonNull()) {
+		JsonObject jsonBody = JsonManager.validateJsonString(getBody);
+		if (jsonBody == null) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
-		jsonBody = (JsonObject) parser.parse(getBody);
         
         if (jsonBody.get("eventid") == null || jsonBody.get("tickets") == null) {
 	        	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

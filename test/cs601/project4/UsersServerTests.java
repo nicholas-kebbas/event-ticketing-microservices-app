@@ -10,6 +10,7 @@ import java.net.URL;
 import org.junit.Test;
 
 import cs601.project4.server.Constants;
+import cs601.project4.utility.ConnectionHelper;
 
 public class UsersServerTests {
 
@@ -18,10 +19,7 @@ public class UsersServerTests {
 		/* Make connection to URL */
 		URL url = new URL(Constants.HOST + Constants.USERS_URL + "/asd/" + "1" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-		connect.setDoOutput(true);
-        connect.setRequestMethod("GET");
-		connect.setRequestProperty("Content-Type", "application/json"); 
-		connect.setRequestProperty("charset", "utf-8");
+		connect = ConnectionHelper.tryGetConnection(connect);
         connect.connect();
         connect.getResponseCode();
         
@@ -34,11 +32,7 @@ public class UsersServerTests {
 		/* Make connection to URL */
 		URL url = new URL(Constants.HOST + Constants.USERS_URL + "/-1");
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-		
-		connect.setDoOutput(true);
-        connect.setRequestMethod("GET");
-		connect.setRequestProperty("Content-Type", "application/json"); 
-		connect.setRequestProperty("charset", "utf-8");
+		connect = ConnectionHelper.tryGetConnection(connect);
         connect.connect();
         connect.getResponseCode();
         
@@ -51,11 +45,7 @@ public class UsersServerTests {
 		/* Make connection to URL */
 		URL url = new URL(Constants.HOST + Constants.USERS_URL + "/" + "1" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-		
-		connect.setDoOutput(true);
-        connect.setRequestMethod("GET");
-		connect.setRequestProperty("Content-Type", "application/json"); 
-		connect.setRequestProperty("charset", "utf-8");
+		connect = ConnectionHelper.tryGetConnection(connect);
         connect.connect();
         connect.getResponseCode();
         

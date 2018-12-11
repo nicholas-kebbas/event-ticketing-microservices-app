@@ -17,6 +17,7 @@ import com.google.gson.JsonParser;
 import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
 import cs601.project4.utility.ConnectionHelper;
+import cs601.project4.utility.JsonManager;
 
 /**
  * There's an issue here where if the user doesn't exist, the events table will still decrement.
@@ -33,25 +34,12 @@ public class FrontendPurchaseEventTicketHandler extends CS601Handler {
 	/* Need to edit the post request to include userId and eventId */
 	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-		
-		/* Open connection to Events Server and send over */
-		byte[] postData = getBody.getBytes(StandardCharsets.UTF_8);
-		
 		/* Check for Correct JSON Issues and No null necessary parameters */
-		JsonParser parser = new JsonParser();
-		JsonObject jsonBody = new JsonObject();
-		try {
-			parser.parse(getBody);
-		} catch (JsonParseException j) {
-	    		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-	    		return;
-		}
-		if (parser.parse(getBody).isJsonNull()) {
+		JsonObject jsonBody = JsonManager.validateJsonString(getBody);
+		if (jsonBody == null) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
-		jsonBody = (JsonObject) parser.parse(getBody);
-		
 		if (jsonBody.get("tickets") == null) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return;

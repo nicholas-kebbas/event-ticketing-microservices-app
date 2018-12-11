@@ -1,6 +1,5 @@
 package cs601.project4.userservice;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -19,6 +18,7 @@ import cs601.project4.database.Database;
 import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
 import cs601.project4.utility.ConnectionHelper;
+import cs601.project4.utility.JsonManager;
 
 /**
  * Internal API that takes as input id from URL, contacts Events Service
@@ -43,20 +43,11 @@ public class CreateTicketHandler extends CS601Handler {
 			/* Parse the request and get Event ID and number of tickets */
 			getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 			/* Check for Correct JSON Issues and No null necessary parameters */
-			JsonParser parser = new JsonParser();
-			JsonObject jsonBody = new JsonObject();
-			
-			try {
-				parser.parse(getBody);
-			} catch (JsonParseException j) {
-		    		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		    		return;
-			}
-			if (parser.parse(getBody).isJsonNull()) {
+			JsonObject jsonBody = JsonManager.validateJsonString(getBody);
+			if (jsonBody == null) {
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 				return;
 			}
-			jsonBody = (JsonObject) parser.parse(getBody);
 			
 			int userId = Integer.parseInt(parameters[1]);
 			if (jsonBody.get("eventid") == null || jsonBody.get("tickets") == null) {

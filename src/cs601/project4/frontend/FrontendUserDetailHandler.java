@@ -32,15 +32,14 @@ public class FrontendUserDetailHandler extends CS601Handler {
 	        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 	        connect = ConnectionHelper.tryGetConnection(connect);
 			/* Get response from User server */
-			BufferedReader in = new BufferedReader(
-		             new InputStreamReader(connect.getInputStream()));
-		     String inputLine;
-		     StringBuffer responseString = new StringBuffer();
-		     while ((inputLine = in.readLine()) != null) {
-		     	responseString.append(inputLine);
-		     }
-		     in.close();
-		     response.getWriter().print(responseString.toString());
+			BufferedReader in = new BufferedReader(new InputStreamReader(connect.getInputStream()));
+			String inputLine;
+			StringBuffer responseString = new StringBuffer();
+		    while ((inputLine = in.readLine()) != null) {
+		    		responseString.append(inputLine);
+		    	}
+		    in.close();
+		    response.getWriter().print(responseString.toString());
 		} catch (IOException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}

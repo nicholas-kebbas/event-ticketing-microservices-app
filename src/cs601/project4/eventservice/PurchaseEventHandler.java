@@ -18,6 +18,7 @@ import cs601.project4.database.Database;
 import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
 import cs601.project4.utility.ConnectionHelper;
+import cs601.project4.utility.JsonManager;
 import cs601.project4.utility.Numeric;
 
 /**
@@ -42,19 +43,11 @@ public class PurchaseEventHandler extends CS601Handler {
 		/* Get body information from Post Request */
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 		/* Check for Correct JSON Issues and No null necessary parameters */
-		JsonParser parser = new JsonParser();
-		JsonObject jsonBody = new JsonObject();
-		try {
-			parser.parse(getBody);
-		} catch (JsonParseException j) {
-	    		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-	    		return;
-		}
-		if (parser.parse(getBody).isJsonNull()) {
+		JsonObject jsonBody = JsonManager.validateJsonString(getBody);
+		if (jsonBody == null) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
-		jsonBody = (JsonObject) parser.parse(getBody);
         
 		if (jsonBody.get("eventid") == null || jsonBody.get("userid") == null || jsonBody.get("tickets") == null) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
