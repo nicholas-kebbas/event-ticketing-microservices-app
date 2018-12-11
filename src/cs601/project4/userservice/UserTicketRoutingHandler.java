@@ -11,8 +11,7 @@ import cs601.project4.utility.Numeric;
  * author: nkebbas
  * */
 public class UserTicketRoutingHandler extends CS601Handler {
-	
-	
+
 	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		CS601Handler handler = parseString(request.getPathInfo());
 		if (handler != null) {

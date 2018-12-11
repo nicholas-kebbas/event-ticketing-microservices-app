@@ -6,14 +6,9 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
-
 import cs601.project4.database.Database;
 import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
@@ -26,9 +21,6 @@ import cs601.project4.utility.Numeric;
  * decrement the available tickets number,
  * and then open a connection to the user service
  * 
- * TODO: There's an issue here where if the user doesn't exist, the events table will still decrement. 
- * This is happening because we're decrementing first. Also an issue in the user server for ticket purchasing.
- * Need to fix this.
  * @author nkebbas
  *
  */

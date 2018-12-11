@@ -36,7 +36,6 @@ public class SystemTests {
 	     	responseString.append(inputLine);
 	     }
 	     in.close();
-	     
 	     String expectedResult = "{" + 
 		     		"	\"userid\": 1," + 
 		     		"	\"username\": \"admin\"," + 
@@ -46,7 +45,6 @@ public class SystemTests {
 		     		"		}" + 
 		     		"	]" + 
 		     		"}";
-	     
 	     assertEquals(expectedResult.trim().replaceAll("\\s+", ""), responseString.toString().trim().replaceAll("\\s+", "")); 
 	}
 	
@@ -180,21 +178,24 @@ public class SystemTests {
         HttpURLConnection connect = (HttpURLConnection) url.openConnection();
         connect = ConnectionHelper.tryGetConnection(connect);
 		/* Get response from User server */
-		BufferedReader in = new BufferedReader(
-	             new InputStreamReader(connect.getInputStream()));
-	     String inputLine;
-	     StringBuffer responseString = new StringBuffer();
-	     while ((inputLine = in.readLine()) != null) {
-	     	responseString.append(inputLine);
-	     }
-	     in.close();
+		BufferedReader in = new BufferedReader(new InputStreamReader(connect.getInputStream()));
+		String inputLine;
+		StringBuffer responseString = new StringBuffer();
+		while ((inputLine = in.readLine()) != null) {
+			responseString.append(inputLine);
+		}
+		in.close();
 	     
 	     String expectedResult = "{" + 
 		     		"	\"userid\": 1," + 
 		     		"	\"username\": \"admin\"," + 
 		     		"	\"tickets\": [" + 
 		     		"		{" + 
-		     		"			\"eventid\": 1" + 
+		     		"			\"eventid\": 1," + 
+		     		"			\"eventname\": AdminEventTickets," + 
+		     		"			\"userid\": 1," + 
+		     		"			\"avail\": 999698," + 
+		     		"			\"purchased\": 301," + 
 		     		"		}" + 
 		     		"	]" + 
 		     		"}";

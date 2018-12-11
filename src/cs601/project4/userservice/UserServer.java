@@ -17,6 +17,7 @@ public class UserServer {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+		
 	    /* Create a connection to the database. */
 	    Database db = Database.getInstance();
 	    db.connect();

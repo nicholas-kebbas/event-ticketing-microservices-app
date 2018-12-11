@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-
-
 /**
  * Object that provides the database with methods to interact with database
  * @author nkebbas

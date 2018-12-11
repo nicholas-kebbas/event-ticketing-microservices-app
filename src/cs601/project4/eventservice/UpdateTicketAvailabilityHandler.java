@@ -3,17 +3,13 @@ package cs601.project4.eventservice;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
-
 import cs601.project4.database.Database;
 import cs601.project4.server.CS601Handler;
 import cs601.project4.utility.JsonManager;
+
 /**
  * Update number of available tickets after ticket is purchased.
  * This will be contacted by servlet in user when ticket is purchased.
