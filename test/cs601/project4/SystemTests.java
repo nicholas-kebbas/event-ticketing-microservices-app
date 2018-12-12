@@ -192,10 +192,10 @@ public class SystemTests {
 		     		"	\"tickets\": [" + 
 		     		"		{" + 
 		     		"			\"eventid\": 1," + 
-		     		"			\"eventname\": AdminEventTickets," + 
+		     		"			\"eventname\": \"AdminEventTickets\"," + 
 		     		"			\"userid\": 1," + 
-		     		"			\"avail\": 999698," + 
-		     		"			\"purchased\": 301," + 
+		     		"			\"avail\": 999690," + 
+		     		"			\"purchased\": 309" + 
 		     		"		}" + 
 		     		"	]" + 
 		     		"}";

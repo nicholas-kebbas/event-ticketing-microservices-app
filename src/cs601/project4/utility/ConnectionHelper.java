@@ -4,6 +4,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
+/**
+ * Helper class with static methods that take connections as input and make server requests
+ * @author nkebbas
+ *
+ */
 public class ConnectionHelper {
 
 	public static HttpURLConnection tryGetConnection(HttpURLConnection connect) throws IOException {

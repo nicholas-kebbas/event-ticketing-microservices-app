@@ -3,7 +3,6 @@ package cs601.project4.frontend;
 import cs601.project4.database.Database;
 import cs601.project4.server.Constants;
 import cs601.project4.server.JettyServer;
-import cs601.project4.userservice.UserTicketRoutingHandler;
 
 public class FrontendServer {
 	

@@ -5,12 +5,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.google.gson.JsonObject;
-
 import cs601.project4.database.Database;
 import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
@@ -18,7 +15,7 @@ import cs601.project4.utility.ConnectionHelper;
 import cs601.project4.utility.JsonManager;
 
 /**
- * Hit Transfer API, will change ticket owner.
+ * Connect to Transfer API, will change ticket owner.
  * @author nkebbas
  *
  */
