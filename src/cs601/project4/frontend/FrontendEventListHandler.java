@@ -13,6 +13,13 @@ import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
 import cs601.project4.utility.ConnectionHelper;
 
+/**
+ * External API to return list of all events in the system.
+ * 
+ * Supports GET Request.
+ * @author nkebbas
+ *
+ */
 public class FrontendEventListHandler extends CS601Handler {
 
 	@Override

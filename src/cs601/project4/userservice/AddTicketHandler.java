@@ -13,7 +13,9 @@ import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
 import cs601.project4.utility.JsonManager;
 /**
- * Add a ticket. Called by Events server.
+ * Add a ticket. Called by Events server in PurchaseEventHandler after the event is confirmed to exist.
+ * 
+ * First, check the user exists, 
  * @author nkebbas
  *
  */

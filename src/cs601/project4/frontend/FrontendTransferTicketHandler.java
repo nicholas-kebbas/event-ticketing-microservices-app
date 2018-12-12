@@ -1,15 +1,12 @@
 package cs601.project4.frontend;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
 import cs601.project4.utility.ConnectionHelper;

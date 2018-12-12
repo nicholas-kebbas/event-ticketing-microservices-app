@@ -4,16 +4,17 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import cs601.project4.server.CS601Handler;
 import cs601.project4.utility.Numeric;
+
 /**
  * Routes /users/ URLs to appropriate handler
- * Parse /users//tickets/transfer and /users/
+ * Parses /users/{id}/tickets/transfer and /users/{id}
  * 
  * @author nkebbas
  *
  */
+
 public class FrontendUsersRoutingHandler extends CS601Handler {
 
 	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

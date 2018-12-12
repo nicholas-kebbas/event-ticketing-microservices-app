@@ -13,6 +13,13 @@ import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
 import cs601.project4.utility.ConnectionHelper;
 
+/**
+ * External API that returns a user based on ID. 
+ * 
+ * Supports GET request.
+ * @author nkebbas
+ *
+ */
 public class FrontendEventDetailHandler extends CS601Handler {
 
 	@Override

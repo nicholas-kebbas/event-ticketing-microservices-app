@@ -17,7 +17,7 @@ import cs601.project4.server.CS601Handler;
 import cs601.project4.utility.JsonManager;
 
 /**
- * Need to figure out how to split appropriately when there's a comma in the json request
+ * Create User in the database. Requires username as input. Returns the userId of the created user.
  * @author nkebbas
  *
  */

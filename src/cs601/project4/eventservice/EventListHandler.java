@@ -3,14 +3,17 @@ package cs601.project4.eventservice;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import cs601.project4.database.Database;
 import cs601.project4.database.Event;
 import cs601.project4.server.CS601Handler;
 
+/**
+ * Return a list of all events.
+ * @author nkebbas
+ *
+ */
 public class EventListHandler extends CS601Handler {
 	
 	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

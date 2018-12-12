@@ -1,21 +1,24 @@
 package cs601.project4.frontend;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
 import cs601.project4.utility.ConnectionHelper;
 
+/**
+ * Create a user by accessing the external facing API. Contacts the User Server internally.
+ * Takes as input a username and returns the userId.
+ * @author nkebbas
+ *
+ */
 public class FrontendCreateUserHandler extends CS601Handler {
 
 	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

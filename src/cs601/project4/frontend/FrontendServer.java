@@ -4,6 +4,11 @@ import cs601.project4.database.Database;
 import cs601.project4.server.Constants;
 import cs601.project4.server.JettyServer;
 
+/**
+ * Maps Handlers to URLs, connects to Database, and launches server.
+ * @author nkebbas
+ *
+ */
 public class FrontendServer {
 	
 	public static void main(String[] args) {

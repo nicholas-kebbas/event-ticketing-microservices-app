@@ -6,13 +6,12 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.google.gson.JsonObject;
 import cs601.project4.database.Database;
 import cs601.project4.database.Event;
+import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
 import cs601.project4.utility.JsonManager;
 
@@ -22,7 +21,7 @@ import cs601.project4.utility.JsonManager;
  * @author nkebbas
  *
  */
-public class CreateEventHandler extends HttpServlet {
+public class CreateEventHandler extends CS601Handler {
 	
 	public synchronized void doPost (HttpServletRequest request, HttpServletResponse response) throws IOException {	
 		/* Build the object based on json request */
@@ -41,9 +40,16 @@ public class CreateEventHandler extends HttpServlet {
 	    		return;
         }
         
+        
         int userId = jsonBody.get("userid").getAsInt();
         String eventName = jsonBody.get("eventname").getAsString(); 
         int numTickets = jsonBody.get("numtickets").getAsInt();
+        
+        /* Return 400 if tickets is less than 0 */
+        if (numTickets < 0) {
+        		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        		return;
+        }
         
         /* After checking for correct JSON, check users server to confirm user exists */
        	URL url = new URL (Constants.HOST + Constants.USERS_URL + "/" + userId);
@@ -73,6 +79,12 @@ public class CreateEventHandler extends HttpServlet {
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().print("{" + "\"eventid\": " + intString  +"}");
+	}
+	
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		return;
 	}
 	
 	private HttpURLConnection tryGetConnection(HttpURLConnection connect) throws IOException {

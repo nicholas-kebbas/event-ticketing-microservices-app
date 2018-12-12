@@ -15,7 +15,7 @@ import cs601.project4.utility.ConnectionHelper;
 import cs601.project4.utility.JsonManager;
 
 /**
- * Connect to Transfer API, will change ticket owner.
+ * Connect to Transfer API, change ticket owner if event and users exist.
  * @author nkebbas
  *
  */

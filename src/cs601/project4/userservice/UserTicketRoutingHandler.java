@@ -12,7 +12,7 @@ import cs601.project4.utility.Numeric;
  * */
 public class UserTicketRoutingHandler extends CS601Handler {
 
-	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		CS601Handler handler = parseString(request.getPathInfo());
 		if (handler != null) {
 			handler.doGet(request, response);
@@ -22,7 +22,7 @@ public class UserTicketRoutingHandler extends CS601Handler {
 		
 	}
 	
-	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		CS601Handler handler = parseString(request.getPathInfo());
 		if (handler != null) {
 			handler.doPost(request, response);

@@ -2,14 +2,19 @@ package cs601.project4.userservice;
 
 import java.io.IOException;
 import java.sql.SQLException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import cs601.project4.database.Database;
 import cs601.project4.database.User;
 import cs601.project4.server.CS601Handler;
 import cs601.project4.utility.Numeric;
+
+/**
+ * Retrieve the users information from the database.Return their userId, username, and an array of the eventIds of
+ * their tickets as a JSON object.
+ * @author nkebbas
+ *
+ */
 
 public class UserDetailHandler extends CS601Handler {
 

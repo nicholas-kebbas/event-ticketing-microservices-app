@@ -20,8 +20,13 @@ import cs601.project4.utility.ConnectionHelper;
 import cs601.project4.utility.JsonManager;
 
 /**
- * There's an issue here where if the user doesn't exist, the events table will still decrement.
  * 
+ * External API to support purchasing a ticket to an event.
+ * Internally contacts Event Server to confirm event exists and 
+ * to decrement tickets appropriately, which will contact User server to access
+ * Tickets and User tables.
+ * 
+ * Supports POST request.
  * @author nkebbas
  *
  */

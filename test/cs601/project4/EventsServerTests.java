@@ -258,7 +258,8 @@ public class EventsServerTests {
 	 * Need to figure out how to make no events display
 	 * @throws IOException
 	 */
-//	@Test
+
+	//	@Test
 //	public void testGetListNoEvents() throws IOException {
 //		/* Make connection to URL */
 //		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/list" );
@@ -340,6 +341,60 @@ public class EventsServerTests {
 		String postData = "{\n" + 
 				"	\"userid\": 1,\n" + 
 				"	\"eventid\": -1,\n" + 
+				"	\"tickets\": 1\n" + 
+				"}";
+		connect.setRequestProperty("Content-Length", Integer.toString(postData.length()));
+		/* Then get response and write that */
+		try(DataOutputStream wr = new DataOutputStream(connect.getOutputStream())) {
+			wr.writeBytes(postData);
+		}
+        connect.connect();
+        connect.getResponseCode();
+        
+        /* Confirm the response is as expected */
+        assertEquals(400, connect.getResponseCode());
+	}
+	
+	@Test
+	public void testPurchaseEventTicketEventIdDifferentThanUrl1() throws IOException {
+		/* Make connection to URL */
+		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/purchase/1" );
+		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
+		connect.setDoOutput(true);
+        connect.setRequestMethod("POST");
+		connect.setRequestProperty("Content-Type", "application/json"); 
+		connect.setRequestProperty("charset", "utf-8");
+		/* Write the body of the request */
+		String postData = "{\n" + 
+				"	\"userid\": 1,\n" + 
+				"	\"eventid\": -1,\n" + 
+				"	\"tickets\": 1\n" + 
+				"}";
+		connect.setRequestProperty("Content-Length", Integer.toString(postData.length()));
+		/* Then get response and write that */
+		try(DataOutputStream wr = new DataOutputStream(connect.getOutputStream())) {
+			wr.writeBytes(postData);
+		}
+        connect.connect();
+        connect.getResponseCode();
+        
+        /* Confirm the response is as expected */
+        assertEquals(400, connect.getResponseCode());
+	}
+	
+	@Test
+	public void testPurchaseEventTicketEventIdDifferentThanUrl2() throws IOException {
+		/* Make connection to URL */
+		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/purchase/-1" );
+		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
+		connect.setDoOutput(true);
+        connect.setRequestMethod("POST");
+		connect.setRequestProperty("Content-Type", "application/json"); 
+		connect.setRequestProperty("charset", "utf-8");
+		/* Write the body of the request */
+		String postData = "{\n" + 
+				"	\"userid\": 1,\n" + 
+				"	\"eventid\": 1,\n" + 
 				"	\"tickets\": 1\n" + 
 				"}";
 		connect.setRequestProperty("Content-Length", Integer.toString(postData.length()));

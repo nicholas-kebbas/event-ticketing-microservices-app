@@ -165,7 +165,6 @@ public class SystemTests {
 	         JsonParser parser = new JsonParser();
 	         System.out.println(responseString.toString());
 	         JsonArray responseObject = (JsonArray) parser.parse(responseString.toString());
-	         
 			 expectedResult = expectedResult.trim().replaceAll("\\s+", "");
 			 responseString.toString().trim().replaceAll("\\s+", "");
 			 assertTrue(responseString.toString().contains(expectedResult)); 
@@ -181,9 +180,11 @@ public class SystemTests {
 		BufferedReader in = new BufferedReader(new InputStreamReader(connect.getInputStream()));
 		String inputLine;
 		StringBuffer responseString = new StringBuffer();
+		
 		while ((inputLine = in.readLine()) != null) {
 			responseString.append(inputLine);
 		}
+		
 		in.close();
 	     
 	     String expectedResult = "{" + 

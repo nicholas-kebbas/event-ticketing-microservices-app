@@ -6,19 +6,23 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
 import cs601.project4.utility.ConnectionHelper;
 import cs601.project4.utility.JsonManager;
 
+/**
+ * External facing API to return user information based on User ID.
+ * 
+ * Supports GET request.
+ * @author nkebbas
+ *
+ */
 public class FrontendUserDetailHandler extends CS601Handler {
 
 	@Override

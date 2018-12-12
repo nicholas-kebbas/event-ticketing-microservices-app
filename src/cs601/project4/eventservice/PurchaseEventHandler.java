@@ -48,12 +48,18 @@ public class PurchaseEventHandler extends CS601Handler {
 		
         
 		if (Numeric.isNumeric(parameters[1])) {
-			// int eventId = Integer.parseInt(parameters[1]);
+			int eventIdUrl = Integer.parseInt(parameters[1]);
 			/* Get the event from the event DB, and decrement tickets */
 			Database db = Database.getInstance();
 			int userId = jsonBody.get("userid").getAsInt();
 			int eventId = jsonBody.get("eventid").getAsInt();
 			int tickets = jsonBody.get("tickets").getAsInt();
+			
+			/* If ID in URL is not the same as what is in body, return 400 */
+			if (eventIdUrl != eventId) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				return;
+			}
 			
 			/* Open a connection and check if user exists */
 			URL userExistsUrl = new URL(Constants.HOST + Constants.USERS_URL + "/" + userId);

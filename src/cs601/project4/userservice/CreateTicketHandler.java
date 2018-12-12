@@ -19,7 +19,7 @@ import cs601.project4.utility.JsonManager;
  * Internal API that takes as input id from URL, contacts Events Service
  * to check availability of tickets, then updates Tickets table.
  * 
- * Need to confirm that the users transferring to and from exist.
+ * 
  * @author nkebbas
  *
  */
