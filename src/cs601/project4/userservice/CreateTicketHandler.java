@@ -52,6 +52,12 @@ public class CreateTicketHandler extends CS601Handler {
 			int eventId = jsonBody.get("eventid").getAsInt();
 			int tickets = jsonBody.get("tickets").getAsInt();
 			
+			/* Return 400 if negative number of tickets */
+			if (tickets < 0) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				return;
+			}
+			
 			/* Open a connection with GET request to confirm event Exists */
 	       	URL eventUrl = new URL (Constants.EVENTS_HOST + Constants.EVENTS_URL + "/" + eventId);
 	        HttpURLConnection eventConnect = (HttpURLConnection) eventUrl.openConnection();

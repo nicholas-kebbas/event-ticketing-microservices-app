@@ -64,6 +64,12 @@ public class PurchaseEventHandler extends CS601Handler {
 				return;
 			}
 			
+			/* Return 400 if negative number of tickets */
+			if (tickets < 0) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				return;
+			}
+			
 			/* Open a connection and check if user exists */
 			URL userExistsUrl = new URL(Constants.USERS_HOST + Constants.USERS_URL + "/" + userId);
 			HttpURLConnection userExistsConnect = (HttpURLConnection) userExistsUrl.openConnection();
