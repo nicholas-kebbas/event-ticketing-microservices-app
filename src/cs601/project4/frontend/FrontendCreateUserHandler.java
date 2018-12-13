@@ -16,15 +16,20 @@ import cs601.project4.utility.ConnectionHelper;
 /**
  * Create a user by accessing the external facing API. Contacts the User Server internally.
  * Takes as input a username and returns the userId.
+ * 
+ * Supports POST requests.
  * @author nkebbas
  *
  */
-public class FrontendCreateUserHandler extends CS601Handler {
 
+public class FrontendCreateUserHandler extends CS601Handler {
+	
+	@Override
 	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 
+	@Override
 	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 		

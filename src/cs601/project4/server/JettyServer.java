@@ -1,13 +1,17 @@
 package cs601.project4.server;
-import javax.servlet.http.HttpServlet;
 
+import javax.servlet.http.HttpServlet;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
-
+/**
+ * Sets up the HTTP Server
+ * @author nkebbas
+ *
+ */
 public class JettyServer {
     private Server server;
     private ServletHandler servletHandler;

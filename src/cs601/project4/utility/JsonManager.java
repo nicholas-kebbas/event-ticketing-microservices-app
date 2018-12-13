@@ -9,6 +9,7 @@ import com.google.gson.JsonParser;
  * @author nkebbas
  *
  */
+
 public class JsonManager {
 	public static JsonObject validateJsonString(String input) {
 		JsonParser parser = new JsonParser();

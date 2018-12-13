@@ -4,6 +4,11 @@ import cs601.project4.database.Database;
 import cs601.project4.server.*;
 import cs601.project4.server.JettyServer;
 
+/**
+ * Sets up URL Mapping, Connects to Database, and launches the User Server
+ * @author nkebbas
+ *
+ */
 public class UserServer {
 	
 	public static void main(String[] args) {

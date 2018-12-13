@@ -14,8 +14,10 @@ import cs601.project4.server.CS601Handler;
  * @author nkebbas
  *
  */
+
 public class EventListHandler extends CS601Handler {
 	
+	@Override
 	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Database db = Database.getInstance();
 		ArrayList<Event> eventsList = new ArrayList<Event>();

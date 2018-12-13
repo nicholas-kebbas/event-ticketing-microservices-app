@@ -1,19 +1,13 @@
 package cs601.project4.frontend;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
-
 import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
 import cs601.project4.utility.ConnectionHelper;
@@ -30,13 +24,15 @@ import cs601.project4.utility.JsonManager;
  * @author nkebbas
  *
  */
+
 public class FrontendPurchaseEventTicketHandler extends CS601Handler {
 
+	@Override
 	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 
-	/* Need to edit the post request to include userId and eventId */
+	@Override
 	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 		/* Check for Correct JSON Issues and No null necessary parameters */
@@ -50,7 +46,6 @@ public class FrontendPurchaseEventTicketHandler extends CS601Handler {
 			return;
 		}
 		int tickets = jsonBody.get("tickets").getAsInt();
-		
 		String[] parameters = request.getPathInfo().split("/");
 		int eventId = Integer.parseInt(parameters[1]);
 		int userId = Integer.parseInt(parameters[3]);

@@ -2,20 +2,16 @@ package cs601.project4;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-
 import org.junit.Test;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
 import cs601.project4.server.Constants;
 import cs601.project4.utility.ConnectionHelper;
 
@@ -163,7 +159,6 @@ public class SystemTests {
 		     		"	\"purchased\": 0\n" + 
 		     		"}";
 	         JsonParser parser = new JsonParser();
-	         System.out.println(responseString.toString());
 	         JsonArray responseObject = (JsonArray) parser.parse(responseString.toString());
 			 expectedResult = expectedResult.trim().replaceAll("\\s+", "");
 			 responseString.toString().trim().replaceAll("\\s+", "");

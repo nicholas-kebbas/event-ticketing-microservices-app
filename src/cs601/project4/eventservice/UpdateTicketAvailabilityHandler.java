@@ -12,11 +12,12 @@ import cs601.project4.utility.JsonManager;
 
 /**
  * Update number of available tickets after ticket is purchased.
- * This will be contacted by servlet in user when ticket is purchased.
+ * This is contacted by Handler in User Server when ticket is purchased.
  * Get the eventId and the number of tickets from the user handler.
  * @author nkebbas
  *
  */
+
 public class UpdateTicketAvailabilityHandler extends CS601Handler {
 
 	@Override

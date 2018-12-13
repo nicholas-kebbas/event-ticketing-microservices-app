@@ -17,10 +17,12 @@ import cs601.project4.utility.Numeric;
  */
 public class EventDetailHandler extends CS601Handler {
 	
+	@Override
 	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 	
+	@Override
 	public synchronized void doGet (HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String[] parameters = request.getPathInfo().split("/");
 			if (parameters.length == 2 && Numeric.isNumeric(parameters[1])) {

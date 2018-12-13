@@ -12,18 +12,24 @@ import javax.servlet.http.HttpServletResponse;
 import cs601.project4.server.CS601Handler;
 import cs601.project4.server.Constants;
 import cs601.project4.utility.ConnectionHelper;
+
 /**
  * Create an Event via the external facing API. This will hit the create event API on the event server. 
  * Takes as input the userId of the event author, the event name, and the number of tickets available for sale.
+ * 
+ * Supports POST requests.
  * @author nkebbas
  *
  */
+
 public class FrontendCreateEventHandler extends CS601Handler {
 
+	@Override
 	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 
+	@Override
 	public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String getBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 		

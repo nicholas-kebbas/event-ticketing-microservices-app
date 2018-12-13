@@ -19,6 +19,7 @@ import cs601.project4.utility.ConnectionHelper;
  * @author nkebbas
  *
  */
+
 public class FrontendTransferTicketHandler extends CS601Handler {
 
 	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

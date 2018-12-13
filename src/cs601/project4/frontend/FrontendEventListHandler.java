@@ -20,6 +20,7 @@ import cs601.project4.utility.ConnectionHelper;
  * @author nkebbas
  *
  */
+
 public class FrontendEventListHandler extends CS601Handler {
 
 	@Override
