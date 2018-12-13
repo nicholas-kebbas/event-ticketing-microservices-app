@@ -26,7 +26,7 @@ public class FrontendEventListHandler extends CS601Handler {
 	@Override
 	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) {
 		try {
-	       	URL url = new URL (Constants.HOST + Constants.EVENTS_URL + "/list");
+	       	URL url = new URL (Constants.EVENTS_HOST + Constants.EVENTS_URL + "/list");
 	        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 	        connect = ConnectionHelper.tryGetConnection(connect);
 			/* Get response from Event server */

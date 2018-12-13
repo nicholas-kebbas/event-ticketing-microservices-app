@@ -51,7 +51,7 @@ public class CreateEventHandler extends CS601Handler {
         }
         
         /* After checking for correct JSON, check users server to confirm user exists */
-       	URL url = new URL (Constants.HOST + Constants.USERS_URL + "/" + userId);
+       	URL url = new URL (Constants.USERS_HOST + Constants.USERS_URL + "/" + userId);
         HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect = tryGetConnection(connect);
 		if (connect.getResponseCode() != 200) {

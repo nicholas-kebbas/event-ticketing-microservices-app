@@ -50,7 +50,7 @@ public class TransferTicketHandler extends CS601Handler {
 		int targetUserId = jsonBody.get("targetuser").getAsInt();
 		
 		/* Confirm Event Exists */
-       	URL eventUrl = new URL (Constants.HOST + Constants.EVENTS_URL + "/" + eventId);
+       	URL eventUrl = new URL (Constants.EVENTS_HOST + Constants.EVENTS_URL + "/" + eventId);
         HttpURLConnection eventConnect = (HttpURLConnection) eventUrl.openConnection();
 		eventConnect = ConnectionHelper.tryGetConnection(eventConnect);
 		
@@ -61,7 +61,7 @@ public class TransferTicketHandler extends CS601Handler {
 		
 		/* Confirm Both Users Exist */
 		/* Confirm User Exists */
-//       	URL userUrl1 = new URL (Constants.HOST + Constants.USERS_URL + "/" + userId);
+//       	URL userUrl1 = new URL (Constants.USERS_HOST + Constants.USERS_URL + "/" + userId);
 //        HttpURLConnection userConnect1 = (HttpURLConnection) userUrl1.openConnection();
 //		userConnect1 = tryGetConnection(userConnect1);
 //		
@@ -71,7 +71,7 @@ public class TransferTicketHandler extends CS601Handler {
 //		}
 		
 		/* Confirm User Exists */
-//       	URL userUrl2 = new URL (Constants.HOST + Constants.USERS_URL + "/" + targetUserId);
+//       	URL userUrl2 = new URL (Constants.USERS_HOST + Constants.USERS_URL + "/" + targetUserId);
 //        HttpURLConnection userConnect2 = (HttpURLConnection) userUrl2.openConnection();
 //		userConnect2 = tryGetConnection(userConnect2);
 //		

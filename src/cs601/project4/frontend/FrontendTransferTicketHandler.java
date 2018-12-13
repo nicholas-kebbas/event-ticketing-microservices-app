@@ -34,7 +34,7 @@ public class FrontendTransferTicketHandler extends CS601Handler {
 		
 		String[] parameters = request.getPathInfo().split("/");
 		int userId = Integer.parseInt(parameters[1]);
-		URL url = new URL(Constants.HOST + Constants.USERS_URL + "/" + userId + "/tickets/transfer");
+		URL url = new URL(Constants.USERS_HOST + Constants.USERS_URL + "/" + userId + "/tickets/transfer");
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect = ConnectionHelper.tryPostConnection(connect, postData);
       

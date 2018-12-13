@@ -51,7 +51,7 @@ public class FrontendPurchaseEventTicketHandler extends CS601Handler {
 		int userId = Integer.parseInt(parameters[3]);
 		String newBody = "{" + "\"userid\":" + userId + "," + "\"eventid\":" + eventId + "," + "\"tickets\":" + tickets + "}";
 		byte[] newBodyBytes = newBody.getBytes(StandardCharsets.UTF_8);
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/purchase/" + eventId);
+		URL url = new URL(Constants.EVENTS_HOST + Constants.EVENTS_URL + "/purchase/" + eventId);
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect = ConnectionHelper.tryPostConnection(connect, newBodyBytes);
 		if (connect.getResponseCode() == 200) {

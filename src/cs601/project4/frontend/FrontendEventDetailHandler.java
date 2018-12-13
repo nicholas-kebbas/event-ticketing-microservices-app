@@ -24,7 +24,7 @@ public class FrontendEventDetailHandler extends CS601Handler {
 	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) {
 		String[] parameters = request.getPathInfo().split("/");
 		try {
-	       	URL url = new URL (Constants.HOST + Constants.EVENTS_URL + "/" + parameters[1]);
+	       	URL url = new URL (Constants.EVENTS_HOST + Constants.EVENTS_URL + "/" + parameters[1]);
 	        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 			connect = ConnectionHelper.tryGetConnection(connect);
 			/* Get response from User server */

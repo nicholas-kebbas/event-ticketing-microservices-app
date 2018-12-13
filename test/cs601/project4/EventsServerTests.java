@@ -20,7 +20,7 @@ public class EventsServerTests {
 	@Test
 	public void testURLDoesNotExist() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/asd/" + "1" );
+		URL url = new URL(Constants.EVENTS_HOST + Constants.EVENTS_URL + "/asd/" + "1" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		
 		connect.setDoOutput(true);
@@ -37,7 +37,7 @@ public class EventsServerTests {
 	@Test
 	public void testEventDoesNotExist() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/-1");
+		URL url = new URL(Constants.EVENTS_HOST + Constants.EVENTS_URL + "/-1");
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		
 		connect.setDoOutput(true);
@@ -54,7 +54,7 @@ public class EventsServerTests {
 	@Test
 	public void testGetEventCorrectInput() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/" + "1" );
+		URL url = new URL(Constants.EVENTS_HOST + Constants.EVENTS_URL + "/" + "1" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		
 		connect.setDoOutput(true);
@@ -71,7 +71,7 @@ public class EventsServerTests {
 	@Test
 	public void testCreateEventCorrectInput() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/create" );
+		URL url = new URL(Constants.EVENTS_HOST + Constants.EVENTS_URL + "/create" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -101,7 +101,7 @@ public class EventsServerTests {
 	@Test
 	public void testCreateEventUserDoesNotExist() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/create" );
+		URL url = new URL(Constants.EVENTS_HOST + Constants.EVENTS_URL + "/create" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -131,7 +131,7 @@ public class EventsServerTests {
 	@Test
 	public void testCreateMalformedJsonInput() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/create" );
+		URL url = new URL(Constants.EVENTS_HOST + Constants.EVENTS_URL + "/create" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -159,7 +159,7 @@ public class EventsServerTests {
 	@Test
 	public void testCreateNoEventNameInput() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/create" );
+		URL url = new URL(Constants.EVENTS_HOST + Constants.EVENTS_URL + "/create" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -187,7 +187,7 @@ public class EventsServerTests {
 	@Test
 	public void testCreateNoUserIdInput() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/create" );
+		URL url = new URL(Constants.EVENTS_HOST + Constants.EVENTS_URL + "/create" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -214,7 +214,7 @@ public class EventsServerTests {
 	@Test
 	public void testCreateNoTicketsInput() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/create" );
+		URL url = new URL(Constants.EVENTS_HOST + Constants.EVENTS_URL + "/create" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -241,7 +241,7 @@ public class EventsServerTests {
 	@Test
 	public void testGetListSuccess() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/list" );
+		URL url = new URL(Constants.EVENTS_HOST + Constants.EVENTS_URL + "/list" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("GET");
@@ -276,7 +276,7 @@ public class EventsServerTests {
 	@Test
 	public void testPurchaseEventTicketSuccess() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/purchase/1" );
+		URL url = new URL(Constants.EVENTS_HOST + Constants.EVENTS_URL + "/purchase/1" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -304,7 +304,7 @@ public class EventsServerTests {
 	@Test
 	public void testPurchaseEventTicketNotEnoughTickets() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/purchase/2" );
+		URL url = new URL(Constants.EVENTS_HOST + Constants.EVENTS_URL + "/purchase/2" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -331,7 +331,7 @@ public class EventsServerTests {
 	@Test
 	public void testPurchaseEventTicketEventDoesNotExist() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/purchase/-1" );
+		URL url = new URL(Constants.EVENTS_HOST + Constants.EVENTS_URL + "/purchase/-1" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -358,7 +358,7 @@ public class EventsServerTests {
 	@Test
 	public void testPurchaseEventTicketEventIdDifferentThanUrl1() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/purchase/1" );
+		URL url = new URL(Constants.EVENTS_HOST + Constants.EVENTS_URL + "/purchase/1" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -385,7 +385,7 @@ public class EventsServerTests {
 	@Test
 	public void testPurchaseEventTicketEventIdDifferentThanUrl2() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/purchase/-1" );
+		URL url = new URL(Constants.EVENTS_HOST + Constants.EVENTS_URL + "/purchase/-1" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -412,7 +412,7 @@ public class EventsServerTests {
 	@Test
 	public void testPurchaseEventTicketUserDoesNotExist() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/purchase/" + 1 );
+		URL url = new URL(Constants.EVENTS_HOST + Constants.EVENTS_URL + "/purchase/" + 1 );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");

@@ -20,7 +20,7 @@ public class SystemTests {
 	@Test
 	public void testGetUserOutput() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL (Constants.HOST + Constants.USERS_URL + "/" + 1);
+		URL url = new URL (Constants.USERS_HOST + Constants.USERS_URL + "/" + 1);
         HttpURLConnection connect = (HttpURLConnection) url.openConnection();
         connect = ConnectionHelper.tryGetConnection(connect);
 		/* Get response from User server */
@@ -47,7 +47,7 @@ public class SystemTests {
 	@Test
 	public void testGetEventOutput() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL (Constants.HOST + Constants.EVENTS_URL + "/" + 2);
+		URL url = new URL (Constants.EVENTS_HOST + Constants.EVENTS_URL + "/" + 2);
         HttpURLConnection connect = (HttpURLConnection) url.openConnection();
         connect = ConnectionHelper.tryGetConnection(connect);
 		/* Get response from User server */
@@ -77,7 +77,7 @@ public class SystemTests {
 				"	\"username\": \"TestUser\"\n" + 
 				"}";
 		byte[] postData = getBody.getBytes( StandardCharsets.UTF_8 );
-		URL url = new URL(Constants.HOST + Constants.USERS_URL + "/create");
+		URL url = new URL(Constants.USERS_HOST + Constants.USERS_URL + "/create");
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect = ConnectionHelper.tryPostConnection(connect, postData);
         connect.connect();
@@ -109,7 +109,7 @@ public class SystemTests {
 				"	\"numtickets\": 0" +
 				"}";
 		byte[] postData = getBody.getBytes( StandardCharsets.UTF_8 );
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/create");
+		URL url = new URL(Constants.EVENTS_HOST + Constants.EVENTS_URL + "/create");
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect = ConnectionHelper.tryPostConnection(connect, postData);
         
@@ -138,7 +138,7 @@ public class SystemTests {
 	@Test
 	public void testGetEventsList() throws IOException {
 			/* Make connection to URL */
-			URL url = new URL (Constants.HOST + Constants.EVENTS_URL + "/list");
+			URL url = new URL (Constants.EVENTS_HOST + Constants.EVENTS_URL + "/list");
 	        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 	        connect = ConnectionHelper.tryGetConnection(connect);
 			/* Get response from User server */
@@ -168,7 +168,7 @@ public class SystemTests {
 	@Test
 	public void testGetUserOutputFrontend() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL (Constants.HOST + Constants.FRONTEND_URL + "/users/" + 1);
+		URL url = new URL (Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/users/" + 1);
         HttpURLConnection connect = (HttpURLConnection) url.openConnection();
         connect = ConnectionHelper.tryGetConnection(connect);
 		/* Get response from User server */
@@ -202,7 +202,7 @@ public class SystemTests {
 	@Test
 	public void testGetEventOutputFrontend() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL (Constants.HOST + Constants.FRONTEND_URL + "/events/" + 2);
+		URL url = new URL (Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/events/" + 2);
         HttpURLConnection connect = (HttpURLConnection) url.openConnection();
         connect = ConnectionHelper.tryGetConnection(connect);
 		/* Get response from User server */
@@ -232,7 +232,7 @@ public class SystemTests {
 				"	\"username\": \"TestUser\"\n" + 
 				"}";
 		byte[] postData = getBody.getBytes( StandardCharsets.UTF_8 );
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/users/create");
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/users/create");
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect = ConnectionHelper.tryPostConnection(connect, postData);
         
@@ -264,7 +264,7 @@ public class SystemTests {
 				"	\"numtickets\": 0" +
 				"}";
 		byte[] postData = getBody.getBytes( StandardCharsets.UTF_8 );
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/events/create");
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/events/create");
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect = ConnectionHelper.tryPostConnection(connect, postData);
         connect.connect();
@@ -294,7 +294,7 @@ public class SystemTests {
 	@Test
 	public void testGetEventsListFrontend() throws IOException {
 			/* Make connection to URL */
-			URL url = new URL (Constants.HOST + Constants.FRONTEND_URL + "/events");
+			URL url = new URL (Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/events");
 	        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 	        connect = ConnectionHelper.tryGetConnection(connect);
 			/* Get response from User server */

@@ -53,7 +53,7 @@ public class CreateTicketHandler extends CS601Handler {
 			int tickets = jsonBody.get("tickets").getAsInt();
 			
 			/* Open a connection with GET request to confirm event Exists */
-	       	URL eventUrl = new URL (Constants.HOST + Constants.EVENTS_URL + "/" + eventId);
+	       	URL eventUrl = new URL (Constants.EVENTS_HOST + Constants.EVENTS_URL + "/" + eventId);
 	        HttpURLConnection eventConnect = (HttpURLConnection) eventUrl.openConnection();
 			eventConnect = ConnectionHelper.tryGetConnection(eventConnect);
 			
@@ -66,7 +66,7 @@ public class CreateTicketHandler extends CS601Handler {
 			
 			/* Open a new POST Request to event server and update ticket availability */
 			byte[] postData = getBody.getBytes( StandardCharsets.UTF_8 );
-	       	URL url = new URL (Constants.HOST + Constants.EVENTS_URL + "/tickets/availability");
+	       	URL url = new URL (Constants.EVENTS_HOST + Constants.EVENTS_URL + "/tickets/availability");
 	        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 	        connect = ConnectionHelper.tryPostConnection(connect, postData);
 			

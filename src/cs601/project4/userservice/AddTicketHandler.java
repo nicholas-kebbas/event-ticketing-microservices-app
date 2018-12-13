@@ -44,7 +44,7 @@ public class AddTicketHandler extends CS601Handler {
 		int tickets = jsonBody.get("tickets").getAsInt();
 		
 		/* Confirm Event Exists */
-       	URL eventUrl = new URL (Constants.HOST + Constants.EVENTS_URL + "/" + eventId);
+       	URL eventUrl = new URL (Constants.EVENTS_HOST + Constants.EVENTS_URL + "/" + eventId);
         HttpURLConnection eventConnect = (HttpURLConnection) eventUrl.openConnection();
 		eventConnect = tryGetConnection(eventConnect);
 		
@@ -54,7 +54,7 @@ public class AddTicketHandler extends CS601Handler {
 		}
 		
 		/* Confirm User Exists */
-       	URL url = new URL (Constants.HOST + Constants.USERS_URL + "/" + userId);
+       	URL url = new URL (Constants.USERS_HOST + Constants.USERS_URL + "/" + userId);
         HttpURLConnection userConnect = (HttpURLConnection) url.openConnection();
 		userConnect = tryGetConnection(userConnect);
 		

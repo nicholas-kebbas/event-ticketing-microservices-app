@@ -29,7 +29,7 @@ public class FrontendUserDetailHandler extends CS601Handler {
 	public synchronized void doGet(HttpServletRequest request, HttpServletResponse response) {
 		String[] parameters = request.getPathInfo().split("/");
 		try {
-	       	URL urlUsers = new URL (Constants.HOST + Constants.USERS_URL + "/" + parameters[1]);
+	       	URL urlUsers = new URL (Constants.USERS_HOST + Constants.USERS_URL + "/" + parameters[1]);
 	        HttpURLConnection connectUsers = (HttpURLConnection) urlUsers.openConnection();
 	        connectUsers = ConnectionHelper.tryGetConnection(connectUsers);
 			/* Get response from User server */
@@ -60,7 +60,7 @@ public class FrontendUserDetailHandler extends CS601Handler {
 				if (i != 0) {
 					finalResponseString.append(",");
 				}
-		       	URL urlEvents = new URL (Constants.HOST + Constants.EVENTS_URL + "/" +eventIds.get(i));
+		       	URL urlEvents = new URL (Constants.EVENTS_HOST + Constants.EVENTS_URL + "/" +eventIds.get(i));
 		        HttpURLConnection connectEvents = (HttpURLConnection) urlEvents.openConnection();
 		        connectEvents = ConnectionHelper.tryGetConnection(connectEvents);
 				/* Get response from User server */

@@ -19,7 +19,7 @@ public class FrontendServerTests {
 	@Test
 	public void testURLDoesNotExist() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/asd/" + "1" );
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/asd/" + "1" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		
 		connect.setDoOutput(true);
@@ -36,7 +36,7 @@ public class FrontendServerTests {
 	@Test
 	public void testGetUserSuccess() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/users/1");
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/users/1");
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		
 		connect.setDoOutput(true);
@@ -53,7 +53,7 @@ public class FrontendServerTests {
 	@Test
 	public void testUserDoesNotExist() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/users/-1");
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/users/-1");
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("GET");
@@ -69,7 +69,7 @@ public class FrontendServerTests {
 	@Test
 	public void testCreateUserCorrectInput() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/users/create" );
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/users/create" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -96,7 +96,7 @@ public class FrontendServerTests {
 	@Test
 	public void testUserCreateMalformedJsonInput() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/users/create" );
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/users/create" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -122,7 +122,7 @@ public class FrontendServerTests {
 	@Test
 	public void testCreateNoNameInput() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/users/create" );
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/users/create" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -148,7 +148,7 @@ public class FrontendServerTests {
 	@Test
 	public void testCreateNoBodyInput() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/users/create" );
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/users/create" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -177,7 +177,7 @@ public class FrontendServerTests {
 	@Test
 	public void testGetEventSuccess() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/events/1");
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/events/1");
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		
 		connect.setDoOutput(true);
@@ -194,7 +194,7 @@ public class FrontendServerTests {
 	@Test
 	public void testEventDoesNotExist() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/events/-1");
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/events/-1");
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		
 		connect.setDoOutput(true);
@@ -211,7 +211,7 @@ public class FrontendServerTests {
 	@Test
 	public void testCreateEventCorrectInput() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/events/create" );
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/events/create" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -240,7 +240,7 @@ public class FrontendServerTests {
 	@Test
 	public void testCreateEventUserDoesNotExist() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/events/create" );
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/events/create" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -269,7 +269,7 @@ public class FrontendServerTests {
 	@Test
 	public void testCreateMalformedJsonInput() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/create" );
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.EVENTS_URL + "/create" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -297,7 +297,7 @@ public class FrontendServerTests {
 	@Test
 	public void testCreateNoEventNameInput() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/events/create" );
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/events/create" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -325,7 +325,7 @@ public class FrontendServerTests {
 	@Test
 	public void testCreateNoUserIdInput() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/events/create" );
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/events/create" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -351,7 +351,7 @@ public class FrontendServerTests {
 	@Test
 	public void testCreateNoTicketsInput() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/events/create" );
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/events/create" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -382,7 +382,7 @@ public class FrontendServerTests {
 	@Test
 	public void purchaseTicketSuccess() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/events/1/purchase/1" );
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/events/1/purchase/1" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -408,7 +408,7 @@ public class FrontendServerTests {
 	@Test
 	public void purchaseTicketErrorEventDoesNotExist() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/events/-1/purchase/1" );
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/events/-1/purchase/1" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -434,7 +434,7 @@ public class FrontendServerTests {
 	@Test
 	public void purchaseTicketErrorUserDoesNotExist() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/events/1/purchase/-1" );
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/events/1/purchase/-1" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -461,7 +461,7 @@ public class FrontendServerTests {
 	@Test
 	public void purchaseTicketErrorNoTicketParameter() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/events/2/purchase/1" );
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/events/2/purchase/1" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -487,7 +487,7 @@ public class FrontendServerTests {
 	@Test
 	public void purchaseTicketErrorNotEnoughAvailableTickets() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/events/2/purchase/1" );
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/events/2/purchase/1" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -518,7 +518,7 @@ public class FrontendServerTests {
 	@Test
 	public void transferTicketSuccess() throws IOException {
 		/* Make connection to URL */
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/users/1/tickets/transfer");
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/users/1/tickets/transfer");
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -546,7 +546,7 @@ public class FrontendServerTests {
 	
 	@Test
 	public void transferTicketFromUserDoesNotExist() throws IOException {
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/users/-1/tickets/transfer" );
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/users/-1/tickets/transfer" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -574,7 +574,7 @@ public class FrontendServerTests {
 	
 	@Test
 	public void transferTicketToUserDoesNotExist() throws IOException {
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/users/1/tickets/transfer" );
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/users/1/tickets/transfer" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -603,7 +603,7 @@ public class FrontendServerTests {
 	
 	@Test
 	public void transferTicketEventDoesNotExist() throws IOException {
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/users/1/tickets/transfer" );
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/users/1/tickets/transfer" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -631,7 +631,7 @@ public class FrontendServerTests {
 	
 	@Test
 	public void transferTicketMalformedJson() throws IOException {
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/users/1/tickets/transfer" );
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/users/1/tickets/transfer" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");
@@ -659,7 +659,7 @@ public class FrontendServerTests {
 	
 	@Test
 	public void transferTicketNotEnoughTickets() throws IOException {
-		URL url = new URL(Constants.HOST + Constants.FRONTEND_URL + "/users/2/tickets/transfer" );
+		URL url = new URL(Constants.FRONTEND_HOST + Constants.FRONTEND_URL + "/users/2/tickets/transfer" );
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setDoOutput(true);
         connect.setRequestMethod("POST");

@@ -65,7 +65,7 @@ public class PurchaseEventHandler extends CS601Handler {
 			}
 			
 			/* Open a connection and check if user exists */
-			URL userExistsUrl = new URL(Constants.HOST + Constants.USERS_URL + "/" + userId);
+			URL userExistsUrl = new URL(Constants.USERS_HOST + Constants.USERS_URL + "/" + userId);
 			HttpURLConnection userExistsConnect = (HttpURLConnection) userExistsUrl.openConnection();
 			userExistsConnect = ConnectionHelper.tryGetConnection(userExistsConnect);
 			userExistsConnect.connect();  
@@ -89,7 +89,7 @@ public class PurchaseEventHandler extends CS601Handler {
 			
 				/* Get the data passed from request and convert to bytes, then open a connection */
 				byte[] postData = getBody.getBytes( StandardCharsets.UTF_8 );
-				URL url = new URL(Constants.HOST + Constants.USERS_URL + "/tickets/add");
+				URL url = new URL(Constants.USERS_HOST + Constants.USERS_URL + "/tickets/add");
 				HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 				connect = ConnectionHelper.tryPostConnection(connect, postData);
 		        connect.connect(); 

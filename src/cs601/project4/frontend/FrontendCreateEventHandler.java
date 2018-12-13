@@ -35,7 +35,7 @@ public class FrontendCreateEventHandler extends CS601Handler {
 		
 		/* Open connection to Events Server and send over */
 		byte[] postData = getBody.getBytes( StandardCharsets.UTF_8 );
-		URL url = new URL(Constants.HOST + Constants.EVENTS_URL + "/create");
+		URL url = new URL(Constants.EVENTS_HOST + Constants.EVENTS_URL + "/create");
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect = ConnectionHelper.tryPostConnection(connect, postData);
 		connect.connect();  
